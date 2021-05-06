@@ -54,36 +54,32 @@ namespace ConsoleApp2
 						var volumeName = Convert.ToString(ld.Properties["VolumeName"].Value); // System
 						var volumeSerial = Convert.ToString(ld.Properties["VolumeSerialNumber"].Value); // 12345678
 
-                        //Console.WriteLine("PhysicalName: {0}", physicalName);
-                        //Console.WriteLine("DiskName: {0}", diskName);
-                        //Console.WriteLine("DiskModel: {0}", diskModel);
-                        //Console.WriteLine("DiskInterface: {0}", diskInterface);
-                        //// Console.WriteLine("Capabilities: {0}", capabilities);
-                        //Console.WriteLine("MediaLoaded: {0}", mediaLoaded);
-                        //Console.WriteLine("MediaType: {0}", mediaType);
-                        //Console.WriteLine("MediaSignature: {0}", mediaSignature);
-                        //Console.WriteLine("MediaStatus: {0}", mediaStatus);
+                        Console.WriteLine("PhysicalName: {0}", physicalName);
+                        Console.WriteLine("DiskName: {0}", diskName);
+                        Console.WriteLine("DiskModel: {0}", diskModel);
+                        Console.WriteLine("DiskInterface: {0}", diskInterface);
+                        // Console.WriteLine("Capabilities: {0}", capabilities);
+                        Console.WriteLine("MediaLoaded: {0}", mediaLoaded);
+                        Console.WriteLine("MediaType: {0}", mediaType);
+                        Console.WriteLine("MediaSignature: {0}", mediaSignature);
+                        Console.WriteLine("MediaStatus: {0}", mediaStatus);
 
-                        //Console.WriteLine("DriveName: {0}", driveName);
-                        //Console.WriteLine("DriveId: {0}", driveId);
-                        //Console.WriteLine("DriveCompressed: {0}", driveCompressed);
-                        //Console.WriteLine("DriveType: {0}", driveType);
-                        //Console.WriteLine("FileSystem: {0}", fileSystem);
-                        //Console.WriteLine("FreeSpace: {0}", (float)freeSpace / 1073741824);
-                        //Console.WriteLine("TotalSpace: {0}", (float)totalSpace / 1073741824);
-                        //Console.WriteLine("DriveMediaType: {0}", driveMediaType);
-                        //Console.WriteLine("VolumeName: {0}", volumeName);
-                        //Console.WriteLine("VolumeSerial: {0}", volumeSerial);
+                        Console.WriteLine("DriveName: {0}", driveName);
+                        Console.WriteLine("DriveId: {0}", driveId);
+                        Console.WriteLine("DriveCompressed: {0}", driveCompressed);
+                        Console.WriteLine("DriveType: {0}", driveType);
+                        Console.WriteLine("FileSystem: {0}", fileSystem);
+                        Console.WriteLine("FreeSpace: {0}", (float)freeSpace / 1073741824);
+                        Console.WriteLine("TotalSpace: {0}", (float)totalSpace / 1073741824);
+                        Console.WriteLine("DriveMediaType: {0}", driveMediaType);
+                        Console.WriteLine("VolumeName: {0}", volumeName);
+                        Console.WriteLine("VolumeSerial: {0}", volumeSerial);
 
-                        //Console.WriteLine(new string('-', 79));
+                        Console.WriteLine(new string('-', 79));
                     }
 				}
 			}
-            while (true)
-            {
-				string w = Console.ReadLine();
-				Console.WriteLine("//////" + (int)w[0] +"/////");
-            }
+
 			Console.Read();
 		}
     }
