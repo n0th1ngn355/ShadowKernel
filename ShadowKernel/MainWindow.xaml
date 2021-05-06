@@ -1,0 +1,251 @@
+﻿<Window x:Class="ShadowKernel.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ShadowKernel"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d" Height="600" Width="1080" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="Black"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        Title="ShadowKernel"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto" AllowDrop="True" Focusable="False" WindowStyle="None">
+
+
+    <Window.Resources>
+        <Style x:Key="ButStyle" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border>
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#FF222222"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid Background="Transparent">
+                                <ContentPresenter>
+                                </ContentPresenter>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <Style x:Key="{x:Type ToolTip}"
+       TargetType="ToolTip">
+            <Setter Property="OverridesDefaultStyle"
+          Value="true" />
+            <Setter Property="HasDropShadow"
+          Value="True" />
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToolTip">
+                        <Border Name="Border" Background="White">
+                            <ContentPresenter Margin="4"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <Style x:Key="Flex" TargetType="{x:Type Grid}">
+
+            <Setter Property="Width" Value="70" />
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard BeginTime="0:0:0.5">
+                                <DoubleAnimation Storyboard.TargetProperty="Width"
+                  To="350" Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard >
+                                <DoubleAnimation Storyboard.TargetProperty="Width"
+                  To="70" Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        
+        
+
+    </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard Duration="00:00:1" Storyboard.TargetProperty="Opacity">
+                    <DoubleAnimation From="0" To="1"/>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
+    <Grid Background="#FF303030">
+
+        <Grid x:Name="GridMain" HorizontalAlignment="Right" Height="580" Width="1010" Margin="0,0,0,0" VerticalAlignment="Bottom"/>
+
+        <Grid>
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="1" ShadowDepth="0.5" Color="#FFACACAC"/>
+            </Grid.Effect>
+            <Grid Margin="0" Background="Black" Width="1080"  VerticalAlignment="Top" Height="40" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+                <Rectangle x:Name="serverInd" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,150,0" Width="15" Height="15" Fill="Red" RadiusX="50" RadiusY="50"/>
+                <TextBlock x:Name="serverText" Text="Сервер не запущен" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,2,180,0"/>
+                <Button Style="{StaticResource ButStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="40" Margin="100,0,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="10,4" Click="Button_Click"  >
+                    <Button.Content>
+                        <Grid>
+                            <materialDesign:PackIcon Kind="AccountCircle" Height="30" Width="30"  Foreground="#FFB9BBBE" Margin="10,0,0,0" VerticalAlignment="Center"  />
+                            <TextBlock Text="{Binding Login}" VerticalAlignment="Center" FontSize="16" Margin="50,0,10,0" HorizontalAlignment="Left" Foreground="White"/>
+                        </Grid>
+                    </Button.Content>
+                    <Button.ContextMenu>
+                        <ContextMenu x:Name="btnMenu">
+                            <MenuItem x:Name="PC" Header="Личный кабинет"  Margin="0,-15,0,0"  BorderThickness="0" FontSize="14" Height="30" Padding="0,0,10,0" HorizontalAlignment="Left" VerticalAlignment="Center" Click="PC_Click">
+                                <MenuItem.Icon>
+                                    <Image Source="Resources/Person_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                        <Image.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                                <SkewTransform/>
+                                                <RotateTransform/>
+                                                <TranslateTransform X="10"/>
+                                            </TransformGroup>
+                                        </Image.RenderTransform>
+                                    </Image>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <Separator Margin="0,-10,0,-10"/>
+                            <MenuItem x:Name="LogOut" Header="Выход" BorderThickness="0" Margin="0,0,0,-15"  FontSize="14" Height="30" Padding="0,0,10,0" HorizontalAlignment="Left" VerticalAlignment="Center" Click="LogOut_Click">
+                                <MenuItem.Icon>
+                                    <Image Source="Resources/Close Window_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                        <Image.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                                <SkewTransform/>
+                                                <RotateTransform/>
+                                                <TranslateTransform X="10"/>
+                                            </TransformGroup>
+                                        </Image.RenderTransform>
+                                    </Image>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+                <!--<Path Data="M0.046783628,5.9624955 L5.6666667,11.856241 M5.2859649,11.856241 L11.105263,5.9624955" Stroke="White" StrokeThickness="1" Stretch="None" Margin="0,0,10,0" HorizontalAlignment="Right" VerticalAlignment="Center" Height="12.5" Width="11.333" />-->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0" >
+                    <Button Style="{StaticResource ButStyle}" Click="MinimizeButton" Background="Black" BorderBrush="{x:Null}" Height="40" >
+                        <Button.Content >
+                            <Grid Margin="20,11,20,9">
+                                <Path Data="M 0,10 L 15,10" Stroke="White" StrokeThickness="1" Stretch="None" />
+                            </Grid>
+                        </Button.Content>
+                    </Button>
+                    <Button Style="{StaticResource ButStyle}" Click="CloseButton" Background="Black" BorderBrush="{x:Null}" FontSize="20" Padding="20,2,20,0">
+                        <Button.Content >
+                            <Grid Margin="20,10">
+                                <Path Data="M-0.33333333,6.5 L13,20.25 M-0.33333333,20.25 L13,6.5" Stroke="White" StrokeThickness="1" Stretch="None" Margin="0,-4.5,-3,-0.75" />
+                            </Grid>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Grid>
+        <Grid Style="{StaticResource Flex}" x:Name="GridMenu" Width="70" HorizontalAlignment="Left" Background="#FF0A0A0A" AllowDrop="True" Panel.ZIndex="25">
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="2" ShadowDepth="1" Color="#FFAEAEAE"/>
+            </Grid.Effect>
+            <StackPanel>
+                <ListView x:Name="ListViewMenu" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="ListViewMenu_SelectionChanged" Height="600" Margin="0" BorderBrush="{x:Null}">
+                    <ListViewItem x:Name="Menu" Height="40" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0,0,8,0">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" >
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"  Width="70" >
+                                <materialDesign:PackIcon Kind="FormatListBulleted" Height="30" Width="25" Margin="21,10,10,10" Foreground="#FFB9BBBE" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock Text="Меню" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" FontSize="16"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem Style="{x:Null}" Height="0" Margin="0,0,0,140"/>
+                    <ListViewItem  x:Name="ItemHome" Height="60" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0,8,8,8">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" >
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"  Width="70" >
+                                <materialDesign:PackIcon Kind="BookOpenPageVariant" Height="30" Width="25" Margin="21,10,10,10" Foreground="#FFB9BBBE" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock Text="Аудиты" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" FontSize="16"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem  x:Name="ItemCreate" Height="60" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0,8,8,8">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" >
+                            <StackPanel  Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Width="70">
+                                <materialDesign:PackIcon Kind="Assessment" Height="30" Width="25" Margin="21,10,10,10" Foreground="#FFB9BBBE" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock Text="Вопросы" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" FontSize="16"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem  x:Name="Server" Height="60" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0,8,8,8">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" >
+                            <StackPanel  Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Width="70">
+                                <materialDesign:PackIcon Kind="UserGroup" Height="30" Width="25" Margin="21,10,10,10" Foreground="#FFB9BBBE" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock Text="Взаимодействие с клиентами" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" FontSize="16"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem   x:Name="Net" Height="60" Margin="0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0,8,8,8">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" >
+                            <StackPanel  Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Width="70">
+                                <materialDesign:PackIcon Kind="Network" Height="30" Width="25" Margin="21,10,10,10" Foreground="#FFB9BBBE" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock Text="Сеть" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" FontSize="16"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem   x:Name="Settings" Height="60"  Margin="0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0,8,8,8" >
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" >
+                            <StackPanel  Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Width="70">
+                                <materialDesign:PackIcon Kind="Settings" Height="30" Width="25" Margin="21,10,10,10" Foreground="#FFB9BBBE" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock Text="Настройки" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" FontSize="16"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem x:Name="Logout" Height="60" Margin="0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0,8,8,8">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" >
+                            <StackPanel  Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Width="70">
+                                <materialDesign:PackIcon Kind="LogoutVariant" Height="30" Width="25" Margin="21,10,10,10" Foreground="#FFB9BBBE" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock Text="Выйти из аккаунта" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" FontSize="16"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem x:Name="Quit" Height="60" Margin="0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0,8,8,8">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" >
+                            <StackPanel  Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Width="70">
+                                <materialDesign:PackIcon Kind="Power" Height="30" Width="25" Margin="21,10,10,10" Foreground="#FFB9BBBE" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock Text="Выход" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" FontSize="16"/>
+                        </StackPanel>
+                    </ListViewItem>
+                </ListView>
+            </StackPanel>
+        </Grid>
+    </Grid>
+
+</Window>

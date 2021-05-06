@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="ShadowKernel.userControls.SettingsServer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:local="clr-namespace:ShadowKernel.userControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:localHelper="clr-namespace:ShadowKernel.helper"
+             xmlns:cm="clr-namespace:System.ComponentModel;assembly=System"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             Background="{DynamicResource MaterialDesignPaper}" 
+             TextElement.FontWeight="Medium"
+             TextElement.FontSize="14"
+             
+             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+             mc:Ignorable="d" Height="540" Width="1020" Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <cm:BackgroundWorker  x:Key="backgroundWorker" DoWork="bwUpdateImage_DoWork"></cm:BackgroundWorker>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Background="#FF303030">
+        <Grid Height="60" VerticalAlignment="Top" Background="{DynamicResource MaterialDesignBackground}" d:IsEffectDisabled="True" >
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="1" ShadowDepth="1" Color="#FFACACAC"/>
+            </Grid.Effect>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Menu TextElement.FontWeight="Medium"
+             TextElement.FontSize="14" Background="{x:Null}" Width="1010" HorizontalContentAlignment="Center">
+                    <MenuItem Header="Клиент" Margin="176,0,0,0" Click="MenuItem_Click"></MenuItem>
+                    <MenuItem Header="Сервер" Margin="200,0,0,0" Click="MenuItem_Click_1"></MenuItem>
+                    <MenuItem Header="Сеть" Margin="200,0,0,0" Click="MenuItem_Click_2"></MenuItem>
+                </Menu>
+            </StackPanel>
+        </Grid>
+        <Grid Height="480" VerticalAlignment="Bottom" Background="#FF303030">
+            <Label Content="Настройки сервера" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="Port" HorizontalAlignment="Left" Height="30" Margin="176,66,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="68" SelectionChanged="Port_SelectionChanged" VerticalScrollBarVisibility="Disabled"/>
+            <TextBlock HorizontalAlignment="Left" Margin="125,78,0,0" TextWrapping="Wrap" Text="Порт" VerticalAlignment="Top"/>
+            <Button x:Name="btnListen" Content="Начать прослушивание" HorizontalAlignment="Left" Margin="301,84,0,0" VerticalAlignment="Top" Width="217" Background="Black" BorderBrush="Black" Click="Button_Click"/>
+            <CheckBox x:Name="notify" Content="Уведомлять о новом подключении" HorizontalAlignment="Left" Margin="45,165,0,0" VerticalAlignment="Top" Background="#FFF44336" BorderBrush="Black" Click="CheckBox_Click"/>
+            <TextBox x:Name="UpInt" HorizontalAlignment="Left" Height="30" Margin="176,103,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="68" SelectionChanged="UpInt_SelectionChanged" VerticalScrollBarVisibility="Disabled"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,117,0,0" TextWrapping="Wrap" Text="Интервал обновления" VerticalAlignment="Top"/>
+
+        </Grid>
+    </Grid>
+</UserControl>

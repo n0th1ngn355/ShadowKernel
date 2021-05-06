@@ -1,0 +1,127 @@
+﻿<Window x:Class="ShadowKernel.SignUp"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ShadowKernel"
+       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        Title="{Binding Content, ElementName=mainLbl}" Height="500" Width="650" 
+        ResizeMode="NoResize" 
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen" 
+        WindowStyle="None" 
+        FontFamily="Segoe UI Emoji" Loaded="Window_Loaded">
+    <Window.Resources>
+        <Style x:Key="But1Style" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="1">
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Visibility" Value="Visible">
+                                            <Setter Property="Background" Value="#FF222222"/>
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#FF303030"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid>
+                                <ContentPresenter Margin="{TemplateBinding Padding}"  HorizontalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ButStyle" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border BorderThickness="0,0,0,1">
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="BorderBrush" Value="#FF303030"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid Background="Transparent">
+                                <ContentPresenter Margin="{TemplateBinding Padding}"  HorizontalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid MouseLeftButtonDown="Grid_MouseLeftButtonDown" Background="Black">
+        
+        <Button Click="CloseButton" Background="Black" BorderBrush="{x:Null}" FontSize="20" Width="50" Height="40" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border>
+                                    <Border.Style>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#FF303030"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <Grid Background="Transparent">
+                                        <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+            <Button.Content >
+                <Grid Margin="18,10">
+                    <Path Data="M-0.33333333,6.5 L13,20.25 M-0.33333333,20.25 L13,6.5" Stroke="White" StrokeThickness="1" Stretch="None" Margin="0,-4.5,-3,-0.75" />
+                </Grid>
+            </Button.Content>
+        </Button>
+
+        <Grid VerticalAlignment="Top" Margin="35,0,35,80" Height="330" Width="550">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <materialDesign:PackIcon Kind="AccountBox"  HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,8,0,0" Foreground="#FFB9BBBE" FontSize="18" FontFamily="Open Sans Extrabold" FontWeight="Bold" Width="32" Height="32"/>
+                <Label x:Name="mainLbl" Content="Регистрация" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0" Foreground="#FFB9BBBE" FontSize="18" FontFamily="Open Sans Extrabold" FontWeight="Bold"/>
+            </StackPanel>
+            <Label x:Name="ErrorLbl" Content="" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5,60,5,5" Foreground="#FF631919" FontSize="18" FontFamily="Open Sans Extrabold" FontWeight="Bold"/>
+            <TextBox x:Name="txtName" materialDesign:HintAssist.Hint="ИМЯ" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="#FFB9BBBE" FontFamily="Open Sans Extrabold" FontSize="18"  Width="250" Height="50" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,150" TabIndex="1"   />
+            <TextBox x:Name="txtSurName" materialDesign:HintAssist.Hint="ФАМИЛИЯ" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="#FFB9BBBE" FontFamily="Open Sans Extrabold" FontSize="18"   Width="250" Height="50" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,150" TabIndex="2"  />
+            <TextBox x:Name="txtLogin" materialDesign:HintAssist.Hint="ЛОГИН" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="#FFB9BBBE" FontFamily="Open Sans Extrabold" FontSize="18"  Width="530" Height="50" HorizontalAlignment="Left" Margin="10,0,0,75" VerticalAlignment="Bottom" TabIndex="3"   />
+            <PasswordBox x:Name="txtOldPassword" materialDesign:HintAssist.Hint="ПАРОЛЬ" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Foreground="#FFB9BBBE" FontFamily="Open Sans Extrabold" FontSize="18"  Width="530" Height="50" HorizontalAlignment="Left" Margin="10,0,0,75" VerticalAlignment="Bottom" Visibility="Collapsed"  />
+            <PasswordBox x:Name="txtPassword" materialDesign:HintAssist.Hint="ПАРОЛЬ" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Foreground="#FFB9BBBE" FontFamily="Open Sans Extrabold" FontSize="18"  Width="250" Height="50" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Bottom" TabIndex="4" />
+            <TextBox x:Name="txtPassword1" Visibility="Collapsed" materialDesign:HintAssist.Hint="ПАРОЛЬ" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="#FFB9BBBE" FontFamily="Open Sans Extrabold" FontSize="18"  Width="250" Height="50" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Bottom" />
+            <PasswordBox x:Name="txtRepPassword" materialDesign:HintAssist.Hint="ПОДТВЕРДИТЬ ПАРОЛЬ" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Foreground="#FFB9BBBE" FontFamily="Open Sans Extrabold" FontSize="18"   Width="250" Height="50" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Bottom" PasswordChanged="txtRepPassword_PasswordChanged" TabIndex="5" />
+            <TextBox x:Name="txtRepPassword1" Visibility="Collapsed" materialDesign:HintAssist.Hint="ПОДТВЕРДИТЬ ПАРОЛЬ" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="#FFB9BBBE" FontFamily="Open Sans Extrabold" FontSize="18"  Width="250" Height="50" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Bottom" TextChanged="txtRepPassword1_TextChanged" />
+        </Grid>
+        <CheckBox x:Name="pswd" Content="Показать пароль" HorizontalAlignment="Left" Margin="60,0,0,105"  Background="#FFF44336" BorderBrush="Black" Foreground="#FFB9BBBE" FontFamily="Open Sans Extrabold" FontSize="18" Height="40" VerticalAlignment="Bottom" Checked="pswd_Checked" Unchecked="pswd_Unchecked" />
+        <CheckBox Visibility="Collapsed" x:Name="pswdCh" Content="Сменить пароль" HorizontalAlignment="Right" Margin="0,0,60,105"  Background="#FFF44336" BorderBrush="Black" Foreground="#FFB9BBBE" FontFamily="Open Sans Extrabold" FontSize="18" Height="40" VerticalAlignment="Bottom" Checked="pswdCh_Checked" Unchecked="pswdCh_Unchecked"  />
+        <Button Style="{StaticResource But1Style}" x:Name="ButtonSignUp" Width="220" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,60,45" Content="ЗАРЕГИСТРИРОВАТЬСЯ" Click="ButtonSignUp_Click" FontFamily="Open Sans Extrabold" Background="#FF303030" BorderBrush="{x:Null}" Foreground="#FFBBBBBB" FontSize="18" Padding="0,6,0,4" TabIndex="6" VerticalContentAlignment="Center" >
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+        <Button Style="{StaticResource ButStyle}" x:Name="ButtonLogin" Width="55" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="60,0,0,50" Content="ВОЙТИ" FontFamily="Open Sans Extrabold" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFBBBBBB" FontSize="14" Padding="0,5,0,0" Height="25" ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalContentAlignment="Center" Grid.IsSharedSizeScope="True" VerticalContentAlignment="Center" Click="ButtonLogin_Click"  >
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+    </Grid>
+</Window>

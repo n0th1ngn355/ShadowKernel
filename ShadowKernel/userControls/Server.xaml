@@ -1,0 +1,345 @@
+﻿<UserControl x:Class="ShadowKernel.userControls.Server"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"  
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ShadowKernel.userControls"
+        mc:Ignorable="d" Height="540" Width="1020" >
+
+    <Grid Background="#FF303030">
+
+        <ListView x:Name="dtgClients" SelectionChanged="dtgClients_SelectionChanged">
+
+            <ListView.View>
+                <GridView AllowsColumnReorder="False">
+                    <GridViewColumn Header="Id" DisplayMemberBinding="{Binding ID}" Width="65"/>
+                    <GridViewColumn Header="IP-адрес" DisplayMemberBinding="{Binding IP}" Width="100"/>
+                    <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding Tag}" Width="100"/>
+                    <GridViewColumn Header="Антивирусное ПО" DisplayMemberBinding="{Binding AV}" Width="170"/>
+                    <GridViewColumn Header="Операционная система" DisplayMemberBinding="{Binding OS}" Width="175"/>
+                </GridView>
+            </ListView.View>
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    
+                    <MenuItem x:Name="IdMenuItem" Header="Клиент не выбран" BorderThickness="0" Margin="0,-15,0,0" FontSize="14" Height="30" Padding="0,0,10,0">
+                        <MenuItem.Icon>
+                            <Image Source="/ShadowKernel;component/Resources/Person_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                <Image.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                        <SkewTransform/>
+                                        <RotateTransform/>
+                                        <TranslateTransform X="10"/>
+                                    </TransformGroup>
+                                </Image.RenderTransform>
+                            </Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator Margin="0,-10,0,-10"/>
+                    <MenuItem Header="Настройки подключения" BorderThickness="0" Margin="0,0,-1,0" FontSize="14" Height="30" Padding="0,0,10,0">
+                        <MenuItem.Icon>
+                            <Image Source="/ShadowKernel;component/Resources/Disconnected_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                <Image.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                        <SkewTransform/>
+                                        <RotateTransform/>
+                                        <TranslateTransform X="10"/>
+                                    </TransformGroup>
+                                </Image.RenderTransform>
+                            </Image>
+                        </MenuItem.Icon>
+                        <MenuItem x:Name="KillClient" Header="Отсоединить клиента" BorderThickness="0" Margin="0,-15,0,0" FontSize="14" Height="30" Padding="0,0,10,0" Click="KillClient_Click">
+                            <MenuItem.Icon>
+                                <Image Source="/ShadowKernel;component/Resources/Close Window_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="10"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                </Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator Margin="0,-10,0,-10"/>
+                        <MenuItem x:Name="RestartClient" Header="Перезапустить подключение" BorderThickness="0" Margin="0" FontSize="14" Height="30" Padding="0,0,10,0" Click="RestartClient_Click">
+                            <MenuItem.Icon>
+                                <Image Source="/ShadowKernel;component/Resources/Restart_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="10"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                </Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator Margin="0,-10,0,-10"/>
+                        <MenuItem Header="Кто-то где-то" BorderThickness="0" Margin="0,0,0,-15" FontSize="14" Height="30" Padding="0,0,10,0">
+                            <MenuItem.Icon>
+                                <Image Source="/ShadowKernel;component/Resources/Administrative Tools_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="10"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                </Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+                    <Separator Margin="0,-10,0,-10"/>
+                    <MenuItem Header="Информация о клиенте" BorderThickness="0" Margin="0" FontSize="14" Height="30" Padding="0,0,10,0">
+                        <MenuItem.Icon>
+                            <Image Source="/ShadowKernel;component/Resources/Info_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                <Image.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                        <SkewTransform/>
+                                        <RotateTransform/>
+                                        <TranslateTransform X="10"/>
+                                    </TransformGroup>
+                                </Image.RenderTransform>
+                            </Image>
+                        </MenuItem.Icon>
+                        <MenuItem x:Name="CompInfo" Header="Информация о компьютере" BorderThickness="0" Margin="0,-15,0,0" FontSize="14" Height="30" Padding="0,0,10,0" Click="CompInfo_Click">
+                            <MenuItem.Icon>
+                                <Image Source="/ShadowKernel;component/Resources/Windows Client_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="10"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                </Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator Margin="0,-10,0,-10"/>
+                        <MenuItem x:Name="TaskMgr" Header="Запущенные процессы" BorderThickness="0" Margin="0" FontSize="14" Height="30" Padding="0,0,10,0" Click="TaskMgr_Click">
+                            <MenuItem.Icon>
+                                <Image Source="/ShadowKernel;component/Resources/Compose_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="10"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                </Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator Margin="0,-10,0,-10"/>
+                        <MenuItem x:Name="HardwareUsage" Header="Производительность" BorderThickness="0" Margin="0" FontSize="14" Height="30" Padding="0,0,10,0" Click="HardwareUsage_Click">
+                            <MenuItem.Icon>
+                                <Image Source="/ShadowKernel;component/Resources/Services_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="10"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                </Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator Margin="0,-10,0,-10"/>
+                        <MenuItem x:Name="Explorer" Header="Проводник" BorderThickness="0" Margin="0,0,0,-15" FontSize="14" Height="30" Padding="0,0,10,0" Click="Explorer_Click">
+                            <MenuItem.Icon>
+                                <Image Source="/ShadowKernel;component/Resources/Opened Folder_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="10"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                </Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+                    <Separator Margin="0,-10,0,-10"/>
+                    <MenuItem x:Name="RemoteShell" Header="Удалённая CMD" BorderThickness="0" Margin="0" FontSize="14" Height="30" Padding="0,0,10,0" Click="RemoteShell_Click" >
+                        <MenuItem.Icon>
+                            <Image Source="/ShadowKernel;component/Resources/Console_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                <Image.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                        <SkewTransform/>
+                                        <RotateTransform/>
+                                        <TranslateTransform X="10"/>
+                                    </TransformGroup>
+                                </Image.RenderTransform>
+                            </Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator Margin="0,-10,0,-10"/>
+                    <MenuItem x:Name="RemoteDesktop" Header="Просмотр экрана" BorderThickness="0" Margin="0" FontSize="14" Height="30" Padding="0,0,10,0" Click="RemoteDesktop_Click" >
+                        <MenuItem.Icon>
+                            <Image Source="/ShadowKernel;component/Resources/Monitor_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                <Image.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                        <SkewTransform/>
+                                        <RotateTransform/>
+                                        <TranslateTransform X="10"/>
+                                    </TransformGroup>
+                                </Image.RenderTransform>
+                            </Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator Margin="0,-10,0,-10"/>
+                    <MenuItem x:Name="Keylogger" Header="Кейлоггер" BorderThickness="0" Margin="0" FontSize="14" Height="30" Padding="0,0,10,0" Click="Keylogger_Click"  >
+                        <MenuItem.Icon>
+                            <Image Source="/ShadowKernel;component/Resources/Keyboard_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                <Image.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                        <SkewTransform/>
+                                        <RotateTransform/>
+                                        <TranslateTransform X="10"/>
+                                    </TransformGroup>
+                                </Image.RenderTransform>
+                            </Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator Margin="0,-10,0,-10"/>
+                    <MenuItem Header="Управление компьютером" BorderThickness="0" Margin="0" FontSize="14" Height="30" Padding="0,0,10,0">
+                        <MenuItem.Icon>
+                            <Image Source="/ShadowKernel;component/Resources/Flash On_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                <Image.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                        <SkewTransform/>
+                                        <RotateTransform/>
+                                        <TranslateTransform X="10"/>
+                                    </TransformGroup>
+                                </Image.RenderTransform>
+                            </Image>
+                        </MenuItem.Icon>
+                        <MenuItem x:Name="SleepMode" Header="Спящий режим" BorderThickness="0" Margin="0,-15,0,0" FontSize="14" Height="30" Padding="0,0,10,0" Click="SleepMode_Click">
+                            <MenuItem.Icon>
+                                <Image Source="/ShadowKernel;component/Resources/Monitor_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="10"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                </Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator Margin="0,-10,0,-10"/>
+                        <MenuItem x:Name="ShutDown" Header="Выключение" BorderThickness="0" Margin="0" FontSize="14" Height="30" Padding="0,0,10,0" Click="ShutDown_Click" >
+                            <MenuItem.Icon>
+                                <Image Source="/ShadowKernel;component/Resources/Disconnected_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="10"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                </Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator Margin="0,-10,0,-10"/>
+                        <MenuItem x:Name="Reboot" Header="Перезагрузка" BorderThickness="0" Margin="0" FontSize="14" Height="30" Padding="0,0,10,0" Click="Reboot_Click"  >
+                            <MenuItem.Icon>
+                                <Image Source="/ShadowKernel;component/Resources/Restart_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="10"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                </Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator Margin="0,-10,0,-10"/>
+                        <MenuItem x:Name="LogOff" Header="Выход из системы" BorderThickness="0" Margin="0" FontSize="14" Height="30" Padding="0,0,10,0" Click="LogOff_Click"  >
+                            <MenuItem.Icon>
+                                <Image Source="/ShadowKernel;component/Resources/Person_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="10"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                </Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator Margin="0,-10,0,-10"/>
+                        <MenuItem x:Name="LockUser" Header="Блокировка пользователя" BorderThickness="0" Margin="0" FontSize="14" Height="30" Padding="0,0,10,0" Click="LockUser_Click" >
+                            <MenuItem.Icon>
+                                <Image Source="/ShadowKernel;component/Resources/Windows Client_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="10"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                </Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator Margin="0,-10,0,-10"/>
+                        <MenuItem x:Name="ScreenLock" Header="Блокирока экрана" BorderThickness="0" Margin="0,0,0,-15" FontSize="14" Height="30" Padding="0,0,10,0" Click="ScreenLock_Click"  >
+                            <MenuItem.Icon>
+                                <Image Source="/ShadowKernel;component/Resources/Lock Landscape_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="10"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                </Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+                    <Separator Margin="0,-10,0,-10"/>
+                    <MenuItem x:Name="Chat" Header="Чат" BorderThickness="0" Margin="0,0,0,-15" FontSize="14" Height="30" Padding="0" Click="Chat_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/ShadowKernel;component/Resources/Administrative Tools_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                <Image.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                        <SkewTransform/>
+                                        <RotateTransform/>
+                                        <TranslateTransform X="10"/>
+                                    </TransformGroup>
+                                </Image.RenderTransform>
+                            </Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    
+                </ContextMenu>
+            </ListView.ContextMenu>
+
+        </ListView>
+
+    </Grid>
+
+</UserControl>

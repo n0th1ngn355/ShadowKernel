@@ -1,0 +1,279 @@
+﻿<UserControl x:Class="ShadowKernel.userControls.UserControlCreate"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:local="clr-namespace:ShadowKernel.userControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:localHelper="clr-namespace:ShadowKernel.helper"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             Background="{DynamicResource MaterialDesignPaper}" 
+             TextElement.FontWeight="Medium"
+             TextElement.FontSize="14"
+             
+             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+             mc:Ignorable="d" Height="540" Width="1020">
+
+    
+    <UserControl.Resources>
+        
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DialogHost.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <localHelper:InvertBooleanConverter  x:Key="boolConvert"/>
+            <localHelper:InverseBooleanToVisibilityConverter  x:Key="visConvert"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Background="Red">
+        <Grid Height="60" VerticalAlignment="Top" Background="{DynamicResource MaterialDesignBackground}" d:IsEffectDisabled="True" >
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="1" ShadowDepth="1" Color="#FFACACAC"/>
+            </Grid.Effect>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <!-- simplest form -->
+                <materialDesign:Snackbar   
+                    Message="Выберите категорию"   
+                    IsActive="False"  
+                    x:Name="SnackbarOne" 
+                    Foreground="{DynamicResource PrimaryHueLightBrush}"
+                    Margin="10,1,1,0"
+                    Width="Auto"
+                    Background="Black"/>
+                <ComboBox  
+                    materialDesign:ComboBoxAssist.ShowSelectedItem="True"
+                    x:Name="cbxAudits"
+                    Foreground="{DynamicResource MaterialDesignBody}"
+                    materialDesign:HintAssist.Hint="Выбор аудита"
+                    materialDesign:HintAssist.HintOpacity=".80"
+                    Margin="10,10"
+                    Width="Auto"
+                    SelectionChanged="CbxAudits_SelectionChanged"
+                    IsEditable="False"
+                    IsReadOnly="True" MouseEnter="cbxAudits_MouseEnter"
+                    />
+                <ComboBox  
+                    materialDesign:ComboBoxAssist.ShowSelectedItem="True"
+                    x:Name="cbxCategories"
+                    Foreground="{DynamicResource MaterialDesignBody}"
+                    materialDesign:HintAssist.Hint="Выбор категории"
+                    materialDesign:HintAssist.HintOpacity=".80"
+                    Margin="10,10"
+                    Width="Auto" 
+                    GotFocus="CbxCategories_GotFocus" 
+                    LostFocus="CbxCategories_LostFocus"
+                    SelectionChanged="CbxCategories_SelectionChanged"/>
+                <!--<Image Source="..\assets\parcit-logo.png" Height="50"/>-->
+
+                <Button x:Name="ButtonGenerateReport" Cursor="Hand" Click="ButtonGenerateReport_Click_1" Height="30" Margin="20,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="FileDocumentOutline" Margin="1"/>
+                        <TextBlock Text="Отчёт" Margin="1"/>
+                    </StackPanel>
+                </Button>
+                <materialDesign:Snackbar   
+                    MessageQueue="{materialDesign:MessageQueue}"
+                    IsActive="False"  
+                    x:Name="SnackbarTwo"
+                    Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                    Margin="10,1,20,0"
+                    Width="Auto"
+                    Background="{x:Null}" MinWidth="100"
+                    />
+            </StackPanel>
+        </Grid>
+        <materialDesign:DialogHost  x:Name="dlgHost1" Background="{DynamicResource MaterialDesignBackground}" DialogTheme="Dark">
+            <materialDesign:DialogHost.DialogContent>
+                <StackPanel Width="200" Height="50" Margin="20" Orientation="Vertical" x:Name="mbx" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock>Сначала выберите аудит</TextBlock>
+                    <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                        IsDefault="True"
+                                        Margin="8"
+                                        Command="materialDesign:DialogHost.CloseDialogCommand">
+                        <Button.CommandParameter>
+                            <system:Boolean>True</system:Boolean>
+                        </Button.CommandParameter>
+                        OK
+                    </Button>
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
+        <materialDesign:DialogHost 
+            x:Name="dlhHost2" 
+            Visibility="Hidden"
+            CloseOnClickAway="True"
+            x:FieldModifier="public" DialogTheme="Dark">
+            <materialDesign:DialogHost.DialogContent>
+
+                <StackPanel 
+                    Width="600" 
+                    Margin="20" 
+                    Orientation="Vertical" 
+                    x:Name="mbxAnswer" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    >
+                    <GroupBox  
+                        Header="Card Group Box"  
+                        Style="{DynamicResource MaterialDesignCardGroupBox}"  
+                        Margin="16">
+                        <GroupBox.HeaderTemplate>
+                            <DataTemplate x:Name="mbxDT">
+                                <StackPanel  
+                                    x:Name="headermbx"
+                                    Orientation="Horizontal">
+                                    <materialDesign:PackIcon
+                                        Kind="QuestionMarkRhombusOutline"
+                                        Height="32"          
+                                        Width="32"          
+                                        VerticalAlignment="Center"
+                                        Margin="10"/>
+
+                                    <TextBlock 
+                                        TextElement.FontSize="18" 
+                                        Margin="0,15,0,10">
+                                        Ответьте на вопрос 
+                                        <TextBlock 
+                                            Text="{Binding Id}"
+                                            TextElement.FontWeight="Bold" 
+                                            TextElement.Foreground="White">
+                                            
+                                        </TextBlock>
+                                         : 
+
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GroupBox.HeaderTemplate>
+                        <StackPanel>
+
+                            <TextBlock 
+                                Text="{Binding Intitled}"
+                                TextElement.FontWeight="Bold"
+                                TextElement.Foreground="White"
+                                TextElement.FontStyle="Italic"
+                                TextElement.FontSize="18"
+                                Margin="15,10,15,10"
+                                TextWrapping="Wrap">
+
+                            </TextBlock>
+                            <StackPanel  x:Name="stkpAnswer">
+                                <StackPanel Orientation="Horizontal" Margin="10">
+                                    <RadioButton 
+                                    GroupName="radioReply"
+                                    x:Name="radio1" 
+                                    IsChecked="{Binding Reply, Mode=TwoWay}"  
+                                    Style="{StaticResource MaterialDesignRadioButton}"
+                                    Content="Да"
+                                    Margin="20"/>
+
+                                    <RadioButton 
+                                    GroupName="radioReply"
+                                    x:Name="radio2"   
+                                    Style="{StaticResource MaterialDesignRadioButton}"
+                                    Content="Нет"
+                                    IsChecked="{Binding Reply, Mode=TwoWay,Converter={StaticResource boolConvert}}"
+                                    Margin="20"/>
+                                </StackPanel>
+
+                            </StackPanel>
+                            <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                        IsDefault="True"
+                                        Margin="0 15 8 0"
+                                    Width="150"
+                                        Command="materialDesign:DialogHost.CloseDialogCommand"
+                                    x:Name="ButtonSaveAnswer" Click="ButtonSaveAnswer_Click">
+                                <Button.CommandParameter>
+                                    <system:Boolean>True</system:Boolean>
+                                </Button.CommandParameter>
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="ContentSave" Margin="0,1,5,1"/>
+                                    <TextBlock Text="Сохранить" Margin="5,1,5,1"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </GroupBox>
+
+
+
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
+        <materialDesign:DialogHost  x:Name="dlgHost3" Background="{DynamicResource MaterialDesignBackground}" Visibility="Collapsed" DialogTheme="Dark">
+            <materialDesign:DialogHost.DialogContent>
+                <StackPanel Width="200" Height="150" Margin="20" Orientation="Vertical" x:Name="mbxProgress" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center">Создание отчёта. Подождите...</TextBlock>
+                    <materialDesign:Card   
+                        UniformCornerRadius="50"  
+                        Padding="2"
+                        Width="100"
+                        Height="100"
+                        Margin="20">
+                        <ProgressBar Width="50" Height="50" Margin="15"
+                                 Style="{DynamicResource MaterialDesignCircularProgressBar}"
+                                 IsIndeterminate="True"
+                                 Value="33"
+                                 x:Name="pgrbReport"/>
+                    </materialDesign:Card>
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
+        
+        <materialDesign:DialogHost  x:Name="dlgHost4" Background="{DynamicResource MaterialDesignBackground}" Visibility="Collapsed" DialogTheme="Dark">
+            <materialDesign:DialogHost.DialogContent>
+                <StackPanel Width="200" Height="150" Margin="20" Orientation="Vertical" x:Name="que" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center">Отчёт</TextBlock>
+                    <Button x:Name="show" Cursor="Hand" Click="show_Click" Margin="0,20,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            
+                            <TextBlock Text="Показать отчёт" Margin="1"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="as" Cursor="Hand" Click="ButtonGenerateReport_Click" Margin="0,20,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            
+                            <TextBlock Text="Создать отчёт" Margin="1"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
+        <Grid Height="480" VerticalAlignment="Bottom">
+            <DataGrid 
+                CanUserSortColumns="True"
+                CanUserAddRows="False"
+                CanUserResizeRows="True"
+                IsReadOnly="True"
+                SelectionMode="Single"
+                SelectionUnit="FullRow"
+                x:Name="dtgQuestions"
+                AutoGenerateColumns="True"
+                AutoGeneratingColumn="DtgQuestions_AutoGeneratingColumn" SelectionChanged="DtgQuestions_SelectionChanged"
+                
+                >
+                <DataGrid.RowStyle>
+
+                    
+                    <Style TargetType="DataGridRow">
+                        
+                        <Style.Triggers>
+
+                            
+                                <DataTrigger Binding="{Binding Answer}" Value="True">
+                                <Setter Property="Background" Value="#FF063E09"></Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Answer}" Value="False">
+                                <Setter Property="Background" Value="#FF4D1608"></Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Answer}" Value="">
+                                <Setter Property="Background" Value="#FF303030"></Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                        </Style>
+                </DataGrid.RowStyle>
+                
+            </DataGrid>
+        </Grid>
+    </Grid>
+</UserControl>

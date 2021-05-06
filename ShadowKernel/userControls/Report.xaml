@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="ShadowKernel.userControls.Report"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:ShadowKernel.userControls"
+       TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             Background="{DynamicResource MaterialDesignPaper}" 
+             TextElement.FontWeight="Medium"
+             TextElement.FontSize="14"
+             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+             mc:Ignorable="d" Height="540" Width="1020">
+    <UserControl.Resources>
+        <Style x:Key="{x:Type ToolTip}"
+       TargetType="ToolTip">
+            <Setter Property="OverridesDefaultStyle"
+          Value="true" />
+            <Setter Property="HasDropShadow"
+          Value="True" />
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToolTip">
+                        <Border Name="Border" Background="White">
+                            <ContentPresenter Margin="4"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ArcStyle" TargetType="ed:Arc">
+            <Setter Property="StartAngle" Value="0"/>
+            <Setter Property="EndAngle" Value="0"/>
+            <Setter Property="Height" Value="150"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Stretch" Value="None"/>
+            <Setter Property="StrokeThickness" Value="75"/>
+            <Setter Property="StrokeDashArray" Value="25"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid>
+            <TextBlock Text="Отчёт" x:Name="title" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0" FontSize="14"/>
+            <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,0,0,0">
+                <Grid x:Name="MainArc" Width="150" Height="150" Margin="0,50,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" >
+                    <ed:Arc x:Name="arc" Style="{StaticResource ArcStyle}" Stroke="#FF484D5F"/>
+                </Grid>
+                <TextBlock Text="0%" x:Name="arctext" Foreground="White" HorizontalAlignment="Center"
+                        FontSize="50" FontWeight="Light" Margin="0,100,0,0" VerticalAlignment="Top"/>
+            </Grid>
+            <materialDesign:PackIcon x:Name="Shield" Margin="200,80,0,0" VerticalAlignment="Top"  Width="100" Height="100" Opacity="0"/>
+            <TextBlock x:Name="rate" Foreground="White" HorizontalAlignment="Left"
+                        FontSize="50" FontWeight="Light" Margin="320,100,0,0" VerticalAlignment="Top" Opacity="0"/>
+            <DataGrid x:Name="dtgReport"  Width="980" Margin="0,200,0,0" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Цвет" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Rectangle Width="10" Height="10" Fill="{Binding Color}" Margin="10,0,0,0"/>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Категория"  Binding="{Binding Category}" Width="150"/>
+                    <DataGridTextColumn Header="Защита" Binding="{Binding Protection}" Width="100"/>
+                    <DataGridTextColumn Header="Вопросы" Binding="{Binding Questions}" Width="100"/>
+                    <DataGridTextColumn Header="Отвечено" Binding="{Binding Answered}" Width="100"/>
+                    <DataGridTextColumn Header="Да" Binding="{Binding Yes}" Width="100"/>
+                    <DataGridTextColumn Header="Нет" Binding="{Binding No}" Width="100"/>
+                    <DataGridTextColumn Header="Нет ответа" Binding="{Binding NA}" Width="100"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</UserControl>

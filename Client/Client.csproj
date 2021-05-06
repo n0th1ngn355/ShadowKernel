@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{885875A9-D3FF-4400-85E0-C5D6928B79FA}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Client</RootNamespace>
+    <AssemblyName>Client</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\ShadowKernel\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\ShadowKernel\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup>
+    <StartupObject>Client.Program</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MaterialDesignColors, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MaterialDesignColors.1.1.3\lib\net45\MaterialDesignColors.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=2.5.0.1205, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MaterialDesignThemes.2.5.0.1205\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Speech" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ClientSettings.cs" />
+    <Compile Include="Forms\Chat.xaml.cs">
+      <DependentUpon>Chat.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\InitialForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InitialForm.Designer.cs">
+      <DependentUpon>InitialForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\IScreenLocker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ScreenLock.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ScreenLock.Designer.cs">
+      <DependentUpon>ScreenLock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\Enums.cs" />
+    <Compile Include="Helpers\Information\ComputerInfo.cs" />
+    <Compile Include="Helpers\Information\GeoInfo.cs" />
+    <Compile Include="Helpers\Networking\Networking.cs" />
+    <Compile Include="Helpers\Networking\Telepathy\Client.cs" />
+    <Compile Include="Helpers\Networking\Telepathy\Common.cs" />
+    <Compile Include="Helpers\Networking\Telepathy\EventType.cs" />
+    <Compile Include="Helpers\Networking\Telepathy\Logger.cs" />
+    <Compile Include="Helpers\Networking\Telepathy\Message.cs" />
+    <Compile Include="Helpers\Networking\Telepathy\NetworkStreamExtensions.cs" />
+    <Compile Include="Helpers\Networking\Telepathy\SafeQueue.cs" />
+    <Compile Include="Helpers\Networking\Telepathy\Server.cs" />
+    <Compile Include="Helpers\Networking\Telepathy\Utils.cs" />
+    <Compile Include="Helpers\Services\AntiProcess.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\IInputDeviceStateAdaptor.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\IInputMessageDispatcher.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\IInputSimulator.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\IKeyboardSimulator.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\IMouseSimulator.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\InputBuilder.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\InputSimulator.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\KeyboardSimulator.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\MouseButton.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\MouseSimulator.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\Native\HARDWAREINPUT.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\Native\INPUT.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\Native\InputType.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\Native\KEYBDINPUT.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\Native\KeyboardFlag.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\Native\MouseFlag.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\Native\MOUSEINPUT.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\Native\MOUSEKEYBDHARDWAREINPUT.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\Native\NativeMethods.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\Native\VirtualKeyCode.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\Native\XButton.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\WindowsInputDeviceStateAdaptor.cs" />
+    <Compile Include="Helpers\Services\InputSimulator\WindowsInputMessageDispatcher.cs" />
+    <Compile Include="Helpers\Services\Keylogger.cs" />
+    <Compile Include="Helpers\Services\StreamClasses.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\Enums.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\IUnsafeCodec.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\IVideoCodec.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\CRC32.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\ExtensionAttribute.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\Extensions.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\FastBitmap.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\JpgCompression.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\LzwCompression.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\MurmurHash2Unsafe.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\NativeMethods.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\PayloadWriter.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\PointerHelper.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\SafeQuickLZ.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\SimpleBitmap.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\UnsafeCodecs\UnsafeStreamCodec.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Forms\InitialForm.resx">
+      <DependentUpon>InitialForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ScreenLock.resx">
+      <DependentUpon>ScreenLock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="alert-logo-png-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Forms\Chat.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Play_48px.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="ShadowKernel.userControls.Net"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ShadowKernel.userControls"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             Background="{DynamicResource MaterialDesignPaper}" 
+             TextElement.FontWeight="Medium"
+             TextElement.FontSize="14"
+             
+             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+             mc:Ignorable="d" Height="540" Width="1020" >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <GridSplitter Grid.Column="1"  Grid.Row="2" ShowsPreview="False" Width="3"
+        HorizontalAlignment="Center" />
+        <Grid Grid.Column="0">
+            <TreeView Margin="0,10,0,0">
+                <TreeViewItem Header="Человек" Padding="0,8,8,8">
+                    <TreeViewItem Header="Еще один"></TreeViewItem>
+                    <TreeViewItem Header="И даже здесь"></TreeViewItem>
+                </TreeViewItem>
+            </TreeView>
+        </Grid>
+    </Grid>
+</UserControl>

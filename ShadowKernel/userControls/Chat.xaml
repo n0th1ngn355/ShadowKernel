@@ -1,0 +1,115 @@
+﻿<Window x:Class="ShadowKernel.userControls.Chat"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ShadowKernel.userControls"
+        mc:Ignorable="d"
+        Title="Чат" Height="450" Width="800" Foreground="White" Background="Black" Closing="Window_Closing" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style x:Key="Bubble" TargetType="Control">
+            <Setter Property="Focusable" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Control">
+                        <Grid SnapsToDevicePixels="True">
+                            <Rectangle RadiusX="5" RadiusY="5"  Fill="{TemplateBinding Background}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- Текст с переносом строк -->
+        <Style x:Key="WrapStyle" TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+        <!-- Текст в пузыре, левая версия -->
+        <Style x:Key="BubbleLeftStyle" TargetType="ContentControl">
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Padding" Value="8 5"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Grid Margin="{TemplateBinding Margin}">
+                            <Control Style="{StaticResource Bubble}" Background="LimeGreen"/>
+                            <ContentPresenter Margin="{TemplateBinding Padding}">
+                                <ContentPresenter.Resources>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource WrapStyle}"/>
+                                </ContentPresenter.Resources>
+                            </ContentPresenter>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- Текст в пузыре, правая версия -->
+        <Style x:Key="BubbleRightStyle" TargetType="ContentControl" BasedOn="{StaticResource BubbleLeftStyle}">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Grid Margin="{TemplateBinding Margin}">
+                            <Control Style="{StaticResource Bubble}" Background="#FFA80A0A" RenderTransformOrigin=".5 0">
+                                <Control.RenderTransform>
+                                    <ScaleTransform ScaleX="-1"/>
+                                </Control.RenderTransform>
+                            </Control>
+                            <ContentPresenter Margin="{TemplateBinding Padding}">
+                                <ContentPresenter.Resources>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource WrapStyle}"/>
+                                </ContentPresenter.Resources>
+                            </ContentPresenter>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ScrollBarThumbStyle" TargetType="{x:Type Thumb}">
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Margin" Value="1,0,1,0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Rectangle Fill="#FF6C6C6C" Margin="2" RadiusX="5" RadiusY="5" ></Rectangle>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ControlTemplate x:Key="VerticalScrollBar" TargetType="{x:Type ScrollBar}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Track Name="PART_Track" Grid.Row="1" 
+                   IsDirectionReversed="True">
+                    <Track.Thumb>
+                        <Thumb Style="{StaticResource ScrollBarThumbStyle}">
+                        </Thumb>
+                    </Track.Thumb>
+                </Track>
+            </Grid>
+        </ControlTemplate>
+
+        <Style TargetType="{x:Type ScrollBar}">
+            <Setter Property="Template" Value="{StaticResource VerticalScrollBar}"/>
+        </Style>
+
+    </Window.Resources>
+    <Grid>
+        <TextBlock x:Name="title" Height="20" Text="Чат с " FontSize="15" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+        <ScrollViewer x:Name="scrl" Margin="0,25,0,35">
+            <StackPanel x:Name="chatPlace" Margin="20,25,40,40" >
+            </StackPanel>
+        </ScrollViewer>
+        <TextBox x:Name="msg" Height="40" VerticalAlignment="Bottom" Margin="20,0,50,-6" VerticalScrollBarVisibility="Disabled" SpellCheck.IsEnabled="True" BorderThickness="0,1,0,0" KeyDown="msg_KeyDown" VerticalContentAlignment="Top" Padding="0,1,0,0"/>
+        <Button  VerticalAlignment="Bottom" HorizontalAlignment="Right" BorderBrush="{x:Null}" Margin="0,0,5,5" Click="Button_Click" >
+            <Button.Background>
+                <ImageBrush ImageSource="/ShadowKernel;component/Resources/Play_48px.png" Stretch="None"/>
+            </Button.Background>
+        </Button>
+    </Grid>
+</Window>
