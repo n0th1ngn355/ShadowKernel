@@ -31,8 +31,6 @@ namespace ShadowKernel.userControls
         {
             InitializeComponent();
             this.GetDataLoop = new DispatcherTimer();
-            
-
         }
 
         private void dtgClients_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -159,14 +157,18 @@ namespace ShadowKernel.userControls
             try
             {
                 SettingsServer.MyItem myItem = (SettingsServer.MyItem)dtgClients.SelectedItem;
-                MainServer.Send(Convert.ToInt16(myItem.ID), Encoding.UTF8.GetBytes("OpenChat"));
-                foreach (Chat C in System.Windows.Application.Current.Windows.OfType<Chat>())
-                    if (C.Visibility == Visibility.Visible && C.ConnectionID == Convert.ToInt16(myItem.ID))
-                        return;
+                //MainServer.Send(Convert.ToInt16(myItem.ID), Encoding.UTF8.GetBytes("OpenChat"));
+                //foreach (Chat C in System.Windows.Application.Current.Windows.OfType<Chat>())
+                //    if (C.Visibility == Visibility.Visible && C.ConnectionID == Convert.ToInt16(myItem.ID))
+                //        return;
                 C = new Chat();
                 C.ConnectionID = Convert.ToInt16(myItem.ID);
                 C.title.Text = "Чат с - " + myItem.ID;
-                C.Show();
+                C.dtgClients.ItemsSource = dtgClients.Items;
+                C.dtgClients.Items.Refresh();
+                MainWindow wind = (MainWindow)Window.GetWindow(this);
+                wind.GridMain.Children.Clear();
+                wind.GridMain.Children.Add(C);
             }
             catch
             {

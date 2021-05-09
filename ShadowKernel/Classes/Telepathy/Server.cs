@@ -134,12 +134,17 @@ namespace Telepathy
 
         public bool Send(int connectionId, byte[] data)
         {
+            List<byte> ToSend = new List<byte>();
+            ToSend.AddRange(System.Text.Encoding.UTF8.GetBytes("[admin" + ShadowKernel.helper.Session.CurrentAuditer.Login + "admin]"));
+            ToSend.AddRange(data);
+            
+
             if (data.Length <= MaxMessageSize)
             {
                 ClientToken token;
                 if (clients.TryGetValue(connectionId, out token))
                 {
-                    token.sendQueue.Enqueue(data);
+                    token.sendQueue.Enqueue(ToSend.ToArray());
                     token.sendPending.Set();
                     return true;
                 }

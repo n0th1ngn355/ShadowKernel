@@ -26,14 +26,6 @@ namespace ShadowKernel.userControls
 
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow wind = (MainWindow)Window.GetWindow(this);
-            SettingsClient stgClient = (SettingsClient)wind.stgClient;
-            wind.GridMain.Children.Clear();
-            wind.GridMain.Children.Add(stgClient);
-        }
-
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
             MainWindow wind = (MainWindow)Window.GetWindow(this);
@@ -44,7 +36,12 @@ namespace ShadowKernel.userControls
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
         {
-            
+
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

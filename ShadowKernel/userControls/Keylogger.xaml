@@ -39,6 +39,15 @@
             <Setter Property="Template" Value="{StaticResource VerticalScrollBar}"/>
         </Style>
     </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard >
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity" By="0" Duration="0:0:0.5" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
     <Grid>
         <TextBox x:Name="txtKeylogger" IsReadOnly="True" Margin="15,15,15,60" TextWrapping="Wrap" Text="" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Auto" BorderThickness="0,1"/>
         <TextBox x:Name="CurWindow" IsReadOnly="True" HorizontalAlignment="Left" Height="27" Margin="100,0,0,10" TextWrapping="Wrap" Text=" Активное окно : [ ] " VerticalAlignment="Bottom" BorderThickness="0,1" VerticalContentAlignment="Stretch"/>

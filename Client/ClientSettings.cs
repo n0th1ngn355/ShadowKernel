@@ -3,6 +3,7 @@
     public static class ClientSettings
     {
         public static string DNS = "127.0.0.1";
+        public static string Admin = "Админ";
         public static string Port = "1604";
         public static string ClientTag = "Tag";
         public static string UpdateInterval = "1";

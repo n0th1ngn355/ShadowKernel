@@ -9,7 +9,15 @@
              TextElement.FontSize="14"
         Title="Проводник клиента" Height="500"  Width="1000"  WindowStartupLocation="CenterScreen" Closing="Window_Closing"  Background="Black" Foreground="White"   AllowDrop="True" MinWidth="700" MinHeight="400">
 
-
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard >
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity" By="0" Duration="0:0:0.5" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
     <Grid Background="#FF303030" ClipToBounds="True">
 
         <Grid.ColumnDefinitions>

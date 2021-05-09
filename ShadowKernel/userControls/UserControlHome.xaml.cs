@@ -24,15 +24,35 @@ namespace ShadowKernel.userControls
         public UserControlHome()
         {
             InitializeComponent();
+            if (Session.CurrentAuditer.Login == "Админ")
+            {
+                cbxC.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                dtgAudits.ItemsSource = Session.CurrentAuditer.Audits.ToList();
+            }
         }
 
         private void DataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
             PropertyDescriptor propertyDescriptor = (PropertyDescriptor)e.PropertyDescriptor;
             e.Column.Header = propertyDescriptor.DisplayName;
-            if (propertyDescriptor.DisplayName == "Id" || propertyDescriptor.DisplayName == "UpdateAt" || propertyDescriptor.DisplayName == "Auditer" || propertyDescriptor.DisplayName == "Questions")
+            if (propertyDescriptor.DisplayName == "Audits" ||propertyDescriptor.DisplayName == "Password" ||propertyDescriptor.DisplayName == "Id" || propertyDescriptor.DisplayName == "UpdateAt" || propertyDescriptor.DisplayName == "Auditer" || propertyDescriptor.DisplayName == "Questions")
             {
                 e.Cancel = true;
+            }
+            if (propertyDescriptor.DisplayName == "FirstName")
+            {
+                e.Column.Header = "Имя";
+            }
+            if (propertyDescriptor.DisplayName == "LastName")
+            {
+                e.Column.Header = "Фамилия";
+            }
+            if (propertyDescriptor.DisplayName == "Login")
+            {
+                e.Column.Header = "Логин";
             }
             if (propertyDescriptor.DisplayName == "AuditedCompanyName")
             {
@@ -60,19 +80,7 @@ namespace ShadowKernel.userControls
             List<Question> questions = new List<Question>();
             foreach (var q in Session.AuditContext.Questions.Include("Audits").Include("Category").Include("Answers").ToList())
             {
-                /*Question q1 = new Question();
-                q1.Category = q.Category;
-                q1.Audits = q.Audits;
-                q1.Coefficient = q.Coefficient;
-                q1.CreatedAt = q.CreatedAt;
-                q1.Details = q.Details;
-                q1.Id = q.Id;
-                q1.Intitled = q.Intitled;
-                q1.Answer = null;
-                q1.Audits.Add((Audit)e.NewItem);
-                questions.Add(q1);*/
                 q.Audits.Add(((Audit)e.NewItem));
-               // questions.Add(q.);
             }
             ((Audit)e.NewItem).Questions = new System.Collections.ObjectModel.ObservableCollection<Question>(questions);
 
@@ -80,7 +88,7 @@ namespace ShadowKernel.userControls
 
         private void dtgAudits_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -89,11 +97,20 @@ namespace ShadowKernel.userControls
             {
                 if (dtgAudits.SelectedItem != null)
                 {
-                    Session.AuditContext.Audits.Remove((Audit)dtgAudits.SelectedItem);
+                    if (cbxC.Visibility == Visibility.Visible)
+                    {
+                        ComboBoxItem it = (ComboBoxItem)cbxC.SelectedItem;
+                        if (it.Content.ToString() == "Аудиторы")
+                            Session.AuditContext.Auditers.Remove((Auditer)dtgAudits.SelectedItem);
+                    }
+                    else
+                    {
+                        Session.AuditContext.Audits.Remove((Audit)dtgAudits.SelectedItem);
+                        MainWindow wind = (MainWindow)Window.GetWindow(this);
+                        wind.uscAudit = new UserControlCreate();
+                    }
                     Session.Save();
-                    dtgAudits.ItemsSource = Session.CurrentAuditer.Audits.ToList();
-                    MainWindow wind = (MainWindow)Window.GetWindow(this);
-                    wind.uscAudit = new UserControlCreate();
+                    admUpdate();
                 }
             }
             catch { }
@@ -104,11 +121,43 @@ namespace ShadowKernel.userControls
             try
             {
                 Session.Save();
-                dtgAudits.ItemsSource = Session.CurrentAuditer.Audits.ToList();
+                admUpdate();
             }
             catch { }
             
         }
 
+        private void admUpdate()
+        {
+            if (cbxC.Visibility == Visibility.Visible)
+            {
+                ComboBoxItem it = (ComboBoxItem)cbxC.SelectedItem;
+                if (it.Content.ToString() == "Аудиторы")
+                {
+                    dtgAudits.ItemsSource = Session.AuditContext.Auditers.Where(a => a.Login != "Админ").ToList();
+                    dtgAudits.CanUserAddRows = false;
+                    dtgAudits.Items.Refresh();
+                }
+                else
+                {
+                    Update();
+                }
+            }
+            else
+            {
+                Update();
+            }
+        }
+        private void Update()
+        {
+            dtgAudits.ItemsSource = Session.CurrentAuditer.Audits.ToList();
+            dtgAudits.CanUserAddRows = true;
+            dtgAudits.Items.Refresh();
+        }
+
+        private void cbxC_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            admUpdate();
+        }
     }
 }

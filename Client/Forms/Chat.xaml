@@ -116,11 +116,11 @@
     </Window.Resources>
     <Grid>
         <TextBlock x:Name="title" Height="20" Text="Чат с админом" FontSize="15" VerticalAlignment="Top" HorizontalAlignment="Center"/>
-        <ScrollViewer x:Name="scrl" Margin="0,25,0,35">
+        <ScrollViewer x:Name="scrl" Margin="0,25,0,42">
             <StackPanel x:Name="chatPlace" Margin="20,25,40,40" >
             </StackPanel>
         </ScrollViewer>
-        <TextBox Style="{x:Null}" x:Name="msg" Height="40" VerticalAlignment="Bottom" Margin="20,0,50,-6" VerticalScrollBarVisibility="Disabled" KeyDown="msg_KeyDown" SpellCheck.IsEnabled="True" BorderThickness="0,1,0,0"  VerticalContentAlignment="Top" Padding="0,4,0,0" Background="#00000000" Foreground="White" CaretBrush="#FFF44336" BorderBrush="#89FFFFFF"/>
+        <TextBox x:Name="msg" Height="40" VerticalAlignment="Bottom" Margin="20,0,50,0" VerticalScrollBarVisibility="Disabled" KeyDown="msg_KeyDown" SpellCheck.IsEnabled="True" BorderThickness="0,1,0,0"  VerticalContentAlignment="Top" Padding="0,4,0,0" Background="#00000000" Foreground="White" CaretBrush="#FFF44336" BorderBrush="#89FFFFFF"/>
         <Button Style="{StaticResource btn}" VerticalAlignment="Bottom" HorizontalAlignment="Right" BorderBrush="{x:Null}" Margin="0,0,5,5" Click="Button_Click" Width="32" Height="32">
             <Button.Background>
                 <ImageBrush ImageSource="/Client;component/Play_48px.png" Stretch="None"/>

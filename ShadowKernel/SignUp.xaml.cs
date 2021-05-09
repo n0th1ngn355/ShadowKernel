@@ -63,9 +63,11 @@ namespace ShadowKernel
         {
             if (IsPerCabinet)
             {
-                Auditer auditer1 = Session.AuditContext.Auditers.Where(a => a.Login == Session.CurrentAuditer.Login).First(); ;
+                Auditer auditer1 = Session.AuditContext.Auditers.Where(a => a.Login == Session.CurrentAuditer.Login).First();
                 mainLbl.Content = auditer1.Login;
-                ButtonLogin.Visibility = Visibility.Collapsed;
+                ButtonLogin.Content = "УДАЛИТЬ АККАУНТ";
+                BrushConverter con = new BrushConverter();
+                ButtonLogin.Foreground = (Brush)con.ConvertFromString("#FF631919");
                 ButtonSignUp.Content = "СОХРАНИТЬ";
                 txtName.Text = auditer1.FirstName;
                 txtSurName.Text = auditer1.LastName;
@@ -84,9 +86,24 @@ namespace ShadowKernel
 
         private void ButtonLogin_Click(object sender, RoutedEventArgs e)
         {
-            Window login = new Login();
-            login.Show();
-            Close();
+            if (IsPerCabinet)
+            {
+                if(System.Windows.Forms.MessageBox.Show("Вы уверены, что хотите удалить данного пользователя?", Title, System.Windows.Forms.MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes) {
+                    Session.AuditContext.Auditers.Remove(Session.AuditContext.Auditers.Where(a => a.Login == Session.CurrentAuditer.Login).First());
+                    Session.Save();
+                    main.notifyIcon.Dispose();
+                    Window login = new Login();
+                    login.Show();
+                    Close();
+
+                }
+            }
+            else
+            {
+                Window login = new Login();
+                login.Show();
+                Close();
+            }
         }
 
         private void ButtonSignUp_Click(object sender, RoutedEventArgs e)
@@ -137,7 +154,7 @@ namespace ShadowKernel
                 LastName = txtSurName.Text,
                 Login = txtLogin.Text,
                 Password = BCrypt.Net.BCrypt.HashPassword(pswd.IsChecked.Value?txtPassword1.Text:txtPassword.Password, BCrypt.Net.BCrypt.GenerateSalt(), false, BCrypt.Net.HashType.SHA256),
-                CreatedAt =DateTime.Now.ToString("dd/MM/yyyy HH:mm"),
+                CreatedAt = DateTime.Now.ToString("dd/MM/yyyy HH:mm"),
                 UpdateAt = DateTime.Now.ToString("dd/MM/yyyy HH:mm")
 
             };

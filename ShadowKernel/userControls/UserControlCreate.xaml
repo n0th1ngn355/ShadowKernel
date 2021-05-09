@@ -13,20 +13,88 @@
              TextElement.FontSize="14"
              
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
-             mc:Ignorable="d" Height="540" Width="1020">
+             mc:Ignorable="d" Height="540" Width="1020" VerticalAlignment="Top">
 
-    
+
     <UserControl.Resources>
-        
+
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DialogHost.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <localHelper:InvertBooleanConverter  x:Key="boolConvert"/>
             <localHelper:InverseBooleanToVisibilityConverter  x:Key="visConvert"/>
+
+            <Style x:Key="ButStyle" TargetType="{x:Type Button}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border>
+                                <Border.Style>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#FF222222"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Grid Background="Transparent">
+                                    <ContentPresenter>
+                                    </ContentPresenter>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="But1Style" TargetType="{x:Type Button}">
+                <Setter Property="Foreground" Value="#FFBBBBBB"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="1">
+                                <Border.Style>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Style.Triggers>
+                                            <Trigger Property="Visibility" Value="Visible">
+                                                <Setter Property="Background" Value="#FF222222"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#FF303030"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Grid>
+                                    <ContentPresenter Margin="{TemplateBinding Padding}"  HorizontalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="Img" TargetType="{x:Type Grid}">
+                <Style.Triggers>
+                    <Trigger Property="IsVisible" Value="True">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard >
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.2" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
         </ResourceDictionary>
+        
+        
     </UserControl.Resources>
-    <Grid Background="Red">
+    <Grid Style="{StaticResource Img}" Background="Red">
         <Grid Height="60" VerticalAlignment="Top" Background="{DynamicResource MaterialDesignBackground}" d:IsEffectDisabled="True" >
             <Grid.Effect>
                 <DropShadowEffect BlurRadius="1" ShadowDepth="1" Color="#FFACACAC"/>
@@ -66,11 +134,18 @@
                     SelectionChanged="CbxCategories_SelectionChanged"/>
                 <!--<Image Source="..\assets\parcit-logo.png" Height="50"/>-->
 
-                <Button x:Name="ButtonGenerateReport" Cursor="Hand" Click="ButtonGenerateReport_Click_1" Height="30" Margin="20,0,0,0">
-                    <StackPanel Orientation="Horizontal">
+                <Button Style="{StaticResource But1Style}" x:Name="ButtonGenerateReport" Cursor="Hand" Height="30" Margin="20,0,0,0" MouseEnter="ButtonGenerateReport_Click_1">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,2,10,0">
                         <materialDesign:PackIcon Kind="FileDocumentOutline" Margin="1"/>
                         <TextBlock Text="Отчёт" Margin="1"/>
                     </StackPanel>
+                    <Button.ContextMenu>
+                        <ContextMenu x:Name="btnMenu">
+                            <MenuItem  Margin="0,-15,0,0" Header="Показать отчёт" Click="show_Click"></MenuItem>
+                            <Separator x:Name="Acc" Margin="0,-10,0,-10" Visibility="Collapsed"/>
+                            <MenuItem  Margin="0,0,0,-15" Header="Создать отчёт" Click="ButtonGenerateReport_Click"></MenuItem>
+                        </ContextMenu>
+                    </Button.ContextMenu>
                 </Button>
                 <materialDesign:Snackbar   
                     MessageQueue="{materialDesign:MessageQueue}"
@@ -220,25 +295,6 @@
             </materialDesign:DialogHost.DialogContent>
         </materialDesign:DialogHost>
         
-        <materialDesign:DialogHost  x:Name="dlgHost4" Background="{DynamicResource MaterialDesignBackground}" Visibility="Collapsed" DialogTheme="Dark">
-            <materialDesign:DialogHost.DialogContent>
-                <StackPanel Width="200" Height="150" Margin="20" Orientation="Vertical" x:Name="que" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <TextBlock FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center">Отчёт</TextBlock>
-                    <Button x:Name="show" Cursor="Hand" Click="show_Click" Margin="0,20,0,0">
-                        <StackPanel Orientation="Horizontal">
-                            
-                            <TextBlock Text="Показать отчёт" Margin="1"/>
-                        </StackPanel>
-                    </Button>
-                    <Button x:Name="as" Cursor="Hand" Click="ButtonGenerateReport_Click" Margin="0,20,0,0">
-                        <StackPanel Orientation="Horizontal">
-                            
-                            <TextBlock Text="Создать отчёт" Margin="1"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-            </materialDesign:DialogHost.DialogContent>
-        </materialDesign:DialogHost>
         <Grid Height="480" VerticalAlignment="Bottom">
             <DataGrid 
                 CanUserSortColumns="True"

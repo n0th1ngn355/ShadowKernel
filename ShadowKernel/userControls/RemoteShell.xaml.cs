@@ -75,5 +75,10 @@ namespace ShadowKernel.userControls
                 mItem.Header = "Powershell";
             }
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            conRow.Focus();
+        }
     }
 }

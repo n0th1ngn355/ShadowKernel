@@ -7,6 +7,15 @@
         xmlns:local="clr-namespace:ShadowKernel.userControls"
         mc:Ignorable="d"
         Title="RDC" Height="450" Width="800" Foreground="White" Background="Black" Closing="Window_Closing">
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard >
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity" By="0" Duration="0:0:0.5" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
     <Grid>
         <WindowsFormsHost Background="Black" Foreground="#FFFBFBFB" Panel.ZIndex="-1">
             <wf:PictureBox x:Name="desktop" Dock="Fill" SizeMode="StretchImage"></wf:PictureBox>

@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+
 using ShadowKernel.helper;
 
 namespace ShadowKernel
@@ -23,45 +24,99 @@ namespace ShadowKernel
         public UserControl uscAudit = null;
         public UserControl server = null;
         public UserControl stgServer = null;
-        public UserControl stgClient = null;
         public UserControl stgNet = null;
         public UserControl net = null;
+        public System.Windows.Forms.NotifyIcon notifyIcon = null;
+        public NotifyContextMenu n;
 
         public MainWindow()
         {
+
             InitializeComponent();
             Init();
+
+            n = new NotifyContextMenu(this);
+
+            notifyIcon = new System.Windows.Forms.NotifyIcon();
+            notifyIcon.Text = "ShadowKernel";
+            notifyIcon.Icon = Properties.Resources.icon;
+            notifyIcon.Visible = true;
+            notifyIcon.DoubleClick += new EventHandler(NotifyIcon_DoubleClick);
+            notifyIcon.MouseClick += NotifyIcon_MouseClick; 
         }
 
-        private void CloseButton(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
-
-        private void MinimizeButton(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = WindowState.Minimized;
-        }
         public void Init()
         {
-            if(Session.AuditContext.Audits.Where(a=> a.Auditer.Login == Session.CurrentAuditer.Login).Count() > 0)
-            Session.AuditContext.Entry(Session.CurrentAuditer).Collection(a => a.Audits).Load();
+            if (Session.AuditContext.Audits.Where(a => a.Auditer.Login == Session.CurrentAuditer.Login).Count() > 0)
+                Session.AuditContext.Entry(Session.CurrentAuditer).Collection(a => a.Audits).Load();
             this.DataContext = Session.CurrentAuditer;
 
             uscDashboard = new UserControlHome();
             uscAudit = new UserControlCreate();
             server = new Server();
             stgServer = new SettingsServer(this);
-            stgClient = new SettingsClient();
             stgNet = new SettingsNet();
             net = new Net();
 
             GridMain.Children.Add(server);
+
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void NotifyIcon_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if((e.Button == System.Windows.Forms.MouseButtons.Right) && (n.Visibility != Visibility.Visible))
+            {
+                n.Left = SystemParameters.PrimaryScreenWidth;
+                n.Visibility = Visibility.Visible;
+                n.Aud.Content = AC.Text;
+                n.Serv.Content = serverText.Text;
+                SettingsServer s = (SettingsServer)stgServer;
+                if (s.notify.IsChecked.Value)
+                {
+                    n.notif.Content = "Откл. уведомления";
+                }
+                else
+                {
+                    n.notif.Content = "Вкл. уведомления";
+                }
+                n.Resources["SBrush"] = new SolidColorBrush(((SolidColorBrush)serverInd.Fill).Color);
+                n.Activate();
+            }
+        }
+
+        private void NotifyIcon_DoubleClick(object sender, EventArgs e)
+        {
+            this.Show();
+        }
+
+        private void CloseButton(object sender, RoutedEventArgs e)
+        {
+
+            this.Hide();
+        }
+
+        private void MinimizeButton(object sender, RoutedEventArgs e)
+        {
+            
+            this.WindowState = WindowState.Minimized;
+
+        }
+
+
+        
        
 
         private void ListViewMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if(((ListViewItem)((ListView)sender).SelectedItem).Name == "Menu")
+            {
+                return;
+            }
             GridMain.Children.Clear();
 
             switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
@@ -86,12 +141,14 @@ namespace ShadowKernel
                     break;
                 case "Quit":
                     Application.Current.Shutdown();
-                    break;
-                case "Menu":
-                    GridMain.Children.Add(server);
+                    notifyIcon.Dispose();
                     break;
                 default:
                     break;
+            }
+            if(tgl.IsChecked.Value)
+            {
+                tgl.IsChecked = !tgl.IsChecked;
             }
         }
 
@@ -108,6 +165,7 @@ namespace ShadowKernel
             Window login = new Login();
             login.Show();
             Close();
+            notifyIcon.Dispose();
         }
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -133,5 +191,11 @@ namespace ShadowKernel
             signUp.IsPerCabinet = true;
             signUp.Show();
         }
+
+        private void Menu_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            tgl.IsChecked = !tgl.IsChecked;
+        }
+
     }
 }

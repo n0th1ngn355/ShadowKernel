@@ -15,6 +15,7 @@
         FontFamily="Segoe UI Emoji" Loaded="Window_Loaded">
     <Window.Resources>
         <Style x:Key="But1Style" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="#FFBBBBBB"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -62,6 +63,15 @@
             </Setter>
         </Style>
     </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard >
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity" By="0" Duration="0:0:0.5" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
     <Grid MouseLeftButtonDown="Grid_MouseLeftButtonDown" Background="Black">
         
         <Button Click="CloseButton" Background="Black" BorderBrush="{x:Null}" FontSize="20" Width="50" Height="40" HorizontalAlignment="Right" VerticalAlignment="Top">
@@ -113,12 +123,12 @@
         </Grid>
         <CheckBox x:Name="pswd" Content="Показать пароль" HorizontalAlignment="Left" Margin="60,0,0,105"  Background="#FFF44336" BorderBrush="Black" Foreground="#FFB9BBBE" FontFamily="Open Sans Extrabold" FontSize="18" Height="40" VerticalAlignment="Bottom" Checked="pswd_Checked" Unchecked="pswd_Unchecked" />
         <CheckBox Visibility="Collapsed" x:Name="pswdCh" Content="Сменить пароль" HorizontalAlignment="Right" Margin="0,0,60,105"  Background="#FFF44336" BorderBrush="Black" Foreground="#FFB9BBBE" FontFamily="Open Sans Extrabold" FontSize="18" Height="40" VerticalAlignment="Bottom" Checked="pswdCh_Checked" Unchecked="pswdCh_Unchecked"  />
-        <Button Style="{StaticResource But1Style}" x:Name="ButtonSignUp" Width="220" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,60,45" Content="ЗАРЕГИСТРИРОВАТЬСЯ" Click="ButtonSignUp_Click" FontFamily="Open Sans Extrabold" Background="#FF303030" BorderBrush="{x:Null}" Foreground="#FFBBBBBB" FontSize="18" Padding="0,6,0,4" TabIndex="6" VerticalContentAlignment="Center" >
+        <Button Style="{StaticResource But1Style}" x:Name="ButtonSignUp" Width="220" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,60,45" Content="ЗАРЕГИСТРИРОВАТЬСЯ" Click="ButtonSignUp_Click" FontFamily="Open Sans Extrabold" BorderBrush="{x:Null}" Foreground="#FFBBBBBB" FontSize="18" Padding="0,6,0,4" TabIndex="6" VerticalContentAlignment="Center" >
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <Button Style="{StaticResource ButStyle}" x:Name="ButtonLogin" Width="55" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="60,0,0,50" Content="ВОЙТИ" FontFamily="Open Sans Extrabold" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFBBBBBB" FontSize="14" Padding="0,5,0,0" Height="25" ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalContentAlignment="Center" Grid.IsSharedSizeScope="True" VerticalContentAlignment="Center" Click="ButtonLogin_Click"  >
+        <Button Style="{StaticResource ButStyle}" x:Name="ButtonLogin" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="60,0,0,50" Content="ВОЙТИ" FontFamily="Open Sans Extrabold" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFBBBBBB" FontSize="14" Padding="0,5,0,0" Height="25" ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalContentAlignment="Center" Grid.IsSharedSizeScope="True" VerticalContentAlignment="Center" Click="ButtonLogin_Click"  >
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>

@@ -13,26 +13,74 @@
              TextElement.FontSize="14"
              
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
-             mc:Ignorable="d" Height="540" Width="1020">
+             mc:Ignorable="d" Height="540" Width="1020" VerticalAlignment="Top" Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style x:Key="But1Style" TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="1">
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Style.Triggers>
+                                    <Trigger Property="Visibility" Value="Visible">
+                                        <Setter Property="Background" Value="Black"/>
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#FF222222"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Grid>
+                            <ContentPresenter Margin="{TemplateBinding Padding}"  HorizontalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-    <Grid Background="#FF303030">
-        <Grid Height="60" VerticalAlignment="Top" Background="{DynamicResource MaterialDesignBackground}" d:IsEffectDisabled="True" >
-            <Grid.Effect>
-                <DropShadowEffect BlurRadius="1" ShadowDepth="1" Color="#FFACACAC"/>
-            </Grid.Effect>
+            <Style x:Key="Img" TargetType="{x:Type Grid}">
+                <Style.Triggers>
+                    <Trigger Property="IsVisible" Value="True">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard >
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.2" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Style="{StaticResource Img}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="3"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Menu TextElement.FontWeight="Medium"
-             TextElement.FontSize="14" Background="{x:Null}" Width="1010" HorizontalContentAlignment="Center">
-                    <MenuItem Header="Клиент" Margin="176,0,0,0" Click="MenuItem_Click"></MenuItem>
-                    <MenuItem Header="Сервер" Margin="200,0,0,0" Click="MenuItem_Click_1"></MenuItem>
-                    <MenuItem Header="Сеть" Margin="200,0,0,0" Click="MenuItem_Click_2"></MenuItem>
-                </Menu>
-            </StackPanel>
-        </Grid>
-        <Grid Height="480" VerticalAlignment="Bottom" Background="#FF303030">
-            <Label Content="Настройки сети" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top"/>
 
-        </Grid>
+        <Button Style="{StaticResource But1Style}" Grid.Column="0" Click="MenuItem_Click_1" Background="Black" Padding="0,20,0,0" Height="Auto" BorderBrush="{x:Null}">
+            <Button.Content>
+                <TextBox Focusable="False" IsReadOnly="True" Text="Клиент/Сервер" VerticalAlignment="Top" BorderBrush="{x:Null}"/>
+            </Button.Content>
+        </Button>
+        <Button Style="{StaticResource But1Style}"  Grid.Column="2" Click="MenuItem_Click_2" Background="Black" Padding="0,20,0,0" Height="Auto" BorderBrush="{x:Null}">
+            <Button.Content>
+                <TextBox   Focusable="False" IsReadOnly="True" Text="Сеть" VerticalAlignment="Top" Padding="0" BorderBrush="#89FFFFFF"/>
+            </Button.Content>
+        </Button>
+        
+        <Rectangle  Grid.Column="1" Grid.Row="0" Fill="Black"/>
     </Grid>
 </UserControl>

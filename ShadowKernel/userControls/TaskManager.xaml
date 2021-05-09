@@ -8,6 +8,15 @@
        TextElement.FontWeight="Medium"
              TextElement.FontSize="14"
         Title="Процессы на компьютере клиента" Height="450" Width="800" SizeToContent="WidthAndHeight"  WindowStartupLocation="Manual" Closing="Window_Closing" HorizontalAlignment="Left" VerticalAlignment="Top">
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard >
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity" By="0" Duration="0:0:0.5" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
     <Grid Background="#FF303030">
         <DataGrid x:Name="clientProcesses" SelectionChanged="dtgClients_SelectionChanged" IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single">
             <DataGrid.Columns>

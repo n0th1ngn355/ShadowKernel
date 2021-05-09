@@ -20,7 +20,6 @@ namespace ShadowKernel.userControls
 
     public partial class UserControlCreate : System.Windows.Controls.UserControl
     {
-        private int i;
         private List<int> possibleScores;
         Audit audit;
         Question question;
@@ -37,7 +36,6 @@ namespace ShadowKernel.userControls
             SnackbarOne.IsActive = false;
             cbxAudits.ItemsSource = Session.AuditContext.Audits.ToList();
             cbxAudits.DisplayMemberPath = "Name";
-            i = 0;
             
 
             generator = new PdfGenerator();
@@ -48,19 +46,16 @@ namespace ShadowKernel.userControls
 
         private void CbxCategories_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (cbxAudits.SelectedItem == null && i < 1)
+            if (cbxAudits.SelectedItem == null)
             {
                 //MessageBox.Show("Please Choose an audit first", App.AppName, MessageBoxButton.OK, MessageBoxImage.Information);
-                dlgHost1.ShowDialog(mbx);
-
                 cbxAudits.Focus();
-                i++;
+                dlgHost1.ShowDialog(mbx);
             }
         }
 
         private void CbxCategories_LostFocus(object sender, RoutedEventArgs e)
         {
-            i = 0;
         }
 
         private void CbxAudits_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -468,29 +463,20 @@ namespace ShadowKernel.userControls
 
         }
 
-        public void f()
-        {
-            dlgHost4.IsOpen = false;
-        }
-        private void ButtonGenerateReport_Click_1(object sender, RoutedEventArgs e)
+        private void ButtonGenerateReport_Click_1(object sender, System.Windows.Input.MouseEventArgs e)
         {
             if (cbxAudits.SelectedItem == null)
             {
                 //MessageBox.Show("Please Choose an audit first", App.AppName, MessageBoxButton.OK, MessageBoxImage.Information);
-                dlgHost1.ShowDialog(mbx);
-
                 cbxAudits.Focus();
-                i++;
+                dlgHost1.ShowDialog(mbx);
             }
             else
             {
-                dlgHost4.ShowDialog(que);
-                dlgHost4.Visibility = Visibility.Visible;
-                que.Visibility = Visibility.Visible;
-                Task.Delay(TimeSpan.FromSeconds(3))
-                    .ContinueWith((t, _) => f(), null,
-                        TaskScheduler.FromCurrentSynchronizationContext());
+                btnMenu.StaysOpen = true;
+                btnMenu.IsOpen = true;
             }
         }
+
     }
 }

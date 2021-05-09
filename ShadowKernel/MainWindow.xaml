@@ -15,144 +15,186 @@
 
 
     <Window.Resources>
-        <Style x:Key="ButStyle" TargetType="{x:Type Button}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border>
-                            <Border.Style>
-                                <Style TargetType="{x:Type Border}">
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#FF222222"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-                            <Grid Background="Transparent">
-                                <ContentPresenter>
-                                </ContentPresenter>
-                            </Grid>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        <ResourceDictionary>
+            <Style x:Key="ButStyle" TargetType="{x:Type Button}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border>
+                                <Border.Style>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#FF222222"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Grid Background="Transparent">
+                                    <ContentPresenter>
+                                    </ContentPresenter>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
 
 
-        <Style x:Key="{x:Type ToolTip}"
+            <Style x:Key="{x:Type ToolTip}"
        TargetType="ToolTip">
-            <Setter Property="OverridesDefaultStyle"
+                <Setter Property="OverridesDefaultStyle"
           Value="true" />
-            <Setter Property="HasDropShadow"
+                <Setter Property="HasDropShadow"
           Value="True" />
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ToolTip">
-                        <Border Name="Border" Background="White">
-                            <ContentPresenter Margin="4"
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToolTip">
+                            <Border Name="Border" Background="White">
+                                <ContentPresenter Margin="4"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
 
+            <Style x:Key="Flex" TargetType="{x:Type Grid}">
 
-        <Style x:Key="Flex" TargetType="{x:Type Grid}">
+                <Setter Property="Width" Value="70" />
 
-            <Setter Property="Width" Value="70" />
-
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-
-                    <Trigger.EnterActions>
-                        <BeginStoryboard>
-                            <Storyboard BeginTime="0:0:0.5">
-                                <DoubleAnimation Storyboard.TargetProperty="Width"
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsChecked, ElementName=tgl}" Value="true">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="Width"
                   To="350" Duration="0:0:0.2" />
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </Trigger.EnterActions>
-                    <Trigger.ExitActions>
-                        <BeginStoryboard>
-                            <Storyboard >
-                                <DoubleAnimation Storyboard.TargetProperty="Width"
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard >
+                                    <DoubleAnimation Storyboard.TargetProperty="Width"
                   To="70" Duration="0:0:0.2" />
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </Trigger.ExitActions>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.ExitActions>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            <local:Login x:Key="Log" Title="{Binding }" />
+            <ContextMenu x:Key="TrayContextMenu" Placement="MousePoint" FontSize="14" >
+                <MenuItem x:Name="Aud" Margin="0,-15,0,0"  Height="30" Padding="0,0,10,0" BorderThickness="0">
+                    <MenuItem.Template>
+                        <ControlTemplate>
+                            <Grid>
+                                <materialDesign:PackIcon Kind="AccountCircle" Height="30" Width="30"  Foreground="#FFB9BBBE" Margin="0,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Right"  />
+                                <TextBlock DataContext="{Binding Path=Login}" Text="{Binding Path=Title}" VerticalAlignment="Center" FontSize="16" Margin="10,0,50,0" HorizontalAlignment="Right" Foreground="White"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </MenuItem.Template>
+                </MenuItem>
+                <Separator Margin="0,-10,0,-10" />
+                <MenuItem x:Name="Serv" Margin="0,0,0,0"  Height="30" Padding="0,0,10,0" BorderThickness="0">
+                    <MenuItem.Template>
+                        <ControlTemplate>
+                            <Grid>
+                                <Rectangle Margin="10,0,10,1" x:Name="Ind" HorizontalAlignment="Right" VerticalAlignment="Center"  Width="15" Height="15" Fill="{Binding Fill, ElementName=serverInd}" RadiusX="50" RadiusY="50"/>
+                                <TextBlock Margin="0,0,10,0" Text="{Binding Path=Text, ElementName=serverText}"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </MenuItem.Template>
+                </MenuItem>
+                <Separator Margin="0,-10,0,-10" />
+                <MenuItem  Margin="0,0,0,-15" Header="Выход" Click="MenuItem_Click" Height="30" Padding="0,0,10,0" BorderThickness="0">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/Close Window_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                            <Image.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                    <SkewTransform/>
+                                    <RotateTransform/>
+                                    <TranslateTransform X="10"/>
+                                </TransformGroup>
+                            </Image.RenderTransform>
+                        </Image>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </ContextMenu>
 
-        
-        
-
+        </ResourceDictionary>
     </Window.Resources>
     <Window.Triggers>
         <EventTrigger RoutedEvent="Loaded">
             <BeginStoryboard>
-                <Storyboard Duration="00:00:1" Storyboard.TargetProperty="Opacity">
-                    <DoubleAnimation From="0" To="1"/>
+                <Storyboard >
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity" By="0" Duration="0:0:0.5" />
+                    <DoubleAnimation Storyboard.TargetProperty="Top" By="-1" Duration="0:0:0.2"  >
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseOut"  />
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
                 </Storyboard>
             </BeginStoryboard>
         </EventTrigger>
     </Window.Triggers>
     <Grid Background="#FF303030">
 
-        <Grid x:Name="GridMain" HorizontalAlignment="Right" Height="580" Width="1010" Margin="0,0,0,0" VerticalAlignment="Bottom"/>
-
+        <Grid x:Name="GridMain" HorizontalAlignment="Right" Height="560" Width="1010" VerticalAlignment="Bottom"/>
         <Grid>
             <Grid.Effect>
                 <DropShadowEffect BlurRadius="1" ShadowDepth="0.5" Color="#FFACACAC"/>
             </Grid.Effect>
             <Grid Margin="0" Background="Black" Width="1080"  VerticalAlignment="Top" Height="40" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
-                <Rectangle x:Name="serverInd" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,150,0" Width="15" Height="15" Fill="Red" RadiusX="50" RadiusY="50"/>
-                <TextBlock x:Name="serverText" Text="Сервер не запущен" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,2,180,0"/>
-                <Button Style="{StaticResource ButStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="40" Margin="100,0,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="10,4" Click="Button_Click"  >
-                    <Button.Content>
-                        <Grid>
-                            <materialDesign:PackIcon Kind="AccountCircle" Height="30" Width="30"  Foreground="#FFB9BBBE" Margin="10,0,0,0" VerticalAlignment="Center"  />
-                            <TextBlock Text="{Binding Login}" VerticalAlignment="Center" FontSize="16" Margin="50,0,10,0" HorizontalAlignment="Left" Foreground="White"/>
-                        </Grid>
-                    </Button.Content>
-                    <Button.ContextMenu>
-                        <ContextMenu x:Name="btnMenu">
-                            <MenuItem x:Name="PC" Header="Личный кабинет"  Margin="0,-15,0,0"  BorderThickness="0" FontSize="14" Height="30" Padding="0,0,10,0" HorizontalAlignment="Left" VerticalAlignment="Center" Click="PC_Click">
-                                <MenuItem.Icon>
-                                    <Image Source="Resources/Person_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
-                                        <Image.RenderTransform>
-                                            <TransformGroup>
-                                                <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
-                                                <SkewTransform/>
-                                                <RotateTransform/>
-                                                <TranslateTransform X="10"/>
-                                            </TransformGroup>
-                                        </Image.RenderTransform>
-                                    </Image>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <Separator Margin="0,-10,0,-10"/>
-                            <MenuItem x:Name="LogOut" Header="Выход" BorderThickness="0" Margin="0,0,0,-15"  FontSize="14" Height="30" Padding="0,0,10,0" HorizontalAlignment="Left" VerticalAlignment="Center" Click="LogOut_Click">
-                                <MenuItem.Icon>
-                                    <Image Source="Resources/Close Window_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
-                                        <Image.RenderTransform>
-                                            <TransformGroup>
-                                                <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
-                                                <SkewTransform/>
-                                                <RotateTransform/>
-                                                <TranslateTransform X="10"/>
-                                            </TransformGroup>
-                                        </Image.RenderTransform>
-                                    </Image>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                        </ContextMenu>
-                    </Button.ContextMenu>
-                </Button>
+                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,120,0" Orientation="Horizontal" >
+                    <TextBlock x:Name="serverText" Text="Сервер не запущен" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,10,1"/>
+                    <Rectangle x:Name="serverInd" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Width="15" Height="15" Fill="Red" RadiusX="50" RadiusY="50"/>
+                    <Button x:Name="btnAc" Style="{StaticResource ButStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="40" Margin="0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="10,4" Click="Button_Click"  >
+                        <Button.Content>
+                            <Grid>
+                                <materialDesign:PackIcon Kind="AccountCircle" Height="30" Width="30"  Foreground="#FFB9BBBE" Margin="0,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Right"  />
+                                <TextBlock x:Name="AC" Text="{Binding Login}" VerticalAlignment="Center" FontSize="16" Margin="10,0,50,0" HorizontalAlignment="Right" Foreground="White"/>
+                            </Grid>
+                        </Button.Content>
+                        <Button.ContextMenu>
+                            <ContextMenu x:Name="btnMenu">
+                                <MenuItem x:Name="PC" Header="Личный кабинет"  Margin="0,-15,0,0"  BorderThickness="0" FontSize="14" Height="30" Padding="0,0,10,0" HorizontalAlignment="Left" VerticalAlignment="Center" Click="PC_Click">
+                                    <MenuItem.Icon>
+                                        <Image Source="Resources/Person_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                            <Image.RenderTransform>
+                                                <TransformGroup>
+                                                    <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                                    <SkewTransform/>
+                                                    <RotateTransform/>
+                                                    <TranslateTransform X="10"/>
+                                                </TransformGroup>
+                                            </Image.RenderTransform>
+                                        </Image>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <Separator Margin="0,-10,0,-10"/>
+                                <MenuItem x:Name="LogOut" Header="Выход" BorderThickness="0" Margin="0,0,0,-15"  FontSize="14" Height="30" Padding="0,0,10,0" HorizontalAlignment="Left" VerticalAlignment="Center" Click="LogOut_Click">
+                                    <MenuItem.Icon>
+                                        <Image Source="Resources/Close Window_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                            <Image.RenderTransform>
+                                                <TransformGroup>
+                                                    <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                                    <SkewTransform/>
+                                                    <RotateTransform/>
+                                                    <TranslateTransform X="10"/>
+                                                </TransformGroup>
+                                            </Image.RenderTransform>
+                                        </Image>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
+                </StackPanel>
                 <!--<Path Data="M0.046783628,5.9624955 L5.6666667,11.856241 M5.2859649,11.856241 L11.105263,5.9624955" Stroke="White" StrokeThickness="1" Stretch="None" Margin="0,0,10,0" HorizontalAlignment="Right" VerticalAlignment="Center" Height="12.5" Width="11.333" />-->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0" >
                     <Button Style="{StaticResource ButStyle}" Click="MinimizeButton" Background="Black" BorderBrush="{x:Null}" Height="40" >
@@ -178,10 +220,11 @@
             </Grid.Effect>
             <StackPanel>
                 <ListView x:Name="ListViewMenu" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="ListViewMenu_SelectionChanged" Height="600" Margin="0" BorderBrush="{x:Null}">
-                    <ListViewItem x:Name="Menu" Height="40" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0,0,8,0">
+                    <ListViewItem x:Name="Menu" Height="40" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0,0,8,0" PreviewMouseLeftButtonDown="Menu_PreviewMouseLeftButtonDown">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" >
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"  Width="70" >
                                 <materialDesign:PackIcon Kind="FormatListBulleted" Height="30" Width="25" Margin="21,10,10,10" Foreground="#FFB9BBBE" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <ToggleButton x:Name="tgl" Width="0" Height="0" />
                             </StackPanel>
                             <TextBlock Text="Меню" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" FontSize="16"/>
                         </StackPanel>

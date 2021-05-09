@@ -222,6 +222,9 @@
     <Compile Include="userControls\Net.xaml.cs">
       <DependentUpon>Net.xaml</DependentUpon>
     </Compile>
+    <Compile Include="userControls\NotifyContextMenu.xaml.cs">
+      <DependentUpon>NotifyContextMenu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="userControls\RDC.xaml.cs">
       <DependentUpon>RDC.xaml</DependentUpon>
     </Compile>
@@ -236,9 +239,6 @@
     </Compile>
     <Compile Include="userControls\SettingsNet.xaml.cs">
       <DependentUpon>SettingsNet.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="userControls\SettingsClient.xaml.cs">
-      <DependentUpon>SettingsClient.xaml</DependentUpon>
     </Compile>
     <Compile Include="userControls\SettingsServer.xaml.cs">
       <DependentUpon>SettingsServer.xaml</DependentUpon>
@@ -296,6 +296,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="userControls\NotifyContextMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="userControls\RDC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -313,10 +317,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="userControls\SettingsNet.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="userControls\SettingsClient.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

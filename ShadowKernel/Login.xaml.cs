@@ -12,12 +12,12 @@ namespace ShadowKernel
 
     public partial class Login : Window
     {
+        public MainWindow wind;
         public Login()
         {
             InitializeComponent();
             Init();
         }
-
         public void Init()
         {
             Session.CurrentAuditer = new Auditer();
@@ -55,6 +55,8 @@ namespace ShadowKernel
                     Window mainWindow = new MainWindow();
                     mainWindow.Show();
                     Close();
+                
+
                 }
                 else
                 {

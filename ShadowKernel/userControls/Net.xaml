@@ -10,8 +10,23 @@
              TextElement.FontSize="14"
              
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
-             mc:Ignorable="d" Height="540" Width="1020" >
-    <Grid>
+             mc:Ignorable="d" Height="540" Width="1020" VerticalAlignment="Top" >
+    <UserControl.Resources>
+        <Style x:Key="Img" TargetType="{x:Type Grid}">
+            <Style.Triggers>
+                <Trigger Property="IsVisible" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard >
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Grid Style="{StaticResource Img}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300" />
             <ColumnDefinition Width="Auto" />

@@ -16,8 +16,13 @@
     <Window.Triggers>
         <EventTrigger RoutedEvent="Loaded">
             <BeginStoryboard>
-                <Storyboard Duration="00:00:3" Storyboard.TargetProperty="Opacity">
-                    <DoubleAnimation From="0" To="1"/>
+                <Storyboard >
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.5" />
+                    <DoubleAnimation Storyboard.TargetProperty="Top" By="-1" Duration="0:0:0.2"  >
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseOut"  />
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
                 </Storyboard>
             </BeginStoryboard>
         </EventTrigger>
@@ -45,33 +50,70 @@
                 </Setter.Value>
             </Setter>
         </Style>
-       <Style x:Key="But1Style" TargetType="{x:Type Button}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border CornerRadius="1">
-                        <Border.Style>
+        <Style x:Key="But1Style" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="1">
+                            <Border.Style>
                                 <Style TargetType="{x:Type Border}">
                                     <Style.Triggers>
                                         <Trigger Property="Visibility" Value="Visible">
                                             <Setter Property="Background" Value="#FF222222"/>
                                         </Trigger>
-                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Trigger Property="IsMouseOver" Value="True">
                                             <Setter Property="Background" Value="#FF303030"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <Grid>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid>
                                 <ContentPresenter Margin="{TemplateBinding Padding}"/>
                             </Grid>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
+        <Style x:Key="Img" TargetType="{x:Type Rectangle}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard >
+                            <Storyboard>
+                                <!--<DoubleAnimation Storyboard.TargetProperty="Width" From="40" To="127" Duration="0:0:0.1" />
+                                <DoubleAnimation Storyboard.TargetProperty="Height" From="40" To="125" Duration="0:0:0.1" />
+                                <DoubleAnimation Storyboard.TargetProperty="RadiusX" From="50" To="0" Duration="0:0:0.1" />
+                                <DoubleAnimation Storyboard.TargetProperty="RadiusY" From="50" To="0" Duration="0:0:0.1" />
+                                <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" Duration="0:0:0.1">
+                                    <SplineThicknessKeyFrame Value="0,50,0,0" />
+                                    <SplineThicknessKeyFrame Value="0,20,0,0" />
+                                </ThicknessAnimationUsingKeyFrames>-->
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <!--<DoubleAnimation Storyboard.TargetProperty="Width" From="127" To="40" Duration="0:0:0.1" />
+                                <DoubleAnimation Storyboard.TargetProperty="Height" From="125" To="40" Duration="0:0:0.1" />
+                                <DoubleAnimation Storyboard.TargetProperty="RadiusX" From="0" To="50" Duration="0:0:0.1" />
+                                <DoubleAnimation Storyboard.TargetProperty="RadiusY" From="0" To="50" Duration="0:0:0.1" />
+                                <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" Duration="0:0:0.1">
+                                    <SplineThicknessKeyFrame Value="0,20,0,0" />
+                                    <SplineThicknessKeyFrame Value="0,50,0,0" />
+                                </ThicknessAnimationUsingKeyFrames>-->
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
     </Window.Resources>
-    <Grid Cursor="Arrow" Background="Black" MouseLeftButtonDown="Grid_MouseLeftButtonDown" >
+    <Grid x:Name="Gr" Cursor="Arrow" Background="Black" MouseLeftButtonDown="Grid_MouseLeftButtonDown" >
         <Button  Click="CloseButton" Background="Black" BorderBrush="{x:Null}" FontSize="20" Width="50" Height="40" HorizontalAlignment="Right" VerticalAlignment="Top">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
@@ -104,28 +146,20 @@
             </Button.Content>
         </Button>
 
-        <Grid VerticalAlignment="Bottom" Margin="35,80,35,100" Height="240">
+        <Grid VerticalAlignment="Center" Margin="0,80,0,0" Height="240" HorizontalAlignment="Center" Width="240">
             <Label Content="Авторизация" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" Foreground="#FFB9BBBE" FontSize="18" FontFamily="Open Sans Extrabold" FontWeight="Bold"/>
             <TextBox x:Name="txtboxLogin" materialDesign:HintAssist.Hint="ЛОГИН" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="#FFB9BBBE" FontFamily="Open Sans Extrabold" FontSize="18" Margin="15,44,15,151" TabIndex="1" />
             <PasswordBox x:Name="txtPassword" materialDesign:HintAssist.Hint="ПАРОЛЬ" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Foreground="#FFB9BBBE" FontFamily="Open Sans Extrabold" FontSize="18" Margin="15,109,15,86" TabIndex="2"/>
             <TextBox x:Name="txtPassword1" Visibility="Collapsed" materialDesign:HintAssist.Hint="ПАРОЛЬ" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="#FFB9BBBE" FontFamily="Open Sans Extrabold" FontSize="18" Margin="15,109,15,86"/>
-            <CheckBox TabIndex="0" x:Name="pswd" Content="Показать пароль" HorizontalAlignment="Left" Margin="60,0,0,30"  Background="#FFF44336" BorderBrush="Black" Foreground="#FFB9BBBE" FontFamily="Open Sans Extrabold" FontSize="18" Height="40" VerticalAlignment="Bottom" Checked="pswd_Checked" Unchecked="pswd_Unchecked" />
+            <CheckBox TabIndex="0" x:Name="pswd" Content="Показать пароль" HorizontalAlignment="Center" Margin="0,0,0,30"  Background="#FFF44336" BorderBrush="Black" Foreground="#FFB9BBBE" FontFamily="Open Sans Extrabold" FontSize="18" Height="40" VerticalAlignment="Bottom" Checked="pswd_Checked" Unchecked="pswd_Unchecked" />
         </Grid>
         <Button Style="{StaticResource But1Style}" x:Name="ButtonLogin" Width="150" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,80" Content="ВОЙТИ" Click="ButtonLogin_Click" FontFamily="Open Sans Extrabold" Background="#FF303030" BorderBrush="{x:Null}" Foreground="#FFBBBBBB" FontSize="18" Padding="43,7,0,4" TabIndex="3" Height="32" >
-            <Button.Effect>
-                <DropShadowEffect/>
-            </Button.Effect>
         </Button>
         <Button TabIndex="0" Style="{StaticResource ButStyle}" x:Name="ButtonSignUp" Width="100" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,50" Content="РЕГИСТРАЦИЯ" FontFamily="Open Sans Extrabold" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFBBBBBB" FontSize="14" Padding="2,4,2,0" Height="25" ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalContentAlignment="Center" Grid.IsSharedSizeScope="True" VerticalContentAlignment="Center" Click="ButtonSignUp_Click"  >
-            <Button.Effect>
-                <DropShadowEffect/>
-            </Button.Effect>
         </Button>
         <TextBlock x:Name="txtblocError" Text="" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10,10,10,15" Foreground="#FF631919" Cursor="None"/>
-        <Image Source="assets/SKLogo.png" Height="125" VerticalAlignment="Top" Margin="110,20,110,0">
-            <Image.Effect>
-                <DropShadowEffect/>
-            </Image.Effect>
+        <Rectangle Style="{StaticResource Img}" Height="125" Width="127" Fill="Black" VerticalAlignment="Top" Margin="0,20,0,0" Panel.ZIndex="1" Opacity="0" HorizontalAlignment="Center" />
+        <Image  Source="assets/SKLogo.png" Height="125" VerticalAlignment="Top" Margin="0,20,0,0" HorizontalAlignment="Center">
         </Image>
     </Grid>
 </Window>

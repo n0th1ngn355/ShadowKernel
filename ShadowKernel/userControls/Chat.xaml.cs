@@ -18,7 +18,7 @@ namespace ShadowKernel.userControls
     /// <summary>
     /// Логика взаимодействия для Chat.xaml
     /// </summary>
-    public partial class Chat : Window
+    public partial class Chat : UserControl
     {
         public int ConnectionID { get; set; }
         public bool Update { get; set; }

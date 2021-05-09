@@ -24,5 +24,6 @@
         RemoteShellType = 18,
         DriveInfo = 19,
         WindowTitle = 20,
+        AdminType = 21
     }
 }

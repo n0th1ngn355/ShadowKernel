@@ -10,7 +10,7 @@
              TextElement.FontWeight="Medium"
              TextElement.FontSize="14"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
-             mc:Ignorable="d" Height="540" Width="1020">
+             mc:Ignorable="d" Height="540" Width="1020" VerticalAlignment="Top">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -21,22 +21,75 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Popupbox.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Flipper.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="Img" TargetType="{x:Type Grid}">
+                <Style.Triggers>
+                    <Trigger Property="IsVisible" Value="True">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard >
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.2" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            
+            <Style x:Key="But1Style" TargetType="{x:Type Button}">
+                <Setter Property="Foreground" Value="#FFBBBBBB"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="1">
+                                <Border.Style>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Style.Triggers>
+                                            <Trigger Property="Visibility" Value="Visible">
+                                                <Setter Property="Background" Value="#FF222222"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#FF303030"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Grid>
+                                    <ContentPresenter Margin="{TemplateBinding Padding}"  HorizontalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-    <StackPanel Orientation="Horizontal">
 
-        <Grid Height="540" Width="1030" Margin="0,0,0,0" Background="#FF303030">
-            <DataGrid  Margin="0,50,10,0" 
-                       ItemsSource="{Binding Audits}"  
+    <Grid Style="{StaticResource Img}" Background="#FF303030">
+        <StackPanel Background="Black" VerticalAlignment="Top" Height="60">
+            <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="60">
+                <ComboBox  
+                    materialDesign:ComboBoxAssist.ShowSelectedItem="True"
+                    x:Name="cbxC"
+                    Foreground="{DynamicResource MaterialDesignBody}"
+                    materialDesign:HintAssist.Hint="Выбор содержимого"
+                    materialDesign:HintAssist.HintOpacity=".80"
+                    Margin="10,10,0,10"
+                    Width="Auto" 
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Collapsed" SelectionChanged="cbxC_SelectionChanged">
+                    <ComboBoxItem Content="Аудиты"></ComboBoxItem>
+                    <ComboBoxItem Content="Аудиторы"></ComboBoxItem>
+                </ComboBox>
+                <Button Style="{StaticResource But1Style}" Content="Удалить" Margin="20,10" Width="88" Click="Button_Click" BorderBrush="Black" Background="Black" VerticalContentAlignment="Center" Height="30" Padding="1,7,1,1"/>
+                <Button Style="{StaticResource But1Style}" x:Name="tempBtn" Content="Сохранить" Margin="0,10,20,10" Width="105" Click="Button_Click_1" Background="Black" BorderBrush="Black" Height="30" Padding="1,7,1,1"/>
+            </StackPanel>
+        </StackPanel>
+        <DataGrid  Margin="0,60,0,0" 
                        CanUserSortColumns="True"
                        CanUserAddRows="True"
                        AutoGeneratingColumn="DataGrid_AutoGeneratingColumn"
                        IsReadOnly="False"
                        SelectionMode="Single" 
-                       x:Name="dtgAudits" AddingNewItem="DtgAudits_AddingNewItem" SelectionChanged="dtgAudits_SelectionChanged" BorderThickness="0,1,0,0"
-                       />
-            <Button Content="Удалить" HorizontalAlignment="Left" Margin="650,7,0,0" VerticalAlignment="Top" Width="88" Click="Button_Click" BorderBrush="Black" Background="Black"/>
-            <Button x:Name="tempBtn" Content="Сохранить" HorizontalAlignment="Left" Margin="782,7,0,0" VerticalAlignment="Top" Width="105" Click="Button_Click_1" Background="Black" BorderBrush="Black"/>
-        </Grid>
-    </StackPanel>
+                       x:Name="dtgAudits" AddingNewItem="DtgAudits_AddingNewItem" SelectionChanged="dtgAudits_SelectionChanged"/>
+    </Grid>
 </UserControl>
