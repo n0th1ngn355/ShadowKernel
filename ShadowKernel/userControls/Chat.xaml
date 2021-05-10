@@ -3,11 +3,27 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ShadowKernel.userControls"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Height="560" Width="1010" Foreground="White" Background="Black">
+        Height="560" Width="800" Foreground="White" Background="Black" >
     <UserControl.Resources>
+        <Style x:Key="btn" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{x:Null}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <Style x:Key="Bubble" TargetType="Control">
             <Setter Property="Focusable" Value="True"/>
             <Setter Property="Template">
@@ -98,71 +114,16 @@
         <Style TargetType="{x:Type ScrollBar}">
             <Setter Property="Template" Value="{StaticResource VerticalScrollBar}"/>
         </Style>
-
-        <Style x:Key="Img" TargetType="{x:Type Grid}">
-            <Style.Triggers>
-                <Trigger Property="IsVisible" Value="True">
-                    <Trigger.EnterActions>
-                        <BeginStoryboard >
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.2" />
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </Trigger.EnterActions>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        
     </UserControl.Resources>
-    <Grid Style="{StaticResource Img}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" MinWidth="100" MaxWidth="300"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0">
-            <ListView x:Name="dtgClients" Padding="0" SelectionMode="Single">
-                <ListView.View>
-                    <GridView>
-                        <GridView.ColumnHeaderContainerStyle>
-                            <Style TargetType="GridViewColumnHeader">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                            </Style>
-                        </GridView.ColumnHeaderContainerStyle>
-                        <GridViewColumn>
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <WrapPanel  MaxWidth="300">
-                                        <StackPanel Margin="15,0,0,0" HorizontalAlignment="Left">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Tag}" />
-                                                <TextBlock Text=" ("/>
-                                                <TextBlock x:Name="text" Text="{Binding ID}"  />
-                                                <TextBlock Text=") " />
-                                            </StackPanel>
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding IP}" />
-                                            </StackPanel>
-                                        </StackPanel>
-                                    </WrapPanel>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </Grid>
-        <GridSplitter Grid.Column="1" BorderThickness="1" HorizontalAlignment="Stretch" Background="#99FFFFFF" Width="5"/>
-        <Grid Grid.Column="2">
-            <TextBlock x:Name="title" Height="20" Text="Чат с " FontSize="15" VerticalAlignment="Top" HorizontalAlignment="Center"/>
-            <ScrollViewer x:Name="scrl" Margin="0,25,0,42">
-                <StackPanel x:Name="chatPlace" Margin="20,25,40,40" >
-                </StackPanel>
-            </ScrollViewer>
-            <TextBox materialDesign:HintAssist.Hint="Введите сообщение" materialDesign:HintAssist.IsFloating="False" Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="msg" Height="32" VerticalAlignment="Bottom" Margin="20,0,50,10" VerticalScrollBarVisibility="Disabled" SpellCheck.IsEnabled="True" BorderThickness="0,1,0,0" KeyDown="msg_KeyDown" VerticalContentAlignment="Center" Padding="5,0,0,0"/>
-            <Button  VerticalAlignment="Bottom" HorizontalAlignment="Right" BorderBrush="{x:Null}" Margin="0,0,9,9" Click="Button_Click" Background="{x:Null}" Padding="0" >
-                <materialDesign:PackIcon Kind="Send" Width="32" Height="32" />
-            </Button>
-        </Grid>
+    <Grid>
+        <TextBlock x:Name="title" Height="20" Text="" FontSize="15" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,7,0,0"/>
+        <ScrollViewer x:Name="scrl" Margin="0,25,0,42">
+            <StackPanel x:Name="chatPlace" Margin="20,25,40,40" >
+            </StackPanel>
+        </ScrollViewer>
+        <TextBox materialDesign:HintAssist.Hint="Введите сообщение" materialDesign:HintAssist.IsFloating="False" Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="msg" Height="32" VerticalAlignment="Bottom" Margin="20,0,50,10" VerticalScrollBarVisibility="Disabled" SpellCheck.IsEnabled="True" BorderThickness="0,1,0,0" KeyDown="msg_KeyDown" VerticalContentAlignment="Center" Padding="5,0,0,0"/>
+        <Button  VerticalAlignment="Bottom" HorizontalAlignment="Right" BorderBrush="{x:Null}" Margin="0,0,9,9" Click="Button_Click" Background="{x:Null}" Padding="0" >
+            <materialDesign:PackIcon Kind="Send" Width="32" Height="32" />
+        </Button>
     </Grid>
 </UserControl>

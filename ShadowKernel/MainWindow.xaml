@@ -229,7 +229,7 @@
                             <TextBlock Text="Меню" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" FontSize="16"/>
                         </StackPanel>
                     </ListViewItem>
-                    <ListViewItem Style="{x:Null}" Height="0" Margin="0,0,0,140"/>
+                    <ListViewItem Style="{x:Null}" Height="0" Margin="0,0,0,80"/>
                     <ListViewItem  x:Name="ItemHome" Height="60" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0,8,8,8">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" >
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"  Width="70" >
@@ -252,6 +252,14 @@
                                 <materialDesign:PackIcon Kind="UserGroup" Height="30" Width="25" Margin="21,10,10,10" Foreground="#FFB9BBBE" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </StackPanel>
                             <TextBlock Text="Взаимодействие с клиентами" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" FontSize="16"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem  x:Name="Chat" Height="60" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0,8,8,8">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" >
+                            <StackPanel  Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Width="70">
+                                <materialDesign:PackIcon Kind="Chat" Height="30" Width="25" Margin="21,10,10,10" Foreground="#FFB9BBBE" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock Text="Чат с клиентами" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" FontSize="16"/>
                         </StackPanel>
                     </ListViewItem>
                     <ListViewItem   x:Name="Net" Height="60" Margin="0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0,8,8,8">

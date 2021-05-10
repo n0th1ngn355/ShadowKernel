@@ -22,10 +22,11 @@ namespace ShadowKernel
     {
         public UserControl uscDashboard = null;
         public UserControl uscAudit = null;
-        public UserControl server = null;
+        public Server server = null;
         public UserControl stgServer = null;
         public UserControl stgNet = null;
         public UserControl net = null;
+        public ChatControl chatControl = null;
         public System.Windows.Forms.NotifyIcon notifyIcon = null;
         public NotifyContextMenu n;
 
@@ -57,6 +58,7 @@ namespace ShadowKernel
             stgServer = new SettingsServer(this);
             stgNet = new SettingsNet();
             net = new Net();
+            chatControl = new ChatControl(this);
 
             GridMain.Children.Add(server);
 
@@ -132,6 +134,11 @@ namespace ShadowKernel
                     break;
                 case "Net":
                     GridMain.Children.Add(net);
+                    break;
+                case "Chat":
+                    GridMain.Children.Add(chatControl);
+                    chatControl.dtgClients.ItemsSource = server.dtgClients.Items;
+                    chatControl.dtgClients.Items.Refresh();
                     break;
                 case "Settings":
                     GridMain.Children.Add(stgServer);

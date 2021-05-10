@@ -156,19 +156,20 @@ namespace ShadowKernel.userControls
         {
             try
             {
-                SettingsServer.MyItem myItem = (SettingsServer.MyItem)dtgClients.SelectedItem;
-                //MainServer.Send(Convert.ToInt16(myItem.ID), Encoding.UTF8.GetBytes("OpenChat"));
-                //foreach (Chat C in System.Windows.Application.Current.Windows.OfType<Chat>())
-                //    if (C.Visibility == Visibility.Visible && C.ConnectionID == Convert.ToInt16(myItem.ID))
-                //        return;
-                C = new Chat();
-                C.ConnectionID = Convert.ToInt16(myItem.ID);
-                C.title.Text = "Чат с - " + myItem.ID;
-                C.dtgClients.ItemsSource = dtgClients.Items;
-                C.dtgClients.Items.Refresh();
                 MainWindow wind = (MainWindow)Window.GetWindow(this);
+                if ((SettingsServer.MyItem)dtgClients.SelectedItem == null) { wind.chatControl.chatPlace.Children.Clear(); return; }
+                SettingsServer.MyItem myItem = (SettingsServer.MyItem)dtgClients.SelectedItem;
+                SettingsServer stg = (SettingsServer)wind.stgServer;
+                wind.chatControl.chatPlace.Children.Clear();
+                Chat chat = stg.chats[Convert.ToInt32(myItem.ID)];
+                chat.title.Text = "Чат с " + myItem.Tag + " (" + myItem.IP + ")";
+                chat.ConnectionID = Convert.ToInt32(myItem.ID);
+                wind.chatControl.chatPlace.Children.Add(chat);
+
                 wind.GridMain.Children.Clear();
-                wind.GridMain.Children.Add(C);
+                wind.GridMain.Children.Add(wind.chatControl);
+                wind.chatControl.dtgClients.ItemsSource = dtgClients.Items;
+                wind.chatControl.dtgClients.Items.Refresh();
             }
             catch
             {

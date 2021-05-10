@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using static ShadowKernel.Classes.Server;
-
 namespace ShadowKernel.userControls
 {
     /// <summary>
@@ -21,17 +20,14 @@ namespace ShadowKernel.userControls
     public partial class Chat : UserControl
     {
         public int ConnectionID { get; set; }
-        public bool Update { get; set; }
         public Chat()
-        {
-            InitializeComponent(); 
-            Update = true;
+        { 
+            InitializeComponent();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            MainServer.Send(ConnectionID, Encoding.UTF8.GetBytes("CloseChat"));
-            Update = false;
+            e.Cancel = true;
         }
 
         private void msg_KeyDown(object sender, KeyEventArgs e)

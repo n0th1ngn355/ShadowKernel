@@ -215,7 +215,7 @@ namespace Client.Helpers.Services
             }
         }
 
-        private static async void StartRemoteDestkop()
+        private static void StartRemoteDestkop()
         {
             while (RemoteDesktopActive)
             {

