@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:ShadowKernel.userControls"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              Background="{DynamicResource MaterialDesignPaper}" 
@@ -10,7 +11,7 @@
              TextElement.FontSize="14"
              
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
-             mc:Ignorable="d" Height="540" Width="1020" VerticalAlignment="Top" >
+             mc:Ignorable="d" Height="560" Width="1010" VerticalAlignment="Top" >
     <UserControl.Resources>
         <Style x:Key="Img" TargetType="{x:Type Grid}">
             <Style.Triggers>
@@ -25,23 +26,88 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="But1Style" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="1">
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Visibility" Value="Visible">
+                                            <Setter Property="Background" Value="Black"/>
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#FF222222"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid>
+                                <ContentPresenter Margin="{TemplateBinding Padding}"  HorizontalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </UserControl.Resources>
     <Grid Style="{StaticResource Img}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="200" MinWidth="200" MaxWidth="250" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        
+        <Grid Grid.Column="0">
+            <Button x:Name="scanIps" Style="{StaticResource But1Style}" Content="Сканировать сеть" HorizontalAlignment="Center" Margin="0,19,0,0" VerticalAlignment="Top" BorderBrush="Black" Padding="16,8,16,0" Height="32" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Click="scanIps_Click"/>
+            <TreeView x:Name="nbours" Margin="0,70,0,0" SelectedItemChanged="nbours_SelectedItemChanged">
+            </TreeView>
+        </Grid>
         <GridSplitter Grid.Column="1"  Grid.Row="2" ShowsPreview="False" Width="3"
         HorizontalAlignment="Center" />
-        <Grid Grid.Column="0">
-            <TreeView Margin="0,10,0,0">
-                <TreeViewItem Header="Человек" Padding="0,8,8,8">
-                    <TreeViewItem Header="Еще один"></TreeViewItem>
-                    <TreeViewItem Header="И даже здесь"></TreeViewItem>
-                </TreeViewItem>
-            </TreeView>
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="200" MinHeight="10" MaxHeight="250"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBox materialDesign:HintAssist.Hint="Фильтр" x:Name="filter" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Padding="2,0,0,0" BorderThickness="0,1" Width="181" HorizontalAlignment="Left" Height="32" Margin="10,0,0,0"/>
+                    <Button x:Name="start" Style="{StaticResource But1Style}" Content="Начать" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" BorderBrush="Black" Padding="16,8,16,0" Height="32" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Click="start_Click" />
+                    <Button x:Name="clear" Style="{StaticResource But1Style}" Content="Очисить" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" BorderBrush="Black" Padding="16,8,16,0" Height="32" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Click="clear_Click" />
+                </StackPanel>
+                <Separator Height="2" VerticalAlignment="Bottom" Margin="0,0,0,3" />
+            </Grid>
+            <Grid Grid.Row="1">
+                <ListView  x:Name="listView" SelectionChanged="listView_SelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                    <ListView.View>
+                        <GridView AllowsColumnReorder="False">
+                            <GridViewColumn Header="Источник" DisplayMemberBinding="{Binding srcIP}" Width="150"/>
+                            <GridViewColumn Header="Конечная точка" DisplayMemberBinding="{Binding endIP}" Width="150"/>
+                            <GridViewColumn Header="Тип" DisplayMemberBinding="{Binding type}" Width="70"/>
+                            <GridViewColumn Header="Время" DisplayMemberBinding="{Binding time}" Width="80"/>
+                            <GridViewColumn Header="Объём" DisplayMemberBinding="{Binding length}" Width="90"/>
+                            <GridViewColumn Header="Данные" Width="80">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock TextWrapping="NoWrap" Text="..." />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+            <GridSplitter Grid.Row="2" ShowsPreview="False" Height="4" Panel.ZIndex="13" HorizontalAlignment="Stretch"/>
+            <Grid Grid.Row="3">
+                <TextBox x:Name="charTextBox"  IsReadOnly="True" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" Padding="4,2" BorderThickness="1" Width="404" HorizontalAlignment="Left"/>
+                <TextBox x:Name="hexTextBox"  IsReadOnly="True" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" Padding="4,2" BorderThickness="1" Width="403" HorizontalAlignment="Right" />
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>

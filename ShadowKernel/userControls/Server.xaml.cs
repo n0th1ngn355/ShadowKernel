@@ -271,5 +271,18 @@ namespace ShadowKernel.userControls
 
             }
         }
+
+        private void ActPorts_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                SettingsServer.MyItem myItem = (SettingsServer.MyItem)dtgClients.SelectedItem;
+                MainServer.Send(Convert.ToInt16(myItem.ID), Encoding.UTF8.GetBytes("GetActivePorts"));
+            }
+            catch
+            {
+
+            }
+        }
     }
 }

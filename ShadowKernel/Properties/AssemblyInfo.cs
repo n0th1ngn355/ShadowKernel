@@ -6,16 +6,16 @@ using System.Windows;
 
 
 [assembly: AssemblyTitle("ShadowKernel")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Дипломная работа")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Daniel Corp.")]
 [assembly: AssemblyProduct("ShadowKernel")]
 [assembly: AssemblyCopyright("Copyright ©  2021")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("Daniel Corp.")]
 [assembly: AssemblyCulture("")]
 
 
-[assembly: ComVisible(false)]
+[assembly: ComVisible(true)]
 
 
 

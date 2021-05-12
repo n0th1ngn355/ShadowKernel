@@ -1,4 +1,4 @@
-﻿<Window x:Class="ShadowKernel.userControls.TaskManager"
+﻿<Window x:Class="ShadowKernel.userControls.ActivePorts"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,7 +7,7 @@
         mc:Ignorable="d"
        TextElement.FontWeight="Medium"
              TextElement.FontSize="14"
-        Title="Процессы на компьютере клиента"  Height="560" Width="800" WindowStartupLocation="CenterScreen" Closing="Window_Closing" >
+        Title="Открытые порты" Height="560" Width="800" WindowStartupLocation="CenterScreen" Closing="Window_Closing" >
     <Window.Triggers>
         <EventTrigger RoutedEvent="Loaded">
             <BeginStoryboard>
@@ -18,14 +18,14 @@
         </EventTrigger>
     </Window.Triggers>
     <Grid Background="#FF303030">
-        <DataGrid x:Name="clientProcesses" SelectionChanged="dtgClients_SelectionChanged" IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single">
+        <DataGrid x:Name="clientProcesses" IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Имя" Binding="{Binding pName}" Width="100"/>
-                <DataGridTextColumn Header="ID" Binding="{Binding pID}" Width="65"/>
-                <DataGridTextColumn Header="Статус" Binding="{Binding pResponding}" Width="70"/>
-                <DataGridTextColumn Header="Название окна" Binding="{Binding pTitle}"  Width="150"/>
-                <DataGridTextColumn Header="Память(кб)" Binding="{Binding pMemory}" Width="170"/>
-                <DataGridTextColumn Header="Исполняемый файл" Binding="{Binding pModule}" Width="170"/>
+                <DataGridTextColumn Header="PID" Binding="{Binding pId}" Width="80"/>
+                <DataGridTextColumn Header="Название" Binding="{Binding pName}" Width="140"/>
+                <DataGridTextColumn Header="Протокол" Binding="{Binding pPrtcl}" Width="90"/>
+                <DataGridTextColumn Header="Источник" Binding="{Binding pLocal}"  Width="170"/>
+                <DataGridTextColumn Header="Назначение" Binding="{Binding pRemote}" Width="170"/>
+                <DataGridTextColumn Header="Статус" Binding="{Binding pStatus}" Width="170"/>
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu>

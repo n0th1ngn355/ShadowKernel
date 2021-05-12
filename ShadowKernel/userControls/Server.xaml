@@ -81,24 +81,9 @@
                             </MenuItem.Icon>
                         </MenuItem>
                         <Separator Margin="0,-10,0,-10"/>
-                        <MenuItem x:Name="RestartClient" Header="Перезапустить подключение" BorderThickness="0" Margin="0" FontSize="14" Height="30" Padding="0,0,10,0" Click="RestartClient_Click">
+                        <MenuItem x:Name="RestartClient" Header="Перезапустить подключение" BorderThickness="0"  Margin="0,0,0,-15" FontSize="14" Height="30" Padding="0,0,10,0" Click="RestartClient_Click">
                             <MenuItem.Icon>
                                 <Image Source="/ShadowKernel;component/Resources/Restart_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
-                                    <Image.RenderTransform>
-                                        <TransformGroup>
-                                            <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
-                                            <SkewTransform/>
-                                            <RotateTransform/>
-                                            <TranslateTransform X="10"/>
-                                        </TransformGroup>
-                                    </Image.RenderTransform>
-                                </Image>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <Separator Margin="0,-10,0,-10"/>
-                        <MenuItem Header="Кто-то где-то" BorderThickness="0" Margin="0,0,0,-15" FontSize="14" Height="30" Padding="0,0,10,0">
-                            <MenuItem.Icon>
-                                <Image Source="/ShadowKernel;component/Resources/Administrative Tools_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
                                     <Image.RenderTransform>
                                         <TransformGroup>
                                             <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
@@ -143,6 +128,21 @@
                         <MenuItem x:Name="TaskMgr" Header="Запущенные процессы" BorderThickness="0" Margin="0" FontSize="14" Height="30" Padding="0,0,10,0" Click="TaskMgr_Click">
                             <MenuItem.Icon>
                                 <Image Source="/ShadowKernel;component/Resources/Compose_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="10"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                </Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator Margin="0,-10,0,-10"/>
+                        <MenuItem x:Name="ActPorts" Header="Активные порты" BorderThickness="0" Margin="0" FontSize="14" Height="30" Padding="0,0,10,0" Click="ActPorts_Click">
+                            <MenuItem.Icon>
+                                <Image Source="/ShadowKernel;component/Resources/Website_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
                                     <Image.RenderTransform>
                                         <TransformGroup>
                                             <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>

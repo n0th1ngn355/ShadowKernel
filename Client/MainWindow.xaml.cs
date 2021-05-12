@@ -342,6 +342,10 @@ namespace Client
                         GetProcesses();
                         break;
 
+                    case "GetActivePorts":
+                        GetActivePorts();
+                        break;
+
                     case "GetComputerInfo":
                         GetComputerInfo();
                         break;
@@ -581,6 +585,29 @@ namespace Client
             ToSend.AddRange(Encoding.UTF8.GetBytes(ListString));
             Networking.MainClient.Send(ToSend.ToArray());
         }
+
+
+        private void GetActivePorts()
+        {
+            List<Port> a = Ports.GetNetStatPorts();
+            List<string> ProcessList = new List<string>();
+
+
+            foreach (var e in a)
+            {
+                ProcessList.Add("p1" + e.pid + "}p2" + e.process_name + "{p3" + e.protocol + ";p4" +  e.local_address + ">p5" +  e.remote_address + "<p6" + e.status + "]");
+            }
+
+            string[] StringArray = ProcessList.ToArray<string>();
+            List<byte> ToSend = new List<byte>();
+            ToSend.Add((int)DataType.ActivePorts);
+            string ListString = "";
+            foreach (string Process in StringArray) ListString += "][" + Process;
+            ToSend.AddRange(Encoding.UTF8.GetBytes(ListString));
+            Networking.MainClient.Send(ToSend.ToArray());
+        }
+
+
 
         ////Prompts user to raise client to administrator
         //private void RaisePerms()

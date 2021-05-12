@@ -96,6 +96,7 @@
         <Grid Grid.Row="1"  Grid.Column="2" Margin="0">
             <Label Content="Создание клиентов" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top"/>
             <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Имя клиента" x:Name="Tag" Margin="30,66,30,50" TextWrapping="Wrap" VerticalAlignment="Top" VerticalScrollBarVisibility="Disabled"/>
+            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="IP-адрес сервера" x:Name="Dns" Margin="30,110,30,0" VerticalAlignment="Top" VerticalScrollBarVisibility="Disabled"/>
             <Button Style="{StaticResource But1Style}" Content="Создать клиента" HorizontalAlignment="Center" Margin="0,0,0,200" VerticalAlignment="Bottom" Width="159" BorderBrush="Black" Padding="16,8,16,0" Height="32" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Click="Button_Click_1"/>
         </Grid>
     </Grid>

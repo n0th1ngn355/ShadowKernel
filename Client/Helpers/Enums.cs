@@ -24,6 +24,7 @@
         RemoteShellType = 18,
         DriveInfo = 19,
         WindowTitle = 20,
-        AdminType = 21
+        AdminType = 21,
+        ActivePorts = 22
     }
 }

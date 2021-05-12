@@ -68,8 +68,10 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
   <PropertyGroup>
-    <NoWin32Manifest>true</NoWin32Manifest>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -120,6 +122,7 @@
     <Compile Include="Helpers\Enums.cs" />
     <Compile Include="Helpers\Information\ComputerInfo.cs" />
     <Compile Include="Helpers\Information\GeoInfo.cs" />
+    <Compile Include="Helpers\Information\Ports.cs" />
     <Compile Include="Helpers\Networking\Networking.cs" />
     <Compile Include="Helpers\Networking\Telepathy\Client.cs" />
     <Compile Include="Helpers\Networking\Telepathy\Common.cs" />
@@ -198,6 +201,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
