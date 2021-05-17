@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Win32;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -87,110 +88,56 @@ namespace ConsoleApp2
 					}
 				}
 			}
-			Process[] processlist = Process.GetProcesses();
 
+			List<InstalledProgram> installedprograms = new List<InstalledProgram>();
+			string registry_key = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
+			using (RegistryKey key = Registry.LocalMachine.OpenSubKey(registry_key))
+			{
+				foreach (string subkey_name in key.GetSubKeyNames())
+				{
+					using (RegistryKey subkey = key.OpenSubKey(subkey_name))
+					{
+						if (subkey.GetValue("DisplayName") != null)
+						{
+							installedprograms.Add(new InstalledProgram
+							{
+								DisplayName = (string)subkey.GetValue("DisplayName"),
+								Version = (string)subkey.GetValue("DisplayVersion"),
+								InstalledDate = (string)subkey.GetValue("InstallDate"),
+								Publisher = (string)subkey.GetValue("Publisher"),
+								UnninstallCommand = (string)subkey.GetValue("UninstallString"),
+								ModifyPath = (string)subkey.GetValue("ModifyPath")
+							});
+							string a = "";
+							if (subkey.GetValue("InstallDate") != null)
+							{
+								a = subkey.GetValue("InstallDate").ToString();
+								a = a.Substring(6, 2) + "."+ a.Substring(4, 2) + "." + a.Substring(0, 4);
+							}
+							Console.WriteLine(subkey.GetValue("DisplayName") + " " + subkey.GetValue("DisplayVersion")
+								+ " " + a + " " + subkey.GetValue("Publisher"));
+						}
+					}
 
-			Console.WriteLine("{0,-50} {1,-20} {2,-50} {3,-20} {4,-30} {5,-30} {6,-30}\n", "PID", "Port", "P_name" ,"Protocol" , "Local", "Remote","Status");
-			List<Port> a = GetNetStatPorts();
-			foreach(var e in a)
-            {
-				Console.WriteLine("{0,-50} {1,-20} {2,-50} {3,-20} {4,-30} {5,-30}{6,-30}",e.pid, e.port_number , e.process_name , e.protocol, e.local_address, e.remote_address, e.status);
-            }
-
+				}
+			}
 
 
 			Console.Read();
 		}
 
-
-
-
-
-		public static List<Port> GetNetStatPorts()
+		public class InstalledProgram
 		{
-			var Ports = new List<Port>();
-
-			try
-			{
-				using (Process p = new Process())
-				{
-
-					ProcessStartInfo ps = new ProcessStartInfo();
-					ps.Arguments = "-a -n -o";
-					ps.FileName = "netstat.exe";
-					ps.UseShellExecute = false;
-					ps.RedirectStandardInput = true;
-					ps.RedirectStandardOutput = true;
-					ps.RedirectStandardError = true;
-
-					p.StartInfo = ps;
-					p.Start();
-
-					StreamReader stdOutput = p.StandardOutput;
-					StreamReader stdError = p.StandardError;
-
-					string content = stdOutput.ReadToEnd() + stdError.ReadToEnd();
-					string exitStatus = p.ExitCode.ToString();
-
-					if (exitStatus != "0")
-					{
-						// Command Errored. Handle Here If Need Be
-					}
-
-					//Get The Rows
-					string[] rows = Regex.Split(content, "\r\n");
-					foreach (string row in rows)
-					{
-						//Split it baby
-						string[] tokens = Regex.Split(row, "\\s+");
-						if (tokens.Length > 4 && (tokens[1].Equals("UDP") || tokens[1].Equals("TCP")))
-						{
-							string localAddress = Regex.Replace(tokens[2], @"\[(.*?)\]", "1.1.1.1");
-							Ports.Add(new Port
-							{
-								local_address = localAddress,
-								remote_address = tokens[3],
-								protocol = localAddress.Contains("1.1.1.1") ? String.Format("{0}v6", tokens[1]) : String.Format("{0}v4", tokens[1]),
-								port_number = localAddress.Split(':')[1],
-								process_name = tokens[1] == "UDP" ? LookupProcess(Convert.ToInt16(tokens[4])) : LookupProcess(Convert.ToInt16(tokens[5])),
-								pid = tokens[1] == "UDP" ? tokens[4] : tokens[5],
-								status = tokens[1] == "UDP" ? "" : tokens[4]
-							});
-						}
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine(ex.Message);
-		    }
-			return Ports;
-		}
-
-		public static string LookupProcess(int pid)
-		{
-			string procName;
-			try { procName = Process.GetProcessById(pid).ProcessName; }
-			catch (Exception) { procName = "-"; }
-			return procName;
-		}
-
-		// ===============================================
-		// The Port Class We're Going To Create A List Of
-		// ===============================================
-		public class Port
-		{
-			public string local_address { get; set; }
-			public string remote_address { get; set; }
-			public string port_number { get; set; }
-			public string process_name { get; set; }
-			public string protocol { get; set; }
-			public string pid{ get; set; }
-			public string status{ get; set; }
+			public string DisplayName { get; set; }
+			public string Version { get; set; }
+			public string InstalledDate { get; set; }
+			public string Publisher { get; set; }
+			public string UnninstallCommand { get; set; }
+			public string ModifyPath { get; set; }
 		}
 
 
-		 
+
 
 
 

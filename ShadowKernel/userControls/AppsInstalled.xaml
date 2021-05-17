@@ -1,0 +1,47 @@
+﻿<Window x:Class="ShadowKernel.userControls.AppsInstalled"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ShadowKernel.userControls"
+        mc:Ignorable="d"
+       TextElement.FontWeight="Medium"
+             TextElement.FontSize="14"
+        Title="Установленные приложения" Height="560" Width="800" WindowStartupLocation="CenterScreen" Closing="Window_Closing" >
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard >
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity" By="0" Duration="0:0:0.5" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
+    <Grid Background="#FF303030">
+        <DataGrid x:Name="clientApps" IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Название" Binding="{Binding DisplayName}" Width="200"/>
+                <DataGridTextColumn Header="Автор" Binding="{Binding Publisher}" Width="200"/>
+                <DataGridTextColumn Header="Дата установки" Binding="{Binding InstalledDate}" Width="120"/>
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem x:Name="RefreshProc" Header="Обновить" BorderThickness="0" Margin="0,-15,0,-15" FontSize="14" Height="30" Padding="0,0,10,0" Click="RefreshProc_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/ShadowKernel;component/Resources/Restart_48px.png" RenderTransformOrigin="0.5,0.5" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                <Image.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleX="1.7" ScaleY="1.7"/>
+                                        <SkewTransform/>
+                                        <RotateTransform/>
+                                        <TranslateTransform X="10"/>
+                                    </TransformGroup>
+                                </Image.RenderTransform>
+                            </Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+    </Grid>
+</Window>

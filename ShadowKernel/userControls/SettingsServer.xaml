@@ -89,7 +89,7 @@
             <Label Content="Настройки сервера" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top"/>
             <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Порт"  x:Name="Port" Margin="30,66,30,0" VerticalAlignment="Top" SelectionChanged="Port_SelectionChanged" VerticalScrollBarVisibility="Disabled"/>
             <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Интервал обновления" x:Name="UpInt" Margin="30,110,30,0" VerticalAlignment="Top" SelectionChanged="UpInt_SelectionChanged" VerticalScrollBarVisibility="Disabled"/>
-            <CheckBox x:Name="notify" Content="Уведомлять о новом подключении" HorizontalAlignment="Center" Margin="10,174,10,0" VerticalAlignment="Top" Background="#FFF44336" BorderBrush="Black" Click="CheckBox_Click"/>
+            <CheckBox x:Name="notify" Content="Уведомления" HorizontalAlignment="Center" Margin="10,174,10,0" VerticalAlignment="Top" Background="#FFF44336" BorderBrush="Black" Click="CheckBox_Click"/>
             <Button Style="{StaticResource But1Style}" x:Name="btnListen" Content="Начать прослушивание" HorizontalAlignment="Center" Margin="0,0,0,200" VerticalAlignment="Bottom" BorderBrush="Black" Click="Button_Click" Padding="16,8,16,4" Height="32"/>
         </Grid>
         <Rectangle  Grid.Column="1" Fill="#FF272727" Grid.Row="1"/>

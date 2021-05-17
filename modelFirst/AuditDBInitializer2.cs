@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 //cat12 = Управление аккаунтом
 //cat13 = Контроль доступа
 //cat14 = Управление удаленным доступом
-//cat15 = Портативный / Мобильный / Беспроводной
+//cat15 = Портативные/мобильные/беспроводные устройства
 //cat16 = Защита системы
 //cat17 = Защита связи
 //cat18 = Целостность системы
@@ -158,7 +158,7 @@ namespace modelFirst
 
             Category cat21 = new Category();
             cat21.Id = 21;
-            cat21.Name = "Ответ на инцидент";
+            cat21.Name = "Ответные меры на инцидент";
             context.Categories.Add(cat21);
 
             Category cat22 = new Category();

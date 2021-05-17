@@ -60,7 +60,7 @@ namespace ShadowKernel
             net = new Net();
             chatControl = new ChatControl(this);
 
-            GridMain.Children.Add(server);
+            GridMain.Children.Add(uscDashboard);
 
         }
 
@@ -75,6 +75,7 @@ namespace ShadowKernel
             {
                 n.Left = SystemParameters.PrimaryScreenWidth;
                 n.Visibility = Visibility.Visible;
+                n.Activate();
                 n.Aud.Content = AC.Text;
                 n.Serv.Content = serverText.Text;
                 SettingsServer s = (SettingsServer)stgServer;

@@ -25,6 +25,7 @@
         DriveInfo = 19,
         WindowTitle = 20,
         AdminType = 21,
-        ActivePorts = 22
+        ActivePorts = 22,
+        AppsInstalled = 23
     }
 }

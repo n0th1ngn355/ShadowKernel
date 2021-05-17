@@ -236,13 +236,17 @@ namespace ShadowKernel.NetClasses
         {
 
             StringBuilder sb = new StringBuilder();
-            
+
             for(int i = this.HeadLength; i < TotalLength; i += LineCount)
             {
                 for (int j = i; j < TotalLength && j < i + LineCount; j++)
                 {
                     if (raw_Packet[j] > 31 && raw_Packet[j] < 128)
                         sb.Append((char)raw_Packet[j]);
+                    else if(raw_Packet[j]> 1040 && raw_Packet[j] < 1103)
+                    {
+                        sb.Append((char)raw_Packet[j]);
+                    }
                     else
                         sb.Append(".");
                 }

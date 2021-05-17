@@ -209,12 +209,6 @@
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="NetClasses\Monitor.cs" />
-    <Compile Include="NetClasses\MyButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="NetClasses\MyRichTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="NetClasses\Packet.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -223,6 +217,9 @@
     </Compile>
     <Compile Include="SignUp.xaml.cs">
       <DependentUpon>SignUp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="userControls\AppsInstalled.xaml.cs">
+      <DependentUpon>AppsInstalled.xaml</DependentUpon>
     </Compile>
     <Compile Include="userControls\ActivePorts.xaml.cs">
       <DependentUpon>ActivePorts.xaml</DependentUpon>
@@ -297,6 +294,10 @@
     <Page Include="SignUp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="userControls\AppsInstalled.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="userControls\ActivePorts.xaml">
       <SubType>Designer</SubType>

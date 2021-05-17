@@ -114,7 +114,11 @@ namespace ShadowKernel.userControls
 			var reply = await ping.SendPingAsync(ip, 500);
 			if (reply.Status == IPStatus.Success)
 			{
-                await Task.Run(() => f1(ip));
+                TreeViewItem lb = new TreeViewItem();
+                lb.Header = ip;
+                lb.Tag = "1";
+                nbours.Items.Add(lb);
+                nbours.Items.Refresh();
             }
 		}
 
@@ -220,6 +224,7 @@ namespace ShadowKernel.userControls
             string[] conditions = { "", "", "" };
             string tmpString = filter.Text;
             int port = 0;
+            IPAddress ip;
             if (tmpString.Contains('/') || tmpString.Contains(':'))//IP:PORT OR IP/PORT
             {
                 string[] arr = { null, null };
@@ -232,8 +237,10 @@ namespace ShadowKernel.userControls
             }
             else if (int.TryParse(tmpString, out port))//just port;
                 conditions[1] = port.ToString();
-            else//just IP;
+            else if (IPAddress.TryParse(tmpString, out ip))//just IP;
                 conditions[0] = tmpString;
+            else
+                conditions[2] = tmpString.ToUpper();
             //Console.WriteLine(conditions);
             return conditions;
         }

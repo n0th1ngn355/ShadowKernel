@@ -153,12 +153,10 @@
             <TextBox x:Name="txtPassword1" Visibility="Collapsed" materialDesign:HintAssist.Hint="ПАРОЛЬ" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Foreground="#FFB9BBBE" FontFamily="Open Sans Extrabold" FontSize="18" Margin="15,109,15,86"/>
             <CheckBox TabIndex="0" x:Name="pswd" Content="Показать пароль" HorizontalAlignment="Center" Margin="0,0,0,30"  Background="#FFF44336" BorderBrush="Black" Foreground="#FFB9BBBE" FontFamily="Open Sans Extrabold" FontSize="18" Height="40" VerticalAlignment="Bottom" Checked="pswd_Checked" Unchecked="pswd_Unchecked" />
         </Grid>
-        <Button Style="{StaticResource But1Style}" x:Name="ButtonLogin" Width="150" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,80" Content="ВОЙТИ" Click="ButtonLogin_Click" FontFamily="Open Sans Extrabold" Background="#FF303030" BorderBrush="{x:Null}" Foreground="#FFBBBBBB" FontSize="18" Padding="43,7,0,4" TabIndex="3" Height="32" >
-        </Button>
-        <Button TabIndex="0" Style="{StaticResource ButStyle}" x:Name="ButtonSignUp" Width="100" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,50" Content="РЕГИСТРАЦИЯ" FontFamily="Open Sans Extrabold" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFBBBBBB" FontSize="14" Padding="2,4,2,0" Height="25" ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalContentAlignment="Center" Grid.IsSharedSizeScope="True" VerticalContentAlignment="Center" Click="ButtonSignUp_Click"  >
-        </Button>
+        <Button Style="{StaticResource But1Style}" x:Name="ButtonLogin" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,80" Content="ВОЙТИ" Click="ButtonLogin_Click" FontFamily="Open Sans Extrabold" Background="#FF303030" BorderBrush="{x:Null}" Foreground="#FFBBBBBB" FontSize="18" Padding="16,7,16,4" TabIndex="3" />
+        <Button TabIndex="0" Style="{StaticResource ButStyle}" x:Name="ButtonSignUp" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,50" Content="РЕГИСТРАЦИЯ" FontFamily="Open Sans Extrabold" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFBBBBBB" FontSize="14" Padding="2,4,2,0" ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalContentAlignment="Center" Grid.IsSharedSizeScope="True" VerticalContentAlignment="Center" Click="ButtonSignUp_Click"  />
         <TextBlock x:Name="txtblocError" Text="" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10,10,10,15" Foreground="#FF631919" Cursor="None"/>
-        <Rectangle Style="{StaticResource Img}" Height="125" Width="127" Fill="Black" VerticalAlignment="Top" Margin="0,20,0,0" Panel.ZIndex="1" Opacity="0" HorizontalAlignment="Center" />
+        <Rectangle Style="{StaticResource Img}" Height="125" Fill="Black" VerticalAlignment="Top" Margin="0,20,0,0" Panel.ZIndex="1" Opacity="0" HorizontalAlignment="Center" />
         <Image  Source="assets/SKLogo.png" Height="125" VerticalAlignment="Top" Margin="0,20,0,0" HorizontalAlignment="Center">
         </Image>
     </Grid>
