@@ -186,9 +186,6 @@
     </ApplicationDefinition>
     <Compile Include="Classes\AutoClosingMsgBox.cs" />
     <Compile Include="Classes\Builder.cs" />
-    <Compile Include="Classes\Notification.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Classes\Server.cs" />
     <Compile Include="Classes\Telepathy\Client.cs" />
     <Compile Include="Classes\Telepathy\Common.cs" />
@@ -259,9 +256,6 @@
     </Compile>
     <Compile Include="userControls\Server.xaml.cs">
       <DependentUpon>Server.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="userControls\SettingsNet.xaml.cs">
-      <DependentUpon>SettingsNet.xaml</DependentUpon>
     </Compile>
     <Compile Include="userControls\SettingsServer.xaml.cs">
       <DependentUpon>SettingsServer.xaml</DependentUpon>
@@ -350,10 +344,6 @@
     <Page Include="userControls\Server.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="userControls\SettingsNet.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="userControls\SettingsServer.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -24,7 +24,6 @@ namespace ShadowKernel
         public UserControl uscAudit = null;
         public Server server = null;
         public UserControl stgServer = null;
-        public UserControl stgNet = null;
         public UserControl net = null;
         public ChatControl chatControl = null;
         public System.Windows.Forms.NotifyIcon notifyIcon = null;
@@ -56,7 +55,6 @@ namespace ShadowKernel
             uscAudit = new UserControlCreate();
             server = new Server();
             stgServer = new SettingsServer(this);
-            stgNet = new SettingsNet();
             net = new Net();
             chatControl = new ChatControl(this);
 

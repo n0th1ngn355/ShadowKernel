@@ -73,17 +73,9 @@
         </Grid.RowDefinitions>
 
 
-        <Button Style="{StaticResource But1Style}" Grid.Column="0" Click="MenuItem_Click_1" Background="Black" Padding="0,20,0,0" Height="Auto" BorderBrush="{x:Null}">
-            <Button.Content>
-                <TextBox Focusable="False" IsReadOnly="True" Text="Клиент/Сервер" VerticalAlignment="Top"/>
-            </Button.Content>
-        </Button>
-        <Rectangle  Grid.Column="1" Grid.Row="0" Fill="Black"/>
-        <Button Style="{StaticResource But1Style}"  Grid.Column="2" Click="MenuItem_Click_2" Background="Black" Padding="0,20,0,0" Height="Auto" BorderBrush="{x:Null}">
-            <Button.Content>
-                <TextBox  Focusable="False" IsReadOnly="True" Text="Сеть" VerticalAlignment="Top" Padding="0" BorderBrush="{x:Null}"/>
-            </Button.Content>
-        </Button>
+        <Grid  Grid.ColumnSpan="3" Background="Black" Height="Auto" >
+            <TextBlock Text="Настройки" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" />
+        </Grid>
 
         <Grid Grid.Row="1" Grid.Column="0" Margin="0" >
             <Label Content="Настройки сервера" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top"/>

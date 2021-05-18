@@ -41,6 +41,7 @@ namespace ShadowKernel.userControls
         private void conRow_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
+            {
                 try
                 {
                     switch (conRow.Text)
@@ -58,6 +59,8 @@ namespace ShadowKernel.userControls
                     }
                 }
                 catch { }
+                conRow.Text = "";
+            }
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)

@@ -64,18 +64,6 @@ namespace ShadowKernel.userControls
         }
 
 
-        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
-        {
-            MainWindow wind = (MainWindow)Window.GetWindow(this);
-            SettingsNet stgNet = (SettingsNet)wind.stgNet;
-            wind.GridMain.Children.Clear();
-            wind.GridMain.Children.Add(stgNet);
-        }
         private ushort GetPortSafe()
         {
             var portValue = Port.Text.ToString();
