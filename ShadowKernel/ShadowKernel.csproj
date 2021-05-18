@@ -391,9 +391,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="assets\ESLogo.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\HandlingPdf\HandlingPdf.csproj">
       <Project>{5f5cbfa1-b4d3-419d-8809-3939c40d24ff}</Project>
       <Name>HandlingPdf</Name>
@@ -404,18 +401,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="assets\ESLogoR.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="assets\ESLogoR2.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="assets\icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="assets\parcit-logo.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
