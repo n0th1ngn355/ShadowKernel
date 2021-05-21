@@ -104,12 +104,6 @@
     <Compile Include="Forms\Chat.xaml.cs">
       <DependentUpon>Chat.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\InitialForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\InitialForm.Designer.cs">
-      <DependentUpon>InitialForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\IScreenLocker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -191,9 +185,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Forms\InitialForm.resx">
-      <DependentUpon>InitialForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ScreenLock.resx">
       <DependentUpon>ScreenLock.cs</DependentUpon>
     </EmbeddedResource>
