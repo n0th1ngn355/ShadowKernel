@@ -36,7 +36,7 @@
 <p align="center"><img src="https://user-images.githubusercontent.com/68782056/134537888-f06c13cb-70fd-446b-b189-60b29aec3a93.png"></p>
 
 * реализация ограничения доступа к информации путём создания окна входа и окна регистрации нового аудитора.
-
-<img align="left" src="https://user-images.githubusercontent.com/68782056/134526841-e904ad8d-8028-452e-b9f5-b9fd82889f21.png"></br></br>
-<img align="right" width="570" src="https://user-images.githubusercontent.com/68782056/134538048-6ae6a31f-7ca3-4dc7-a535-feb53f42e8b2.png">
+<table><tr><td>
+<img align="left" src="https://user-images.githubusercontent.com/68782056/134526841-e904ad8d-8028-452e-b9f5-b9fd82889f21.png"></td><td>
+<img align="right" width="570" src="https://user-images.githubusercontent.com/68782056/134538048-6ae6a31f-7ca3-4dc7-a535-feb53f42e8b2.png"></td></tr></table>
 
