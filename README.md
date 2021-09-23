@@ -26,9 +26,6 @@
 
 ## Реализация проведения аудита информационной безопасности:
 * создание базы данных с помощью СУБД SQLite с моделями: аудитор, аудит, вопрос, категория, ответ;
-
-<p align="center"><img src="https://user-images.githubusercontent.com/68782056/134526841-e904ad8d-8028-452e-b9f5-b9fd82889f21.png"></p>
-
 * формирование списка вопросов и разбиение по категориям;
 <p align="center"><img src="https://user-images.githubusercontent.com/68782056/134537150-e5d6f391-7672-4a17-ad11-22e3932c1b20.png"></p>
 
@@ -39,5 +36,7 @@
 <p align="center"><img src="https://user-images.githubusercontent.com/68782056/134537888-f06c13cb-70fd-446b-b189-60b29aec3a93.png"></p>
 
 * реализация ограничения доступа к информации путём создания окна входа и окна регистрации нового аудитора.
-<p align="center"><img src="https://user-images.githubusercontent.com/68782056/134538048-6ae6a31f-7ca3-4dc7-a535-feb53f42e8b2.png"></p>
+
+<img align="left" src="https://user-images.githubusercontent.com/68782056/134526841-e904ad8d-8028-452e-b9f5-b9fd82889f21.png"></br></br>
+<img align="right" width="570" src="https://user-images.githubusercontent.com/68782056/134538048-6ae6a31f-7ca3-4dc7-a535-feb53f42e8b2.png">
 
