@@ -23,13 +23,6 @@
 * правильное логическое разделение проведения аудитов;
 * реализация ограничения доступа к информации через программный модуль путём создания окна входа и окна регистрации нового аудитора.
 
-| First Header | Second Header |
-| --- | --- |
-|![image](https://user-images.githubusercontent.com/68782056/134526841-e904ad8d-8028-452e-b9f5-b9fd82889f21.png)|![image](https://user-images.githubusercontent.com/68782056/134511230-acff1ad9-ce52-45c3-87a3-290caa4bafcc.png)|
-
-
-
-
 <table>
   <tr><td>
     <img src="https://user-images.githubusercontent.com/68782056/134526841-e904ad8d-8028-452e-b9f5-b9fd82889f21.png"></td>
