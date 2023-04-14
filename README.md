@@ -41,4 +41,3 @@
 <img align="right" width="570" src="https://user-images.githubusercontent.com/68782056/134538048-6ae6a31f-7ca3-4dc7-a535-feb53f42e8b2.png"></td></tr></table>
 </br></br>
 
-<p align="right"><i><b>Над проектом работали: Кирьяков Д.Р., Айрапетов Т.Э.</b></i></p>
